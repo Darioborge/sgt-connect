@@ -33,10 +33,10 @@ function Perfil() {
     try {
       const bucket = kind === "avatar" ? "avatars" : "covers";
       const url = await uploadToBucket(bucket, user.id, file);
-      const col = kind === "avatar" ? "avatar_url" : "cover_url";
-      const { error } = await supabase.from("profiles").update({ [col]: url }).eq("id", user.id);
+      const patch = kind === "avatar" ? { avatar_url: url } : { cover_url: url };
+      const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
       if (error) throw error;
-      setProfile((p) => (p ? { ...p, [col]: url } : p));
+      setProfile((p) => (p ? { ...p, ...patch } : p));
       toast.success(kind === "avatar" ? "Foto de perfil atualizada" : "Capa atualizada");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erro ao enviar imagem");
