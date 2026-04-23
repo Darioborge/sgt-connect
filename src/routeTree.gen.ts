@@ -49,14 +49,14 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatIndexRoute = ChatIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ChatRoute,
+  id: '/chat/',
+  path: '/chat/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ChatIdRoute = ChatIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ChatRoute,
+  id: '/chat/$id',
+  path: '/chat/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -130,6 +130,8 @@ export interface RootRouteChildren {
   ExplorarRoute: typeof ExplorarRoute
   PerfilRoute: typeof PerfilRoute
   PublicarRoute: typeof PublicarRoute
+  ChatIdRoute: typeof ChatIdRoute
+  ChatIndexRoute: typeof ChatIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -178,17 +180,17 @@ declare module '@tanstack/react-router' {
     }
     '/chat/': {
       id: '/chat/'
-      path: '/'
+      path: '/chat'
       fullPath: '/chat/'
       preLoaderRoute: typeof ChatIndexRouteImport
-      parentRoute: typeof ChatRoute
+      parentRoute: typeof rootRouteImport
     }
     '/chat/$id': {
       id: '/chat/$id'
-      path: '/$id'
+      path: '/chat/$id'
       fullPath: '/chat/$id'
       preLoaderRoute: typeof ChatIdRouteImport
-      parentRoute: typeof ChatRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -200,16 +202,9 @@ const rootRouteChildren: RootRouteChildren = {
   ExplorarRoute: ExplorarRoute,
   PerfilRoute: PerfilRoute,
   PublicarRoute: PublicarRoute,
+  ChatIdRoute: ChatIdRoute,
+  ChatIndexRoute: ChatIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
