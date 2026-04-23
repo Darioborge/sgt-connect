@@ -9,16 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatIndexRouteImport } from './routes/chat.index'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
 
+const PublicarRoute = PublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplorarRoute = ExplorarRouteImport.update({
+  id: '/explorar',
+  path: '/explorar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
@@ -37,21 +49,23 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatIndexRoute = ChatIndexRouteImport.update({
-  id: '/chat/',
-  path: '/chat/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => ChatRoute,
 } as any)
 const ChatIdRoute = ChatIdRouteImport.update({
-  id: '/chat/$id',
-  path: '/chat/$id',
-  getParentRoute: () => rootRouteImport,
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ChatRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/explorar': typeof ExplorarRoute
   '/perfil': typeof PerfilRoute
+  '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/': typeof ChatIndexRoute
 }
@@ -59,7 +73,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/explorar': typeof ExplorarRoute
   '/perfil': typeof PerfilRoute
+  '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat': typeof ChatIndexRoute
 }
@@ -68,7 +84,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/explorar': typeof ExplorarRoute
   '/perfil': typeof PerfilRoute
+  '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/': typeof ChatIndexRoute
 }
@@ -78,17 +96,29 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/configuracoes'
+    | '/explorar'
     | '/perfil'
+    | '/publicar'
     | '/chat/$id'
     | '/chat/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/configuracoes' | '/perfil' | '/chat/$id' | '/chat'
+  to:
+    | '/'
+    | '/auth'
+    | '/configuracoes'
+    | '/explorar'
+    | '/perfil'
+    | '/publicar'
+    | '/chat/$id'
+    | '/chat'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/configuracoes'
+    | '/explorar'
     | '/perfil'
+    | '/publicar'
     | '/chat/$id'
     | '/chat/'
   fileRoutesById: FileRoutesById
@@ -97,18 +127,32 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
+  ExplorarRoute: typeof ExplorarRoute
   PerfilRoute: typeof PerfilRoute
-  ChatIdRoute: typeof ChatIdRoute
-  ChatIndexRoute: typeof ChatIndexRoute
+  PublicarRoute: typeof PublicarRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/publicar': {
+      id: '/publicar'
+      path: '/publicar'
+      fullPath: '/publicar'
+      preLoaderRoute: typeof PublicarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/perfil': {
       id: '/perfil'
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explorar': {
+      id: '/explorar'
+      path: '/explorar'
+      fullPath: '/explorar'
+      preLoaderRoute: typeof ExplorarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configuracoes': {
@@ -134,17 +178,17 @@ declare module '@tanstack/react-router' {
     }
     '/chat/': {
       id: '/chat/'
-      path: '/chat'
+      path: '/'
       fullPath: '/chat/'
       preLoaderRoute: typeof ChatIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ChatRoute
     }
     '/chat/$id': {
       id: '/chat/$id'
-      path: '/chat/$id'
+      path: '/$id'
       fullPath: '/chat/$id'
       preLoaderRoute: typeof ChatIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ChatRoute
     }
   }
 }
@@ -153,10 +197,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
+  ExplorarRoute: ExplorarRoute,
   PerfilRoute: PerfilRoute,
-  ChatIdRoute: ChatIdRoute,
-  ChatIndexRoute: ChatIndexRoute,
+  PublicarRoute: PublicarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
