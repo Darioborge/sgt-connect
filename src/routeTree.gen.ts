@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as ExplorarRouteImport } from './routes/explorar'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const PerfilRoute = PerfilRouteImport.update({
 const ExplorarRoute = ExplorarRouteImport.update({
   id: '/explorar',
   path: '/explorar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/explorar': typeof ExplorarRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/explorar': typeof ExplorarRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
@@ -68,20 +76,36 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/explorar': typeof ExplorarRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/chat' | '/explorar' | '/perfil' | '/publicar'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/chat'
+    | '/configuracoes'
+    | '/explorar'
+    | '/perfil'
+    | '/publicar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/chat' | '/explorar' | '/perfil' | '/publicar'
+  to:
+    | '/'
+    | '/auth'
+    | '/chat'
+    | '/configuracoes'
+    | '/explorar'
+    | '/perfil'
+    | '/publicar'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/chat'
+    | '/configuracoes'
     | '/explorar'
     | '/perfil'
     | '/publicar'
@@ -91,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   ChatRoute: typeof ChatRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
   ExplorarRoute: typeof ExplorarRoute
   PerfilRoute: typeof PerfilRoute
   PublicarRoute: typeof PublicarRoute
@@ -117,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/explorar'
       fullPath: '/explorar'
       preLoaderRoute: typeof ExplorarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -147,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   ChatRoute: ChatRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
   ExplorarRoute: ExplorarRoute,
   PerfilRoute: PerfilRoute,
   PublicarRoute: PublicarRoute,
