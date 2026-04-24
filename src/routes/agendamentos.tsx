@@ -19,10 +19,7 @@ export const Route = createFileRoute("/agendamentos")({
   head: () => ({ meta: [{ title: "Agendamentos — SGT Express" }] }),
 });
 
-type Booking = Database["public"]["Tables"]["bookings"]["Row"] & {
-  client: { id: string; full_name: string | null; avatar_url: string | null } | null;
-  provider: { id: string; full_name: string | null; avatar_url: string | null; phone: string | null } | null;
-};
+type Booking = Database["public"]["Tables"]["bookings"]["Row"];
 
 const STATUS_LABEL: Record<Booking["status"], string> = {
   pendente: "Pendente",
@@ -55,16 +52,10 @@ function Bookings() {
     const col = tab === "recebidos" ? "provider_id" : "client_id";
     const { data } = await supabase
       .from("bookings")
-      .select("*, client:profiles!bookings_client_id_fkey1(id, full_name, avatar_url), provider:profiles!bookings_provider_id_fkey1(id, full_name, avatar_url, phone)")
+      .select("*")
       .eq(col, user.id)
       .order("scheduled_at", { ascending: false });
-    // fallback if FKs not labelled — query without join
-    if (!data) {
-      const { data: rows } = await supabase.from("bookings").select("*").eq(col, user.id).order("scheduled_at", { ascending: false });
-      setItems((rows ?? []) as unknown as Booking[]);
-      return;
-    }
-    setItems(data as unknown as Booking[]);
+    setItems(data ?? []);
   }, [user, tab]);
 
   useEffect(() => {
@@ -182,7 +173,7 @@ function Bookings() {
                   {isProvider && b.status === "confirmado" && (
                     <button
                       onClick={() => act(b.id, () => setBookingStatus(b.id, "em_curso"), "Em curso")}
-                      className="flex items-center gap-1 rounded-full bg-blue-600 px-2.5 py-1 text-[11px] font-semibold text-white"
+                      className="flex items-center gap-1 rounded-full bg-primary/80 px-2.5 py-1 text-[11px] font-semibold text-primary-foreground"
                     >
                       <Play className="h-3 w-3" /> Iniciar
                     </button>
@@ -190,7 +181,7 @@ function Bookings() {
                   {isProvider && (b.status === "em_curso" || b.status === "confirmado") && (
                     <button
                       onClick={() => act(b.id, async () => { await concludeBooking(b.id); }, "Concluído — fatura emitida")}
-                      className="flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-[11px] font-semibold text-white"
+                      className="flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[11px] font-semibold text-primary-foreground"
                     >
                       <CheckCircle2 className="h-3 w-3" /> Concluir
                     </button>
