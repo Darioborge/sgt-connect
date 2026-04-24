@@ -5,9 +5,10 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { categories } from "@/components/sgt/data";
+import { useTheme } from "@/components/sgt/ThemeProvider";
 
 export const Route = createFileRoute("/configuracoes")({
   component: () => (
@@ -22,6 +23,7 @@ function Settings() {
   const { user } = useAuth();
   const { profile } = useProfile(user?.id);
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -125,6 +127,37 @@ function Settings() {
             className="h-5 w-9 appearance-none rounded-full bg-secondary transition checked:bg-primary"
           />
         </label>
+
+        <div className="rounded-xl border border-border bg-card px-4 py-3">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm font-medium">Tema da aplicação</span>
+            <span className="text-xs text-muted-foreground capitalize">{theme === "dark" ? "Escuro" : "Claro"}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setTheme("light")}
+              className={`flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm transition ${
+                theme === "light"
+                  ? "border-primary bg-primary/10 text-primary font-medium"
+                  : "border-border bg-background text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Sun className="h-4 w-4" /> Claro
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme("dark")}
+              className={`flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm transition ${
+                theme === "dark"
+                  ? "border-primary bg-primary/10 text-primary font-medium"
+                  : "border-border bg-background text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Moon className="h-4 w-4" /> Escuro
+            </button>
+          </div>
+        </div>
 
         <button
           type="submit"
