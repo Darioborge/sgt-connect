@@ -1,7 +1,8 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Search, PlusSquare, MessageCircle, User } from "lucide-react";
+import { Home, Search, PlusSquare, MessageCircle, User, Sun, Moon } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/sgt/ThemeProvider";
 
 interface MobileShellProps {
   children: ReactNode;
@@ -18,6 +19,7 @@ const navItems = [
 
 export function MobileShell({ children, hideTopBar }: MobileShellProps) {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -35,14 +37,23 @@ export function MobileShell({ children, hideTopBar }: MobileShellProps) {
                 SGT <span className="text-primary">Express</span>
               </span>
             </Link>
-            <Link
-              to="/chat"
-              className="relative rounded-full p-2 text-foreground transition hover:bg-accent"
-              aria-label="Mensagens"
-            >
-              <MessageCircle className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-primary" />
-            </Link>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={toggleTheme}
+                className="rounded-full p-2 text-foreground transition hover:bg-accent"
+                aria-label={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
+              >
+                {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+              <Link
+                to="/chat"
+                className="relative rounded-full p-2 text-foreground transition hover:bg-accent"
+                aria-label="Mensagens"
+              >
+                <MessageCircle className="h-5 w-5" />
+                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-primary" />
+              </Link>
+            </div>
           </header>
         )}
 
