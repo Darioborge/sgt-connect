@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { StoriesBar } from "@/components/sgt/StoriesBar";
 import { FeedCard } from "@/components/sgt/FeedCard";
 import { categories } from "@/components/sgt/data";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
+import { Loader2, Calendar, FileText, Siren } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type Post = Database["public"]["Tables"]["posts"]["Row"] & {
