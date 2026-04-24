@@ -3,10 +3,11 @@ import { MobileShell } from "@/components/sgt/MobileShell";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/sgt/AuthProvider";
-import { Search, Star, BadgeCheck, Loader2 } from "lucide-react";
+import { Search, Star, BadgeCheck, Loader2, Calendar } from "lucide-react";
 import { categories } from "@/components/sgt/data";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { BookingDialog } from "@/components/sgt/BookingDialog";
 import type { Database } from "@/integrations/supabase/types";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -22,6 +23,7 @@ function Explorar() {
   const [providers, setProviders] = useState<Profile[] | null>(null);
   const [filter, setFilter] = useState("");
   const [cat, setCat] = useState<string | null>(null);
+  const [bookFor, setBookFor] = useState<Profile | null>(null);
 
   useEffect(() => {
     let q = supabase.from("profiles").select("*").eq("mode", "prestador");
@@ -115,16 +117,41 @@ function Explorar() {
                   )}
                 </div>
               </div>
-              <button
-                onClick={() => contratar(p)}
-                className="rounded-full px-3 py-1.5 text-xs font-semibold text-primary-foreground"
-                style={{ background: "var(--gradient-primary)" }}
-              >
-                Contratar
-              </button>
+              <div className="flex flex-col gap-1.5">
+                <button
+                  onClick={() => contratar(p)}
+                  className="rounded-full px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+                  style={{ background: "var(--gradient-primary)" }}
+                >
+                  Chat
+                </button>
+                <button
+                  onClick={() => {
+                    if (!user) return navigate({ to: "/auth" });
+                    if (p.id === user.id) return toast.info("Não podes agendar contigo");
+                    setBookFor(p);
+                  }}
+                  className="flex items-center justify-center gap-1 rounded-full border border-primary px-3 py-1.5 text-xs font-semibold text-primary"
+                >
+                  <Calendar className="h-3 w-3" /> Agendar
+                </button>
+              </div>
             </li>
           ))}
         </ul>
+      )}
+
+      {bookFor && (
+        <BookingDialog
+          open={!!bookFor}
+          onClose={() => setBookFor(null)}
+          provider={{
+            id: bookFor.id,
+            full_name: bookFor.full_name,
+            category: bookFor.category,
+            price_from_kz: bookFor.price_from_kz,
+          }}
+        />
       )}
     </MobileShell>
   );

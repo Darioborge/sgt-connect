@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          address: string | null
+          category: string | null
+          client_id: string
+          coupon_code: string | null
+          created_at: string
+          description: string | null
+          discount_kz: number
+          duration_min: number | null
+          id: string
+          notes: string | null
+          price_kz: number
+          provider_id: string
+          scheduled_at: string
+          status: Database["public"]["Enums"]["booking_status"]
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          category?: string | null
+          client_id: string
+          coupon_code?: string | null
+          created_at?: string
+          description?: string | null
+          discount_kz?: number
+          duration_min?: number | null
+          id?: string
+          notes?: string | null
+          price_kz?: number
+          provider_id: string
+          scheduled_at: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          category?: string | null
+          client_id?: string
+          coupon_code?: string | null
+          created_at?: string
+          description?: string | null
+          discount_kz?: number
+          duration_min?: number | null
+          id?: string
+          notes?: string | null
+          price_kz?: number
+          provider_id?: string
+          scheduled_at?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           content: string
@@ -76,6 +130,173 @@ export type Database = {
           user_b?: string
         }
         Relationships: []
+      }
+      coupon_redemptions: {
+        Row: {
+          booking_id: string | null
+          coupon_id: string
+          id: string
+          redeemed_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          coupon_id: string
+          id?: string
+          redeemed_at?: string
+          user_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          coupon_id?: string
+          id?: string
+          redeemed_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_redemptions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupon_redemptions_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coupons: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          max_uses: number | null
+          type: Database["public"]["Enums"]["coupon_type"]
+          uses_count: number
+          value: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          type?: Database["public"]["Enums"]["coupon_type"]
+          uses_count?: number
+          value: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          type?: Database["public"]["Enums"]["coupon_type"]
+          uses_count?: number
+          value?: number
+        }
+        Relationships: []
+      }
+      emergency_requests: {
+        Row: {
+          accepted_by: string | null
+          category: string
+          city: string | null
+          client_id: string
+          closed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          status: Database["public"]["Enums"]["emergency_status"]
+        }
+        Insert: {
+          accepted_by?: string | null
+          category: string
+          city?: string | null
+          client_id: string
+          closed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["emergency_status"]
+        }
+        Update: {
+          accepted_by?: string | null
+          category?: string
+          city?: string | null
+          client_id?: string
+          closed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["emergency_status"]
+        }
+        Relationships: []
+      }
+      invoices: {
+        Row: {
+          amount_kz: number
+          booking_id: string
+          client_id: string
+          created_at: string
+          discount_kz: number
+          id: string
+          issued_at: string
+          number: string
+          provider_id: string
+          service_name: string
+          total_kz: number
+        }
+        Insert: {
+          amount_kz: number
+          booking_id: string
+          client_id: string
+          created_at?: string
+          discount_kz?: number
+          id?: string
+          issued_at?: string
+          number?: string
+          provider_id: string
+          service_name: string
+          total_kz: number
+        }
+        Update: {
+          amount_kz?: number
+          booking_id?: string
+          client_id?: string
+          created_at?: string
+          discount_kz?: number
+          id?: string
+          issued_at?: string
+          number?: string
+          provider_id?: string
+          service_name?: string
+          total_kz?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       likes: {
         Row: {
@@ -233,6 +454,33 @@ export type Database = {
         }
         Relationships: []
       }
+      quick_replies: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          label: string
+          position: number | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          label: string
+          position?: number | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          label?: string
+          position?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       service_requests: {
         Row: {
           category: string | null
@@ -324,6 +572,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_coupon: {
+        Args: { _amount: number; _code: string }
+        Returns: {
+          coupon_id: string
+          discount_kz: number
+          message: string
+          total_kz: number
+        }[]
+      }
+      conclude_booking: { Args: { _booking_id: string }; Returns: string }
       get_or_create_conversation: { Args: { _other: string }; Returns: string }
       has_role: {
         Args: {
@@ -335,6 +593,15 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      booking_status:
+        | "pendente"
+        | "confirmado"
+        | "em_curso"
+        | "concluido"
+        | "cancelado"
+        | "recusado"
+      coupon_type: "percentual" | "fixo"
+      emergency_status: "aberto" | "aceite" | "fechado" | "cancelado"
       request_status:
         | "pendente"
         | "aceite"
@@ -470,6 +737,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      booking_status: [
+        "pendente",
+        "confirmado",
+        "em_curso",
+        "concluido",
+        "cancelado",
+        "recusado",
+      ],
+      coupon_type: ["percentual", "fixo"],
+      emergency_status: ["aberto", "aceite", "fechado", "cancelado"],
       request_status: [
         "pendente",
         "aceite",

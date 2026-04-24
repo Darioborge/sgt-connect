@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
+import { Route as EmergenciaRouteImport } from './routes/emergencia'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AgendamentosRouteImport } from './routes/agendamentos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatIndexRouteImport } from './routes/chat.index'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
@@ -28,9 +31,19 @@ const PerfilRoute = PerfilRouteImport.update({
   path: '/perfil',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaturasRoute = FaturasRouteImport.update({
+  id: '/faturas',
+  path: '/faturas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExplorarRoute = ExplorarRouteImport.update({
   id: '/explorar',
   path: '/explorar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmergenciaRoute = EmergenciaRouteImport.update({
+  id: '/emergencia',
+  path: '/emergencia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
@@ -41,6 +54,11 @@ const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendamentosRoute = AgendamentosRouteImport.update({
+  id: '/agendamentos',
+  path: '/agendamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -61,9 +79,12 @@ const ChatIdRoute = ChatIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
+  '/faturas': typeof FaturasRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
@@ -71,9 +92,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
+  '/faturas': typeof FaturasRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
@@ -82,9 +106,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
+  '/faturas': typeof FaturasRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
@@ -94,9 +121,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agendamentos'
     | '/auth'
     | '/configuracoes'
+    | '/emergencia'
     | '/explorar'
+    | '/faturas'
     | '/perfil'
     | '/publicar'
     | '/chat/$id'
@@ -104,9 +134,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agendamentos'
     | '/auth'
     | '/configuracoes'
+    | '/emergencia'
     | '/explorar'
+    | '/faturas'
     | '/perfil'
     | '/publicar'
     | '/chat/$id'
@@ -114,9 +147,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/agendamentos'
     | '/auth'
     | '/configuracoes'
+    | '/emergencia'
     | '/explorar'
+    | '/faturas'
     | '/perfil'
     | '/publicar'
     | '/chat/$id'
@@ -125,9 +161,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgendamentosRoute: typeof AgendamentosRoute
   AuthRoute: typeof AuthRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
+  EmergenciaRoute: typeof EmergenciaRoute
   ExplorarRoute: typeof ExplorarRoute
+  FaturasRoute: typeof FaturasRoute
   PerfilRoute: typeof PerfilRoute
   PublicarRoute: typeof PublicarRoute
   ChatIdRoute: typeof ChatIdRoute
@@ -150,11 +189,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faturas': {
+      id: '/faturas'
+      path: '/faturas'
+      fullPath: '/faturas'
+      preLoaderRoute: typeof FaturasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/explorar': {
       id: '/explorar'
       path: '/explorar'
       fullPath: '/explorar'
       preLoaderRoute: typeof ExplorarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emergencia': {
+      id: '/emergencia'
+      path: '/emergencia'
+      fullPath: '/emergencia'
+      preLoaderRoute: typeof EmergenciaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configuracoes': {
@@ -169,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agendamentos': {
+      id: '/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/agendamentos'
+      preLoaderRoute: typeof AgendamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -197,9 +257,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgendamentosRoute: AgendamentosRoute,
   AuthRoute: AuthRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
+  EmergenciaRoute: EmergenciaRoute,
   ExplorarRoute: ExplorarRoute,
+  FaturasRoute: FaturasRoute,
   PerfilRoute: PerfilRoute,
   PublicarRoute: PublicarRoute,
   ChatIdRoute: ChatIdRoute,
@@ -208,12 +271,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

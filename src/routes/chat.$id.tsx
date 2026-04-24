@@ -4,10 +4,17 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadToBucket } from "@/lib/upload";
-import { ArrowLeft, ImageIcon, Send, Loader2 } from "lucide-react";
+import { ArrowLeft, ImageIcon, Send, Loader2, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
+
+const DEFAULT_QUICK_REPLIES = [
+  "Estou a caminho 🚗",
+  "Posso atender em 30 minutos",
+  "Cheguei ao local",
+  "Obrigado pela preferência!",
+];
 
 export const Route = createFileRoute("/chat/$id")({
   component: () => (
@@ -30,6 +37,20 @@ function Conversation() {
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
+  const [showQuick, setShowQuick] = useState(false);
+  const [quickReplies, setQuickReplies] = useState<string[]>(DEFAULT_QUICK_REPLIES);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("quick_replies")
+      .select("content")
+      .eq("user_id", user.id)
+      .order("position")
+      .then(({ data }) => {
+        if (data && data.length > 0) setQuickReplies(data.map((r) => r.content));
+      });
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -162,9 +183,35 @@ function Conversation() {
         )}
       </div>
 
+      {showQuick && (
+        <div className="flex flex-wrap gap-1.5 border-t border-border bg-secondary/40 px-3 py-2">
+          {quickReplies.map((q) => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => {
+                setText(q);
+                setShowQuick(false);
+              }}
+              className="rounded-full border border-border bg-background px-3 py-1 text-xs hover:border-primary hover:text-primary"
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      )}
+
       <form onSubmit={send} className="flex items-center gap-2 border-t border-border bg-background px-3 py-3">
         <button type="button" onClick={() => fileRef.current?.click()} disabled={busy} className="rounded-full p-2 hover:bg-accent">
           {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImageIcon className="h-5 w-5" />}
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowQuick((v) => !v)}
+          className={cn("rounded-full p-2 hover:bg-accent", showQuick && "text-primary")}
+          aria-label="Respostas rápidas"
+        >
+          <Zap className="h-5 w-5" />
         </button>
         <input
           ref={fileRef}
