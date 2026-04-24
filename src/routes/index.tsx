@@ -52,6 +52,18 @@ function Index() {
     <MobileShell>
       <StoriesBar />
 
+      <div className="grid grid-cols-3 gap-2 border-b border-border px-3 py-3">
+        <Link to="/agendamentos" className="flex flex-col items-center gap-1 rounded-xl border border-border bg-card px-2 py-2 text-[11px] font-medium hover:border-primary hover:text-primary">
+          <Calendar className="h-4 w-4 text-primary" /> Agendamentos
+        </Link>
+        <Link to="/faturas" className="flex flex-col items-center gap-1 rounded-xl border border-border bg-card px-2 py-2 text-[11px] font-medium hover:border-primary hover:text-primary">
+          <FileText className="h-4 w-4 text-primary" /> Faturas
+        </Link>
+        <Link to="/emergencia" className="flex flex-col items-center gap-1 rounded-xl border border-destructive/40 bg-destructive/5 px-2 py-2 text-[11px] font-semibold text-destructive">
+          <Siren className="h-4 w-4" /> SOS
+        </Link>
+      </div>
+
       <div className="flex gap-2 overflow-x-auto border-b border-border px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {categories.map((c) => (
           <button
