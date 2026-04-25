@@ -83,77 +83,6 @@ export function FeedCard({ post }: { post: Post }) {
   };
 
   return (
-<<<<<<< Updated upstream
-    <article className="mx-3 mt-3 overflow-hidden rounded-3xl border border-border/50 bg-card" style={{ boxShadow: "var(--shadow-soft)" }}>
-      <header className="flex items-center justify-between px-4 pb-2 pt-3">
-        <div className="flex items-center gap-2.5">
-          <div className="rounded-full p-[1.5px]" style={{ background: "var(--gradient-primary)" }}>
-            <img
-              src={provider?.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${provider?.full_name ?? "U"}`}
-              alt={provider?.full_name ?? ""}
-              className="h-8 w-8 rounded-full bg-card object-cover"
-            />
-          </div>
-          <div className="leading-tight">
-            <div className="flex items-center gap-1 text-sm font-semibold text-foreground">
-              {provider?.full_name ?? "Núpublico"}
-              {provider?.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
-            </div>
-            <div className="text-[11px] text-muted-foreground">
-              {new Date(post.created_at ?? "").toLocaleDateString("pt-PT", { day: "2-digit", month: "short" })}
-            </div>
-          </div>
-        </div>
-        <button className="text-muted-foreground" aria-label="Mais">
-          <span className="text-lg leading-none">⋮</span>
-        </button>
-      </header>
-
-      <div className="relative mx-3 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
-        <img src={post.image_url} alt={post.caption ?? ""} className="h-full w-full object-cover" />
-      </div>
-
-      <div className="px-4 pb-4 pt-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
-            <h3 className="text-base font-semibold text-foreground">
-              {provider?.category ?? "Saber mais"}
-            </h3>
-            {post.caption && (
-              <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{post.caption}</p>
-            )}
-          </div>
-          <button
-            onClick={() => setOpen(true)}
-            className="flex shrink-0 items-center gap-1 rounded-full bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary"
-          >
-            <MessageCircle className="h-3 w-3" /> Comentar
-          </button>
-        </div>
-
-        <div className="mt-3 flex items-center justify-between border-t border-border/50 pt-3">
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <button onClick={toggleLike} className="flex items-center gap-1.5">
-              <Heart className={cn("h-4 w-4 transition", liked ? "fill-primary text-primary" : "")} />
-              <span>{likeCount}</span>
-            </button>
-            <button onClick={() => setOpen(true)} className="flex items-center gap-1.5">
-              <MessageCircle className="h-4 w-4" />
-              <span>{commentCount}</span>
-            </button>
-            <button onClick={contratar} aria-label="Contactar">
-              <Send className="h-4 w-4" />
-            </button>
-          </div>
-          <button
-            onClick={contratar}
-            className="rounded-full px-4 py-1.5 text-xs font-semibold text-primary-foreground"
-            style={{ background: "var(--gradient-primary)" }}
-          >
-            {provider?.price_from_kz ? `${provider.price_from_kz.toLocaleString("pt-PT")} Kz` : "Pedir orçamento"}
-          </button>
-        </div>
-=======
     <article className="overflow-hidden rounded-[1.5rem] bg-card shadow-sm">
       <header className="flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-3">
@@ -196,7 +125,7 @@ export function FeedCard({ post }: { post: Post }) {
             {post.caption}
           </p>
         )}
->>>>>>> Stashed changes
+      </div>
       </div>
 
       {open && <CommentsSheet postId={post.id} onClose={() => setOpen(false)} onCount={setCommentCount} />}
