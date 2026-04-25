@@ -14,7 +14,7 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 export const Route = createFileRoute("/explorar")({
   component: Explorar,
-  head: () => ({ meta: [{ title: "Explorar — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Explorar — Núpublico" }] }),
 });
 
 function Explorar() {

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/configuracoes")({
       <Settings />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Configurações — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Configurações — Núpublico" }] }),
 });
 
 function Settings() {

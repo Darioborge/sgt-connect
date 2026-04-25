@@ -15,7 +15,7 @@ export const Route = createFileRoute("/faturas")({
       <Invoices />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Faturas — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Faturas — Núpublico" }] }),
 });
 
 type Invoice = Database["public"]["Tables"]["invoices"]["Row"];

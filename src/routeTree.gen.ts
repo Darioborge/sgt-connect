@@ -14,6 +14,7 @@ import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as EmergenciaRouteImport } from './routes/emergencia'
+import { Route as CriarPostRouteImport } from './routes/criar-post'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AgendamentosRouteImport } from './routes/agendamentos'
@@ -44,6 +45,11 @@ const ExplorarRoute = ExplorarRouteImport.update({
 const EmergenciaRoute = EmergenciaRouteImport.update({
   id: '/emergencia',
   path: '/emergencia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CriarPostRoute = CriarPostRouteImport.update({
+  id: '/criar-post',
+  path: '/criar-post',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/criar-post': typeof CriarPostRoute
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/criar-post': typeof CriarPostRoute
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/criar-post': typeof CriarPostRoute
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
+    | '/criar-post'
     | '/emergencia'
     | '/explorar'
     | '/faturas'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
+    | '/criar-post'
     | '/emergencia'
     | '/explorar'
     | '/faturas'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
+    | '/criar-post'
     | '/emergencia'
     | '/explorar'
     | '/faturas'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   AgendamentosRoute: typeof AgendamentosRoute
   AuthRoute: typeof AuthRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
+  CriarPostRoute: typeof CriarPostRoute
   EmergenciaRoute: typeof EmergenciaRoute
   ExplorarRoute: typeof ExplorarRoute
   FaturasRoute: typeof FaturasRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/emergencia'
       fullPath: '/emergencia'
       preLoaderRoute: typeof EmergenciaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/criar-post': {
+      id: '/criar-post'
+      path: '/criar-post'
+      fullPath: '/criar-post'
+      preLoaderRoute: typeof CriarPostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configuracoes': {
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgendamentosRoute: AgendamentosRoute,
   AuthRoute: AuthRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
+  CriarPostRoute: CriarPostRoute,
   EmergenciaRoute: EmergenciaRoute,
   ExplorarRoute: ExplorarRoute,
   FaturasRoute: FaturasRoute,
