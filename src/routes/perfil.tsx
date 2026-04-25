@@ -16,7 +16,7 @@ export const Route = createFileRoute("/perfil")({
       <Perfil />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Meu perfil — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Meu perfil — Núpublico" }] }),
 });
 
 function Perfil() {

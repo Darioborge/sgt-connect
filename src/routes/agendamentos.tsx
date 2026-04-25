@@ -16,7 +16,7 @@ export const Route = createFileRoute("/agendamentos")({
       <Bookings />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Agendamentos — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Agendamentos — Núpublico" }] }),
 });
 
 type Booking = Database["public"]["Tables"]["bookings"]["Row"];

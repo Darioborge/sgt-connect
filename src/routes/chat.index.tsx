@@ -12,7 +12,7 @@ export const Route = createFileRoute("/chat/")({
       <ChatList />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Mensagens — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Mensagens — Núpublico" }] }),
 });
 
 interface Item {
