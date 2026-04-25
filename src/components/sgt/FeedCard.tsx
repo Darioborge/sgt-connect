@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Send, BadgeCheck, Loader2, X } from "lucide-react";
+import { Heart, MessageCircle, Send, BadgeCheck, Loader2, X, MoreVertical, Reply } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,6 +83,7 @@ export function FeedCard({ post }: { post: Post }) {
   };
 
   return (
+<<<<<<< Updated upstream
     <article className="mx-3 mt-3 overflow-hidden rounded-3xl border border-border/50 bg-card" style={{ boxShadow: "var(--shadow-soft)" }}>
       <header className="flex items-center justify-between px-4 pb-2 pt-3">
         <div className="flex items-center gap-2.5">
@@ -152,6 +153,50 @@ export function FeedCard({ post }: { post: Post }) {
             {provider?.price_from_kz ? `${provider.price_from_kz.toLocaleString("pt-PT")} Kz` : "Pedir orçamento"}
           </button>
         </div>
+=======
+    <article className="overflow-hidden rounded-[1.5rem] bg-card shadow-sm">
+      <header className="flex items-center justify-between px-4 py-4">
+        <div className="flex items-center gap-3">
+          <img
+            src={provider?.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${provider?.full_name ?? "U"}`}
+            alt={provider?.full_name ?? ""}
+            className="h-10 w-10 rounded-full object-cover"
+          />
+          <div className="leading-tight">
+            <div className="flex items-center gap-1 text-sm font-medium text-white">
+              {provider?.full_name ?? "Utilizador"}
+              {provider?.verified && <BadgeCheck className="h-4 w-4 text-primary" />}
+            </div>
+            <div className="text-xs text-white/60">
+              {new Date(post.created_at ?? "").toLocaleDateString("pt-PT")}
+            </div>
+          </div>
+        </div>
+        <button className="text-white/60 hover:text-white">
+          <MoreVertical className="h-5 w-5" />
+        </button>
+      </header>
+
+      <div className="relative w-full overflow-hidden bg-muted">
+        <img src={post.image_url} alt={post.caption ?? ""} className="w-full object-cover" />
+      </div>
+
+      <div className="p-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-white">Learn More</h3>
+          <button 
+            onClick={() => setOpen(true)}
+            className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20"
+          >
+            <Reply className="h-3.5 w-3.5" /> Reply
+          </button>
+        </div>
+        {post.caption && (
+          <p className="mt-2 text-sm leading-relaxed text-white/70">
+            {post.caption}
+          </p>
+        )}
+>>>>>>> Stashed changes
       </div>
 
       {open && <CommentsSheet postId={post.id} onClose={() => setOpen(false)} onCount={setCommentCount} />}

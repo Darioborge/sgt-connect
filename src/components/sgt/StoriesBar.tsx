@@ -85,31 +85,28 @@ export function StoriesBar() {
 
   return (
     <>
-      <div className="flex gap-3 overflow-x-auto border-b border-border px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <Link to="/publicar" className="flex w-16 shrink-0 flex-col items-center gap-1">
-          <div
-            className="flex h-16 w-16 items-center justify-center rounded-full text-primary-foreground"
-            style={{ background: "var(--gradient-primary)" }}
-          >
-            <Plus className="h-6 w-6" />
+      <div className="flex gap-4 overflow-x-auto px-6 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <Link to="/publicar" className="flex w-16 shrink-0 flex-col items-center gap-2">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/20 text-primary ring-2 ring-primary ring-offset-2 ring-offset-background">
+            <Plus className="h-6 w-6" strokeWidth={2.5} />
           </div>
-          <span className="text-[10px] font-medium">{user ? "Teu status" : "Entrar"}</span>
+          <span className="text-xs font-medium text-white/70">{user ? "You" : "Login"}</span>
         </Link>
 
         {groups.map((g, gi) => (
           <button
             key={g.userId}
             onClick={() => setViewer({ group: gi, index: 0 })}
-            className="flex w-16 shrink-0 flex-col items-center gap-1"
+            className="flex w-16 shrink-0 flex-col items-center gap-2"
           >
-            <div className="rounded-full p-[2px]" style={{ background: "var(--gradient-primary)" }}>
+            <div className="rounded-full">
               <img
                 src={g.avatar || `https://api.dicebear.com/9.x/initials/svg?seed=${g.fullName}`}
                 alt={g.fullName}
-                className="h-16 w-16 rounded-full bg-background object-cover ring-2 ring-background"
+                className="h-16 w-16 rounded-full object-cover ring-2 ring-primary ring-offset-2 ring-offset-background"
               />
             </div>
-            <span className="w-full truncate text-center text-[10px] font-medium">{g.fullName}</span>
+            <span className="w-full truncate text-center text-xs font-medium text-white/70">{g.fullName.split(' ')[0]}</span>
           </button>
         ))}
       </div>

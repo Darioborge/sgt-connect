@@ -5,7 +5,11 @@ import { FeedCard } from "@/components/sgt/FeedCard";
 import { categories } from "@/components/sgt/data";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+<<<<<<< Updated upstream
 import { Loader2, Calendar, Siren, Sparkles } from "lucide-react";
+=======
+import { Loader2, Search, Bell } from "lucide-react";
+>>>>>>> Stashed changes
 import type { Database } from "@/integrations/supabase/types";
 
 type Post = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -49,6 +53,7 @@ function Index() {
   }, []);
 
   return (
+<<<<<<< Updated upstream
     <MobileShell topTitle="Discover">
       <StoriesBar />
 
@@ -90,6 +95,38 @@ function Index() {
       ) : (
         <div className="pb-2">{posts.map((p) => <FeedCard key={p.id} post={p} />)}</div>
       )}
+=======
+    <MobileShell hideTopBar={true}>
+      <div className="flex items-center justify-between px-6 pt-12 pb-4">
+        <h1 className="text-2xl tracking-tight text-white">
+          Discover <span className="font-semibold text-primary">Nuvenda</span>
+        </h1>
+        <div className="flex gap-3">
+          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-card/60 text-white transition hover:bg-card">
+            <Search className="h-5 w-5" />
+          </button>
+          <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-card/60 text-white transition hover:bg-card">
+            <Bell className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
+      <StoriesBar />
+
+      <div className="mt-4 flex flex-col gap-6 px-4">
+        {posts === null ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="px-4 py-16 text-center text-sm text-muted-foreground">
+            Ainda não há publicações. Toca em <span className="font-medium text-primary">Publicar</span> para criar a primeira!
+          </div>
+        ) : (
+          posts.map((p) => <FeedCard key={p.id} post={p} />)
+        )}
+      </div>
+>>>>>>> Stashed changes
     </MobileShell>
   );
 }
