@@ -16,11 +16,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "SGT Express — Serviços rápidos em Angola" },
+      { title: "Núpublico — Cria conteúdo publicitário com IA" },
       {
         name: "description",
         content:
-          "SGT Express liga clientes a prestadores de serviços de confiança em Angola: eletricistas, limpezas, beleza e mais, em minutos.",
+          "Núpublico é a plataforma angolana para criar posts publicitários profissionais com IA, promover serviços e vender mais — tudo num só fluxo.",
       },
     ],
   }),
@@ -76,7 +76,7 @@ function Index() {
         ))}
       </div>
 
-      <h1 className="sr-only">SGT Express — Marketplace de serviços em Angola</h1>
+      <h1 className="sr-only">Núpublico — Cria conteúdo publicitário com IA</h1>
 
       {posts === null ? (
         <div className="flex items-center justify-center py-16">

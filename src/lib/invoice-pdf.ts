@@ -25,10 +25,10 @@ export function downloadInvoicePdf(invoice: InvoiceForPdf) {
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("SGT Express", 40, 50);
+  doc.text("Nupublico", 40, 50);
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("Servicos rapidos e confiaveis em Angola", 40, 68);
+  doc.text("Cria conteudo publicitario com IA em Angola", 40, 68);
 
   doc.setFontSize(12);
   doc.text(`Fatura N. ${invoice.number}`, W - 40, 50, { align: "right" });
@@ -85,7 +85,7 @@ export function downloadInvoicePdf(invoice: InvoiceForPdf) {
   doc.setFontSize(9);
   doc.setTextColor(140, 140, 140);
   doc.text(
-    "Documento gerado pelo SGT Express. Obrigado pela sua preferencia.",
+    "Documento gerado pelo Nupublico. Obrigado pela sua preferencia.",
     W / 2,
     doc.internal.pageSize.getHeight() - 30,
     { align: "center" },

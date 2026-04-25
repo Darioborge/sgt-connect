@@ -31,10 +31,10 @@ export function MobileShell({ children, hideTopBar }: MobileShellProps) {
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold text-primary-foreground"
                 style={{ background: "var(--gradient-primary)" }}
               >
-                SGT
+                Nú
               </div>
               <span className="text-lg font-semibold tracking-tight">
-                SGT <span className="text-primary">Express</span>
+                Nú<span className="text-primary">público</span>
               </span>
             </Link>
             <div className="flex items-center gap-1">

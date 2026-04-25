@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
-  head: () => ({ meta: [{ title: "Entrar — SGT Express" }] }),
+  head: () => ({ meta: [{ title: "Entrar — Núpublico" }] }),
 });
 
 function AuthPage() {
@@ -72,10 +72,10 @@ function AuthPage() {
             className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl text-base font-bold text-primary-foreground"
             style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-elegant)" }}
           >
-            SGT
+            Nú
           </div>
-          <h1 className="text-2xl font-bold">SGT Express</h1>
-          <p className="text-sm text-muted-foreground">Serviços rápidos e confiáveis em Angola</p>
+          <h1 className="text-2xl font-bold">Núpublico</h1>
+          <p className="text-sm text-muted-foreground">Cria conteúdo publicitário com IA em minutos</p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5" style={{ boxShadow: "var(--shadow-soft)" }}>
