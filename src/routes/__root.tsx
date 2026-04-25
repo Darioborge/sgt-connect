@@ -40,6 +40,10 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Núpublico — Cria conteúdo publicitário com IA" },
+      { name: "twitter:description", content: "Núpublico: cria posts publicitários profissionais com IA em PT-AO." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dcf4a94e-56df-4abb-ae4e-d6b889eb1c8b/id-preview-adfe3d66--8a9f4976-9f6f-44de-b8ed-32f955024f55.lovable.app-1777123748939.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dcf4a94e-56df-4abb-ae4e-d6b889eb1c8b/id-preview-adfe3d66--8a9f4976-9f6f-44de-b8ed-32f955024f55.lovable.app-1777123748939.png" },
     ],
     links: [
       {
