@@ -24,17 +24,14 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  // Núpublico identity is dark green & black — force dark theme by default.
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {
-    let initial: Theme = "light";
+    let initial: Theme = "dark";
     try {
       const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-      if (stored === "light" || stored === "dark") {
-        initial = stored;
-      } else if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
-        initial = "dark";
-      }
+      if (stored === "light" || stored === "dark") initial = stored;
     } catch {
       // ignore
     }

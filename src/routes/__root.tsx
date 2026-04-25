@@ -54,7 +54,7 @@ export const Route = createRootRoute({
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
-  const themeScript = `(function(){try{var t=localStorage.getItem('sgt-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`;
+  const themeScript = `(function(){try{var t=localStorage.getItem('sgt-theme')||'dark';if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){document.documentElement.classList.add('dark');}})();`;
   return (
     <html lang="pt">
       <head>
