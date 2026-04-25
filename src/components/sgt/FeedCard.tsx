@@ -126,7 +126,6 @@ export function FeedCard({ post }: { post: Post }) {
           </p>
         )}
       </div>
-      </div>
 
       {open && <CommentsSheet postId={post.id} onClose={() => setOpen(false)} onCount={setCommentCount} />}
     </article>
