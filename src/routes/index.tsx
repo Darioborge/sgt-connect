@@ -5,7 +5,7 @@ import { FeedCard } from "@/components/sgt/FeedCard";
 import { categories } from "@/components/sgt/data";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Calendar, FileText, Siren, Sparkles } from "lucide-react";
+import { Loader2, Calendar, Siren, Sparkles } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type Post = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -49,38 +49,27 @@ function Index() {
   }, []);
 
   return (
-    <MobileShell>
+    <MobileShell topTitle="Discover">
       <StoriesBar />
 
-      <Link
-        to="/criar-post"
-        className="mx-3 mt-3 flex items-center justify-between gap-3 rounded-2xl px-4 py-3 text-primary-foreground"
-        style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-elegant)" }}
-      >
-        <div>
-          <div className="flex items-center gap-1.5 text-sm font-bold"><Sparkles className="h-4 w-4" /> Smart Post Creator</div>
-          <div className="text-[11px] opacity-90">Cria posts publicitários com IA em segundos</div>
-        </div>
-        <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">Criar</span>
-      </Link>
-
-      <div className="grid grid-cols-3 gap-2 border-b border-border px-3 py-3">
-        <Link to="/agendamentos" className="flex flex-col items-center gap-1 rounded-xl border border-border bg-card px-2 py-2 text-[11px] font-medium hover:border-primary hover:text-primary">
-          <Calendar className="h-4 w-4 text-primary" /> Agendamentos
+      {/* Quick actions */}
+      <div className="mx-3 mt-2 grid grid-cols-3 gap-2">
+        <Link to="/criar-post" className="flex flex-col items-center gap-1 rounded-2xl border border-primary/30 bg-primary/10 px-2 py-2.5 text-[11px] font-semibold text-primary">
+          <Sparkles className="h-4 w-4" /> Criar
         </Link>
-        <Link to="/faturas" className="flex flex-col items-center gap-1 rounded-xl border border-border bg-card px-2 py-2 text-[11px] font-medium hover:border-primary hover:text-primary">
-          <FileText className="h-4 w-4 text-primary" /> Faturas
+        <Link to="/agendamentos" className="flex flex-col items-center gap-1 rounded-2xl border border-border/50 bg-card px-2 py-2.5 text-[11px] font-medium hover:text-primary">
+          <Calendar className="h-4 w-4 text-primary" /> Agenda
         </Link>
-        <Link to="/emergencia" className="flex flex-col items-center gap-1 rounded-xl border border-destructive/40 bg-destructive/5 px-2 py-2 text-[11px] font-semibold text-destructive">
+        <Link to="/emergencia" className="flex flex-col items-center gap-1 rounded-2xl border border-destructive/30 bg-destructive/10 px-2 py-2.5 text-[11px] font-semibold text-destructive">
           <Siren className="h-4 w-4" /> SOS
         </Link>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto border-b border-border px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-2 overflow-x-auto px-3 pb-1 pt-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {categories.map((c) => (
           <button
             key={c.id}
-            className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-secondary-foreground transition hover:border-primary hover:text-primary"
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-border/50 bg-card px-3 py-1.5 text-xs font-medium text-foreground transition hover:border-primary hover:text-primary"
           >
             <span>{c.emoji}</span>
             {c.label}
@@ -88,7 +77,7 @@ function Index() {
         ))}
       </div>
 
-      <h1 className="sr-only">Núpublico — Cria conteúdo publicitário com IA</h1>
+      <h1 className="sr-only">Núpublico — Marketplace de serviços com IA</h1>
 
       {posts === null ? (
         <div className="flex items-center justify-center py-16">
@@ -96,10 +85,10 @@ function Index() {
         </div>
       ) : posts.length === 0 ? (
         <div className="px-4 py-16 text-center text-sm text-muted-foreground">
-          Ainda não há publicações. Toca em <span className="font-medium text-primary">Publicar</span> para criar a primeira!
+          Ainda não há publicações. Toca em <span className="font-semibold text-primary">+</span> para criar a primeira!
         </div>
       ) : (
-        posts.map((p) => <FeedCard key={p.id} post={p} />)
+        <div className="pb-2">{posts.map((p) => <FeedCard key={p.id} post={p} />)}</div>
       )}
     </MobileShell>
   );
