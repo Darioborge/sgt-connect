@@ -514,6 +514,119 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_post_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          post_id: string
+          visitor_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          post_id: string
+          visitor_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          post_id?: string
+          visitor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smart_post_events_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "smart_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smart_posts: {
+        Row: {
+          audience: string | null
+          caption_long: string | null
+          caption_medium: string | null
+          caption_short: string | null
+          clicks_count: number
+          conversions_count: number
+          copy_direct: string | null
+          copy_emotional: string | null
+          created_at: string
+          cta: string | null
+          emotion: string | null
+          format: string
+          generated_image_url: string | null
+          hashtags: string[] | null
+          id: string
+          is_premium: boolean
+          mode: string
+          score: number
+          service_type: string | null
+          source_image_url: string | null
+          title: string | null
+          updated_at: string
+          user_id: string
+          views_count: number
+        }
+        Insert: {
+          audience?: string | null
+          caption_long?: string | null
+          caption_medium?: string | null
+          caption_short?: string | null
+          clicks_count?: number
+          conversions_count?: number
+          copy_direct?: string | null
+          copy_emotional?: string | null
+          created_at?: string
+          cta?: string | null
+          emotion?: string | null
+          format?: string
+          generated_image_url?: string | null
+          hashtags?: string[] | null
+          id?: string
+          is_premium?: boolean
+          mode?: string
+          score?: number
+          service_type?: string | null
+          source_image_url?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+          views_count?: number
+        }
+        Update: {
+          audience?: string | null
+          caption_long?: string | null
+          caption_medium?: string | null
+          caption_short?: string | null
+          clicks_count?: number
+          conversions_count?: number
+          copy_direct?: string | null
+          copy_emotional?: string | null
+          created_at?: string
+          cta?: string | null
+          emotion?: string | null
+          format?: string
+          generated_image_url?: string | null
+          hashtags?: string[] | null
+          id?: string
+          is_premium?: boolean
+          mode?: string
+          score?: number
+          service_type?: string | null
+          source_image_url?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+          views_count?: number
+        }
+        Relationships: []
+      }
       statuses: {
         Row: {
           caption: string | null
