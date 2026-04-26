@@ -79,14 +79,15 @@ function CriarPost() {
   const { user } = useAuth();
   const { profile } = useProfile(user?.id);
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [step, setStep] = useState<"upload" | "config" | "result">("upload");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [hint, setHint] = useState("");
-  const [mode, setMode] = useState<Mode>("viral");
-  const [format, setFormat] = useState<Format>("square");
+  const [hint, setHint] = useState(search.hint ?? "");
+  const [mode, setMode] = useState<Mode>(search.mode ?? "viral");
+  const [format, setFormat] = useState<Format>(search.format ?? "square");
   const [busy, setBusy] = useState(false);
   const [busyText, setBusyText] = useState("");
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
