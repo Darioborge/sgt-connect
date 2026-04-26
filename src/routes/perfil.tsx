@@ -1,9 +1,9 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
-import { Settings, BadgeCheck, Camera, Loader2, LogOut, Sparkles, Plus, Pencil } from "lucide-react";
+import { Settings, BadgeCheck, Camera, Loader2, Sparkles, Plus, Pencil, Wand2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { uploadToBucket } from "@/lib/upload";
@@ -33,9 +33,8 @@ interface SmartPostRow {
 type Tab = "photos" | "videos" | "saved";
 
 function Perfil() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { profile, setProfile } = useProfile(user?.id);
-  const navigate = useNavigate();
   const avatarRef = useRef<HTMLInputElement>(null);
   const coverRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState<"avatar" | "cover" | null>(null);
@@ -204,7 +203,7 @@ function Perfil() {
         <Stat value={String(profile?.jobs_done ?? 0)} label="Serviços" />
       </div>
 
-      {/* Message + Follow */}
+      {/* Message + Inspiração */}
       <div className="mt-5 flex items-center justify-center gap-3 px-6">
         <Link
           to="/chat"
@@ -213,15 +212,12 @@ function Perfil() {
         >
           Mensagem
         </Link>
-        <button
-          onClick={async () => {
-            await signOut();
-            navigate({ to: "/auth" });
-          }}
+        <Link
+          to="/inspiracao"
           className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-primary/40 bg-card py-2.5 text-sm font-semibold text-primary"
         >
-          <LogOut className="h-3.5 w-3.5" /> Sair
-        </button>
+          <Wand2 className="h-3.5 w-3.5" /> Inspiração
+        </Link>
       </div>
 
       {/* Tabs */}

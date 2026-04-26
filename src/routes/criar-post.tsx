@@ -24,12 +24,29 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+interface CriarPostSearch {
+  template?: string;
+  mode?: "viral" | "premium" | "venda_rapida" | "story";
+  format?: "square" | "vertical";
+  hint?: string;
+}
+
 export const Route = createFileRoute("/criar-post")({
   component: () => (
     <RequireAuth>
       <CriarPost />
     </RequireAuth>
   ),
+  validateSearch: (s: Record<string, unknown>): CriarPostSearch => ({
+    template: typeof s.template === "string" ? s.template : undefined,
+    mode: ["viral", "premium", "venda_rapida", "story"].includes(s.mode as string)
+      ? (s.mode as CriarPostSearch["mode"])
+      : undefined,
+    format: ["square", "vertical"].includes(s.format as string)
+      ? (s.format as CriarPostSearch["format"])
+      : undefined,
+    hint: typeof s.hint === "string" ? s.hint : undefined,
+  }),
   head: () => ({ meta: [{ title: "Criar Post — Núpublico Smart Post Creator" }] }),
 });
 
@@ -62,14 +79,15 @@ function CriarPost() {
   const { user } = useAuth();
   const { profile } = useProfile(user?.id);
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [step, setStep] = useState<"upload" | "config" | "result">("upload");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [hint, setHint] = useState("");
-  const [mode, setMode] = useState<Mode>("viral");
-  const [format, setFormat] = useState<Format>("square");
+  const [hint, setHint] = useState(search.hint ?? "");
+  const [mode, setMode] = useState<Mode>(search.mode ?? "viral");
+  const [format, setFormat] = useState<Format>(search.format ?? "square");
   const [busy, setBusy] = useState(false);
   const [busyText, setBusyText] = useState("");
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
@@ -210,6 +228,15 @@ function CriarPost() {
 
       {step === "upload" && (
         <div className="px-4 py-6">
+          {search.template && (
+            <div className="mb-4 flex items-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-3 py-2.5 text-xs">
+              <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+              <span>
+                <span className="font-semibold text-primary">Inspiração aplicada.</span>{" "}
+                <span className="text-muted-foreground">Carrega a foto do teu produto/serviço — o estilo já está pré-configurado.</span>
+              </span>
+            </div>
+          )}
           <button
             onClick={() => fileRef.current?.click()}
             className="flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 text-center"
