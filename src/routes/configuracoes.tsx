@@ -5,7 +5,7 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Loader2, Sun, Moon } from "lucide-react";
+import { ArrowLeft, Loader2, Sun, Moon, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { categories } from "@/components/sgt/data";
 import { useTheme } from "@/components/sgt/ThemeProvider";
@@ -167,6 +167,18 @@ function Settings() {
         >
           {busy && <Loader2 className="h-4 w-4 animate-spin" />}
           Guardar alterações
+        </button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            await supabase.auth.signOut();
+            toast.success("Sessão terminada");
+            navigate({ to: "/auth" });
+          }}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-destructive/40 bg-destructive/5 py-3 text-sm font-semibold text-destructive hover:bg-destructive/10"
+        >
+          <LogOut className="h-4 w-4" /> Terminar sessão
         </button>
       </form>
     </MobileShell>
