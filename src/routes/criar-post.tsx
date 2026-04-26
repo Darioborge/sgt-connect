@@ -228,6 +228,15 @@ function CriarPost() {
 
       {step === "upload" && (
         <div className="px-4 py-6">
+          {search.template && (
+            <div className="mb-4 flex items-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-3 py-2.5 text-xs">
+              <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+              <span>
+                <span className="font-semibold text-primary">Inspiração aplicada.</span>{" "}
+                <span className="text-muted-foreground">Carrega a foto do teu produto/serviço — o estilo já está pré-configurado.</span>
+              </span>
+            </div>
+          )}
           <button
             onClick={() => fileRef.current?.click()}
             className="flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 text-center"
