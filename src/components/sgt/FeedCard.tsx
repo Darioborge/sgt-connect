@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Send, BadgeCheck, Loader2, X, MoreVertical, Reply } from "lucide-react";
+import { Heart, BadgeCheck, Loader2, X, MoreVertical, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -94,7 +94,9 @@ export function FeedCard({ post }: { post: Post }) {
           <div className="leading-tight">
             <div className="flex items-center gap-1 text-sm font-medium text-white">
               {provider?.full_name ?? "Utilizador"}
-              {provider?.verified && <BadgeCheck className="h-4 w-4 text-primary" />}
+              {provider?.verified && (
+                <BadgeCheck className="h-4 w-4 fill-[oklch(0.55_0.18_150)] text-background" />
+              )}
             </div>
             <div className="text-xs text-white/60">
               {new Date(post.created_at ?? "").toLocaleDateString("pt-PT")}
@@ -111,17 +113,36 @@ export function FeedCard({ post }: { post: Post }) {
       </div>
 
       <div className="p-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-white">Learn More</h3>
-          <button 
-            onClick={() => setOpen(true)}
-            className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20"
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleLike}
+              className={cn(
+                "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition",
+                liked ? "bg-red-500/15 text-red-400" : "bg-white/10 text-white hover:bg-white/20",
+              )}
+              aria-label="Curtir"
+            >
+              <Heart className={cn("h-4 w-4", liked && "fill-current")} />
+              {likeCount}
+            </button>
+            <button
+              onClick={() => setOpen(true)}
+              className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/20"
+              aria-label="Comentar"
+            >
+              <MessageCircle className="h-4 w-4" /> {commentCount}
+            </button>
+          </div>
+          <button
+            onClick={contratar}
+            className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90"
           >
-            <Reply className="h-3.5 w-3.5" /> Reply
+            Pedir orçamento
           </button>
         </div>
         {post.caption && (
-          <p className="mt-2 text-sm leading-relaxed text-white/70">
+          <p className="mt-3 text-sm leading-relaxed text-white/80">
             {post.caption}
           </p>
         )}
