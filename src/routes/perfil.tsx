@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
@@ -35,7 +35,6 @@ type Tab = "photos" | "videos" | "saved";
 function Perfil() {
   const { user } = useAuth();
   const { profile, setProfile } = useProfile(user?.id);
-  const navigate = useNavigate();
   const avatarRef = useRef<HTMLInputElement>(null);
   const coverRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState<"avatar" | "cover" | null>(null);
