@@ -4,7 +4,7 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadToBucket } from "@/lib/upload";
-import { ArrowLeft, ImageIcon, Send, Loader2, Zap } from "lucide-react";
+import { ArrowLeft, ImageIcon, Send, Loader2, Zap, Phone, Video, Mic } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
@@ -149,6 +149,20 @@ function Conversation() {
               <div className="truncate text-sm font-semibold">{other.full_name ?? "Utilizador"}</div>
               <div className="text-[10px] text-muted-foreground">online</div>
             </div>
+            <button
+              onClick={() => toast.info("Chamada de voz em breve")}
+              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
+              aria-label="Chamada de voz"
+            >
+              <Phone className="h-4 w-4 text-primary" />
+            </button>
+            <button
+              onClick={() => toast.info("Videochamada em breve")}
+              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
+              aria-label="Videochamada"
+            >
+              <Video className="h-4 w-4 text-primary" />
+            </button>
           </>
         )}
       </header>
@@ -226,13 +240,24 @@ function Conversation() {
           placeholder="Mensagem…"
           className="flex-1 rounded-full border border-border bg-secondary px-4 py-2 text-sm outline-none focus:border-primary"
         />
-        <button
-          type="submit"
-          disabled={!text.trim()}
-          className="rounded-full bg-primary p-2 text-primary-foreground disabled:opacity-50"
-        >
-          <Send className="h-4 w-4" />
-        </button>
+        {text.trim() ? (
+          <button
+            type="submit"
+            className="rounded-full bg-primary p-2 text-primary-foreground"
+            aria-label="Enviar"
+          >
+            <Send className="h-4 w-4" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => toast.info("Mensagem de áudio em breve")}
+            className="rounded-full bg-primary p-2 text-primary-foreground"
+            aria-label="Gravar áudio"
+          >
+            <Mic className="h-4 w-4" />
+          </button>
+        )}
       </form>
     </div>
   );
