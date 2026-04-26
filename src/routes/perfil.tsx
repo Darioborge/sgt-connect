@@ -97,36 +97,23 @@ function Perfil() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-background" />
 
-        {/* Top bar over cover */}
-        <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4">
-          <div className="flex h-9 items-center rounded-full bg-background/40 px-3 text-sm font-semibold text-foreground backdrop-blur-md">
-            Núpublico
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => coverRef.current?.click()}
-              disabled={uploading === "cover"}
-              aria-label="Mudar capa"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-background/40 text-foreground backdrop-blur-md"
-            >
-              {uploading === "cover" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-            </button>
-            <Link
-              to="/configuracoes"
-              aria-label="Definições"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-background/40 text-foreground backdrop-blur-md"
-            >
-              <Settings className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Big title over cover */}
-        <div className="absolute inset-x-0 top-16 px-6 text-center">
-          <div className="text-xs font-medium uppercase tracking-[0.3em] text-foreground/80">Núpublico</div>
-          <div className="mt-1 text-2xl font-bold leading-tight text-primary drop-shadow">
-            {profile?.category ?? "Serviços de Consultoria"}
-          </div>
+        {/* Top bar over cover — só ícones, sem texto sobreposto */}
+        <div className="absolute inset-x-0 top-0 flex items-center justify-end gap-2 px-4 pt-4">
+          <button
+            onClick={() => coverRef.current?.click()}
+            disabled={uploading === "cover"}
+            aria-label="Mudar capa"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-background/40 text-foreground backdrop-blur-md"
+          >
+            {uploading === "cover" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+          </button>
+          <Link
+            to="/configuracoes"
+            aria-label="Definições"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-background/40 text-foreground backdrop-blur-md"
+          >
+            <Settings className="h-4 w-4" />
+          </Link>
         </div>
 
         <input
@@ -166,15 +153,48 @@ function Perfil() {
         </div>
       </div>
 
-      {/* Name + handle */}
+      {/* Name + handle + verified (verde) */}
       <div className="mt-3 px-4 text-center">
-        <div className="flex items-center justify-center gap-1 text-lg font-semibold">
-          {profile?.full_name ?? "Sem nome"}
-          {profile?.verified && <BadgeCheck className="h-4 w-4 text-primary" />}
+        <div className="flex items-center justify-center gap-1.5 text-lg font-semibold">
+          <span>{profile?.full_name ?? "Sem nome"}</span>
+          {profile?.verified && (
+            <BadgeCheck
+              className="h-5 w-5 fill-[oklch(0.55_0.18_150)] text-background"
+              aria-label="Perfil verificado"
+            />
+          )}
         </div>
         <div className="text-xs text-muted-foreground">
           @{profile?.username ?? (profile?.full_name?.toLowerCase().replace(/\s+/g, "_") ?? "user")}
         </div>
+
+        {/* Bio + meta */}
+        {profile?.bio && (
+          <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-foreground/80">{profile.bio}</p>
+        )}
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+          {profile?.category && (
+            <span className="rounded-full bg-primary/15 px-2.5 py-0.5 font-medium text-primary">
+              {profile.category}
+            </span>
+          )}
+          {profile?.city && <span>📍 {profile.city}</span>}
+          {profile?.phone && <span>📞 {profile.phone}</span>}
+          {profile?.price_from_kz != null && profile.price_from_kz > 0 && (
+            <span className="font-semibold text-foreground">
+              desde {profile.price_from_kz.toLocaleString("pt-PT")} Kz
+            </span>
+          )}
+        </div>
+
+        {!profile?.verified && (
+          <Link
+            to="/configuracoes"
+            className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline"
+          >
+            <BadgeCheck className="h-3.5 w-3.5" /> Completa o perfil para obter o selo verde
+          </Link>
+        )}
       </div>
 
       {/* Stats inline */}
