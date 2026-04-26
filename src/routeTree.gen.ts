@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as InspiracaoRouteImport } from './routes/inspiracao'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as EmergenciaRouteImport } from './routes/emergencia'
@@ -30,6 +31,11 @@ const PublicarRoute = PublicarRouteImport.update({
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InspiracaoRoute = InspiracaoRouteImport.update({
+  id: '/inspiracao',
+  path: '/inspiracao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaturasRoute = FaturasRouteImport.update({
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
+  '/inspiracao': typeof InspiracaoRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
+  '/inspiracao': typeof InspiracaoRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
+  '/inspiracao': typeof InspiracaoRoute
   '/perfil': typeof PerfilRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/emergencia'
     | '/explorar'
     | '/faturas'
+    | '/inspiracao'
     | '/perfil'
     | '/publicar'
     | '/chat/$id'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/emergencia'
     | '/explorar'
     | '/faturas'
+    | '/inspiracao'
     | '/perfil'
     | '/publicar'
     | '/chat/$id'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/emergencia'
     | '/explorar'
     | '/faturas'
+    | '/inspiracao'
     | '/perfil'
     | '/publicar'
     | '/chat/$id'
@@ -180,6 +192,7 @@ export interface RootRouteChildren {
   EmergenciaRoute: typeof EmergenciaRoute
   ExplorarRoute: typeof ExplorarRoute
   FaturasRoute: typeof FaturasRoute
+  InspiracaoRoute: typeof InspiracaoRoute
   PerfilRoute: typeof PerfilRoute
   PublicarRoute: typeof PublicarRoute
   ChatIdRoute: typeof ChatIdRoute
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inspiracao': {
+      id: '/inspiracao'
+      path: '/inspiracao'
+      fullPath: '/inspiracao'
+      preLoaderRoute: typeof InspiracaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faturas': {
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmergenciaRoute: EmergenciaRoute,
   ExplorarRoute: ExplorarRoute,
   FaturasRoute: FaturasRoute,
+  InspiracaoRoute: InspiracaoRoute,
   PerfilRoute: PerfilRoute,
   PublicarRoute: PublicarRoute,
   ChatIdRoute: ChatIdRoute,

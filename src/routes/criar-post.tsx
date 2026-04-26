@@ -24,12 +24,29 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+interface CriarPostSearch {
+  template?: string;
+  mode?: "viral" | "premium" | "venda_rapida" | "story";
+  format?: "square" | "vertical";
+  hint?: string;
+}
+
 export const Route = createFileRoute("/criar-post")({
   component: () => (
     <RequireAuth>
       <CriarPost />
     </RequireAuth>
   ),
+  validateSearch: (s: Record<string, unknown>): CriarPostSearch => ({
+    template: typeof s.template === "string" ? s.template : undefined,
+    mode: ["viral", "premium", "venda_rapida", "story"].includes(s.mode as string)
+      ? (s.mode as CriarPostSearch["mode"])
+      : undefined,
+    format: ["square", "vertical"].includes(s.format as string)
+      ? (s.format as CriarPostSearch["format"])
+      : undefined,
+    hint: typeof s.hint === "string" ? s.hint : undefined,
+  }),
   head: () => ({ meta: [{ title: "Criar Post — Núpublico Smart Post Creator" }] }),
 });
 
