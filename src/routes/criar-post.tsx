@@ -376,9 +376,24 @@ function CriarPost() {
 
       {step === "result" && analysis && generatedUrl && (
         <div className="space-y-4 px-4 py-4 pb-8">
-          <div className="overflow-hidden rounded-2xl" style={{ boxShadow: "var(--shadow-elegant)" }}>
+          <div className="relative overflow-hidden rounded-2xl" style={{ boxShadow: "var(--shadow-elegant)" }}>
             <img src={generatedUrl} alt={analysis.title} className="w-full" />
+            {!isPremiumActive && (
+              <div className="pointer-events-none absolute inset-0 flex items-end justify-end p-3">
+                <div className="rounded-md bg-black/55 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+                  Núpublico · Free
+                </div>
+              </div>
+            )}
           </div>
+          {!isPremiumActive && (
+            <Link
+              to="/planos"
+              className="block rounded-xl border border-primary/40 bg-primary/10 px-3 py-2 text-center text-xs font-semibold text-primary"
+            >
+              ✨ Faz upgrade para Premium e remove a marca de água
+            </Link>
+          )}
 
           <div className="rounded-xl border border-border bg-card p-4">
             <div className="flex items-center justify-between">
