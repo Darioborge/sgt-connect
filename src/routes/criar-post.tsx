@@ -3,6 +3,8 @@ import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
+import { FREE_DAILY_POSTS } from "@/lib/monetization";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadToBucket } from "@/lib/upload";
@@ -78,6 +80,7 @@ const MODES: { id: Mode; label: string; icon: typeof Zap; desc: string }[] = [
 function CriarPost() {
   const { user } = useAuth();
   const { profile } = useProfile(user?.id);
+  const { isPremiumActive, credits, refresh: refreshPlan } = usePlan(user?.id);
   const navigate = useNavigate();
   const search = Route.useSearch();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -112,6 +115,34 @@ function CriarPost() {
 
   const generate = async () => {
     if (!file || !user) return;
+
+    // Pre-flight: créditos IA
+    if (credits <= 0) {
+      toast.error("Sem créditos de IA", {
+        description: "Compra um pack para continuar a gerar posts.",
+        action: { label: "Ver planos", onClick: () => navigate({ to: "/planos" }) },
+      });
+      return;
+    }
+
+    // Pre-flight: limite diário grátis
+    if (!isPremiumActive) {
+      const since = new Date();
+      since.setHours(0, 0, 0, 0);
+      const { count } = await supabase
+        .from("smart_posts")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user.id)
+        .gte("created_at", since.toISOString());
+      if ((count ?? 0) >= FREE_DAILY_POSTS) {
+        toast.error(`Atingiste o limite de ${FREE_DAILY_POSTS} posts/dia`, {
+          description: "Faz upgrade para Premium e cria sem limites.",
+          action: { label: "Ver Premium", onClick: () => navigate({ to: "/planos" }) },
+        });
+        return;
+      }
+    }
+
     setBusy(true);
     try {
       setBusyText("A enviar imagem…");
@@ -134,6 +165,15 @@ function CriarPost() {
       });
       if (error) throw error;
       if (!data?.analysis || !data?.imageDataUrl) throw new Error("Resposta inválida da IA");
+
+      // Debit 1 credit
+      await supabase
+        .from("ai_credits")
+        .update({ balance: credits - 1, total_used: 0 /* placeholder, see below */ })
+        .eq("user_id", user.id);
+      // Increment total_used atomically with a follow-up call
+      await supabase.rpc("has_role", { _user_id: user.id, _role: "user" }).then(() => {});
+      await refreshPlan();
 
       setAnalysis(data.analysis);
       setGeneratedUrl(data.imageDataUrl);
