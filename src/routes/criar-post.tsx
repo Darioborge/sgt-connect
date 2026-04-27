@@ -169,10 +169,8 @@ function CriarPost() {
       // Debit 1 credit
       await supabase
         .from("ai_credits")
-        .update({ balance: credits - 1, total_used: 0 /* placeholder, see below */ })
+        .update({ balance: Math.max(credits - 1, 0) })
         .eq("user_id", user.id);
-      // Increment total_used atomically with a follow-up call
-      await supabase.rpc("has_role", { _user_id: user.id, _role: "user" }).then(() => {});
       await refreshPlan();
 
       setAnalysis(data.analysis);
