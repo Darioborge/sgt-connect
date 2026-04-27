@@ -152,7 +152,7 @@ function Perfil() {
         </div>
       </div>
 
-      {/* Name + handle + verified (verde) */}
+      {/* Name + handle + verified (verde) + premium (azul) */}
       <div className="mt-3 px-4 text-center">
         <div className="flex items-center justify-center gap-1.5 text-lg font-semibold">
           <span>{profile?.full_name ?? "Sem nome"}</span>
@@ -160,6 +160,12 @@ function Perfil() {
             <BadgeCheck
               className="h-5 w-5 fill-[oklch(0.55_0.18_150)] text-background"
               aria-label="Perfil verificado"
+            />
+          )}
+          {isPremiumActive && (
+            <BadgeCheck
+              className="h-5 w-5 fill-[oklch(0.60_0.18_240)] text-background"
+              aria-label="Premium"
             />
           )}
         </div>
