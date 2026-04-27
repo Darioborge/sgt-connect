@@ -3,6 +3,8 @@ import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
+import { FREE_DAILY_POSTS } from "@/lib/monetization";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadToBucket } from "@/lib/upload";
@@ -78,6 +80,7 @@ const MODES: { id: Mode; label: string; icon: typeof Zap; desc: string }[] = [
 function CriarPost() {
   const { user } = useAuth();
   const { profile } = useProfile(user?.id);
+  const { isPremiumActive, credits, refresh: refreshPlan } = usePlan(user?.id);
   const navigate = useNavigate();
   const search = Route.useSearch();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -112,6 +115,34 @@ function CriarPost() {
 
   const generate = async () => {
     if (!file || !user) return;
+
+    // Pre-flight: créditos IA
+    if (credits <= 0) {
+      toast.error("Sem créditos de IA", {
+        description: "Compra um pack para continuar a gerar posts.",
+        action: { label: "Ver planos", onClick: () => navigate({ to: "/planos" }) },
+      });
+      return;
+    }
+
+    // Pre-flight: limite diário grátis
+    if (!isPremiumActive) {
+      const since = new Date();
+      since.setHours(0, 0, 0, 0);
+      const { count } = await supabase
+        .from("smart_posts")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user.id)
+        .gte("created_at", since.toISOString());
+      if ((count ?? 0) >= FREE_DAILY_POSTS) {
+        toast.error(`Atingiste o limite de ${FREE_DAILY_POSTS} posts/dia`, {
+          description: "Faz upgrade para Premium e cria sem limites.",
+          action: { label: "Ver Premium", onClick: () => navigate({ to: "/planos" }) },
+        });
+        return;
+      }
+    }
+
     setBusy(true);
     try {
       setBusyText("A enviar imagem…");
@@ -134,6 +165,13 @@ function CriarPost() {
       });
       if (error) throw error;
       if (!data?.analysis || !data?.imageDataUrl) throw new Error("Resposta inválida da IA");
+
+      // Debit 1 credit
+      await supabase
+        .from("ai_credits")
+        .update({ balance: Math.max(credits - 1, 0) })
+        .eq("user_id", user.id);
+      await refreshPlan();
 
       setAnalysis(data.analysis);
       setGeneratedUrl(data.imageDataUrl);
@@ -338,9 +376,24 @@ function CriarPost() {
 
       {step === "result" && analysis && generatedUrl && (
         <div className="space-y-4 px-4 py-4 pb-8">
-          <div className="overflow-hidden rounded-2xl" style={{ boxShadow: "var(--shadow-elegant)" }}>
+          <div className="relative overflow-hidden rounded-2xl" style={{ boxShadow: "var(--shadow-elegant)" }}>
             <img src={generatedUrl} alt={analysis.title} className="w-full" />
+            {!isPremiumActive && (
+              <div className="pointer-events-none absolute inset-0 flex items-end justify-end p-3">
+                <div className="rounded-md bg-black/55 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+                  Núpublico · Free
+                </div>
+              </div>
+            )}
           </div>
+          {!isPremiumActive && (
+            <Link
+              to="/planos"
+              className="block rounded-xl border border-primary/40 bg-primary/10 px-3 py-2 text-center text-xs font-semibold text-primary"
+            >
+              ✨ Faz upgrade para Premium e remove a marca de água
+            </Link>
+          )}
 
           <div className="rounded-xl border border-border bg-card p-4">
             <div className="flex items-center justify-between">

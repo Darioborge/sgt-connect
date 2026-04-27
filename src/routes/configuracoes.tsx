@@ -5,7 +5,8 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Loader2, Sun, Moon, LogOut } from "lucide-react";
+import { ArrowLeft, Loader2, Sun, Moon, LogOut, Crown, ChevronRight } from "lucide-react";
+import { usePlan } from "@/hooks/usePlan";
 import { toast } from "sonner";
 import { categories } from "@/components/sgt/data";
 import { useTheme } from "@/components/sgt/ThemeProvider";
@@ -24,6 +25,7 @@ function Settings() {
   const { profile } = useProfile(user?.id);
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
+  const { isPremiumActive, credits } = usePlan(user?.id);
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -127,6 +129,26 @@ function Settings() {
             className="h-5 w-9 appearance-none rounded-full bg-secondary transition checked:bg-primary"
           />
         </label>
+
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/planos" })}
+          className="flex w-full items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 text-left transition hover:border-primary/40"
+        >
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-full text-primary-foreground"
+            style={{ background: "var(--gradient-primary)" }}
+          >
+            <Crown className="h-5 w-5" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold">Planos & Créditos</p>
+            <p className="text-xs text-muted-foreground">
+              {isPremiumActive ? "Premium ativo" : "Plano Gratuito"} · {credits} créditos IA
+            </p>
+          </div>
+          <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        </button>
 
         <div className="rounded-xl border border-border bg-card px-4 py-3">
           <div className="mb-2 flex items-center justify-between">

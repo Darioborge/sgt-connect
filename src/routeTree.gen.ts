@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicarRouteImport } from './routes/publicar'
+import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as InspiracaoRouteImport } from './routes/inspiracao'
 import { Route as FaturasRouteImport } from './routes/faturas'
@@ -26,6 +27,11 @@ import { Route as ChatIdRouteImport } from './routes/chat.$id'
 const PublicarRoute = PublicarRouteImport.update({
   id: '/publicar',
   path: '/publicar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosRoute = PlanosRouteImport.update({
+  id: '/planos',
+  path: '/planos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfilRoute = PerfilRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
   '/perfil': typeof PerfilRoute
+  '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/': typeof ChatIndexRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
   '/perfil': typeof PerfilRoute
+  '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat': typeof ChatIndexRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
   '/perfil': typeof PerfilRoute
+  '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/': typeof ChatIndexRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/faturas'
     | '/inspiracao'
     | '/perfil'
+    | '/planos'
     | '/publicar'
     | '/chat/$id'
     | '/chat/'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/faturas'
     | '/inspiracao'
     | '/perfil'
+    | '/planos'
     | '/publicar'
     | '/chat/$id'
     | '/chat'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/faturas'
     | '/inspiracao'
     | '/perfil'
+    | '/planos'
     | '/publicar'
     | '/chat/$id'
     | '/chat/'
@@ -194,6 +206,7 @@ export interface RootRouteChildren {
   FaturasRoute: typeof FaturasRoute
   InspiracaoRoute: typeof InspiracaoRoute
   PerfilRoute: typeof PerfilRoute
+  PlanosRoute: typeof PlanosRoute
   PublicarRoute: typeof PublicarRoute
   ChatIdRoute: typeof ChatIdRoute
   ChatIndexRoute: typeof ChatIndexRoute
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/publicar'
       fullPath: '/publicar'
       preLoaderRoute: typeof PublicarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos': {
+      id: '/planos'
+      path: '/planos'
+      fullPath: '/planos'
+      preLoaderRoute: typeof PlanosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfil': {
@@ -306,6 +326,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaturasRoute: FaturasRoute,
   InspiracaoRoute: InspiracaoRoute,
   PerfilRoute: PerfilRoute,
+  PlanosRoute: PlanosRoute,
   PublicarRoute: PublicarRoute,
   ChatIdRoute: ChatIdRoute,
   ChatIndexRoute: ChatIndexRoute,
