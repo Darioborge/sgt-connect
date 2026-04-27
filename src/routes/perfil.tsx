@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { uploadToBucket } from "@/lib/upload";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { usePlan } from "@/hooks/usePlan";
 
 export const Route = createFileRoute("/perfil")({
   component: () => (
@@ -35,6 +36,7 @@ type Tab = "photos" | "videos" | "saved";
 function Perfil() {
   const { user } = useAuth();
   const { profile, setProfile } = useProfile(user?.id);
+  const { isPremiumActive } = usePlan(user?.id);
   const avatarRef = useRef<HTMLInputElement>(null);
   const coverRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState<"avatar" | "cover" | null>(null);
