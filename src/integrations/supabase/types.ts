@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_credits: {
+        Row: {
+          balance: number
+          id: string
+          total_purchased: number
+          total_used: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          id?: string
+          total_purchased?: number
+          total_used?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          id?: string
+          total_purchased?: number
+          total_used?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           address: string | null
@@ -362,6 +389,105 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          amount_kz: number
+          confirmed_at: string | null
+          confirmed_by: string | null
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["payment_kind"]
+          metadata: Json
+          method: Database["public"]["Enums"]["payment_method"]
+          reference: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_kz: number
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["payment_kind"]
+          metadata?: Json
+          method?: Database["public"]["Enums"]["payment_method"]
+          reference?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["payment_kind"]
+          metadata?: Json
+          method?: Database["public"]["Enums"]["payment_method"]
+          reference?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_boosts: {
+        Row: {
+          active: boolean
+          amount_kz: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          level: Database["public"]["Enums"]["boost_level"]
+          payment_id: string | null
+          smart_post_id: string
+          starts_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          amount_kz: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level: Database["public"]["Enums"]["boost_level"]
+          payment_id?: string | null
+          smart_post_id: string
+          starts_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          amount_kz?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level?: Database["public"]["Enums"]["boost_level"]
+          payment_id?: string | null
+          smart_post_id?: string
+          starts_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_boosts_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_boosts_smart_post_id_fkey"
+            columns: ["smart_post_id"]
+            isOneToOne: false
+            referencedRelation: "smart_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           caption: string | null
@@ -662,6 +788,71 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          auto_renew: boolean
+          created_at: string
+          expires_at: string | null
+          id: string
+          started_at: string
+          tier: Database["public"]["Enums"]["plan_tier"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_renew?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          started_at?: string
+          tier?: Database["public"]["Enums"]["plan_tier"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_renew?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          started_at?: string
+          tier?: Database["public"]["Enums"]["plan_tier"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      template_packs_owned: {
+        Row: {
+          created_at: string
+          id: string
+          pack_id: string
+          payment_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pack_id: string
+          payment_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pack_id?: string
+          payment_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_packs_owned_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -695,6 +886,7 @@ export type Database = {
         }[]
       }
       conclude_booking: { Args: { _booking_id: string }; Returns: string }
+      confirm_payment: { Args: { _payment_id: string }; Returns: undefined }
       get_or_create_conversation: { Args: { _other: string }; Returns: string }
       has_role: {
         Args: {
@@ -713,8 +905,17 @@ export type Database = {
         | "concluido"
         | "cancelado"
         | "recusado"
+      boost_level: "basico" | "medio" | "alto"
       coupon_type: "percentual" | "fixo"
       emergency_status: "aberto" | "aceite" | "fechado" | "cancelado"
+      payment_kind:
+        | "assinatura_premium"
+        | "creditos_ia"
+        | "promover_post"
+        | "template_pack"
+      payment_method: "multicaixa_express" | "transferencia_iban" | "cartao"
+      payment_status: "pendente" | "confirmado" | "rejeitado" | "cancelado"
+      plan_tier: "gratuito" | "premium"
       request_status:
         | "pendente"
         | "aceite"
@@ -858,8 +1059,18 @@ export const Constants = {
         "cancelado",
         "recusado",
       ],
+      boost_level: ["basico", "medio", "alto"],
       coupon_type: ["percentual", "fixo"],
       emergency_status: ["aberto", "aceite", "fechado", "cancelado"],
+      payment_kind: [
+        "assinatura_premium",
+        "creditos_ia",
+        "promover_post",
+        "template_pack",
+      ],
+      payment_method: ["multicaixa_express", "transferencia_iban", "cartao"],
+      payment_status: ["pendente", "confirmado", "rejeitado", "cancelado"],
+      plan_tier: ["gratuito", "premium"],
       request_status: [
         "pendente",
         "aceite",
