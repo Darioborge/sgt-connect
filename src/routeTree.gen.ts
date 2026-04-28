@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as InspiracaoRouteImport } from './routes/inspiracao'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
@@ -37,6 +38,11 @@ const PlanosRoute = PlanosRouteImport.update({
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapaRoute = MapaRouteImport.update({
+  id: '/mapa',
+  path: '/mapa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InspiracaoRoute = InspiracaoRouteImport.update({
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
+  '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
+  '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
+  '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/explorar'
     | '/faturas'
     | '/inspiracao'
+    | '/mapa'
     | '/perfil'
     | '/planos'
     | '/publicar'
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
     | '/explorar'
     | '/faturas'
     | '/inspiracao'
+    | '/mapa'
     | '/perfil'
     | '/planos'
     | '/publicar'
@@ -188,6 +199,7 @@ export interface FileRouteTypes {
     | '/explorar'
     | '/faturas'
     | '/inspiracao'
+    | '/mapa'
     | '/perfil'
     | '/planos'
     | '/publicar'
@@ -205,6 +217,7 @@ export interface RootRouteChildren {
   ExplorarRoute: typeof ExplorarRoute
   FaturasRoute: typeof FaturasRoute
   InspiracaoRoute: typeof InspiracaoRoute
+  MapaRoute: typeof MapaRoute
   PerfilRoute: typeof PerfilRoute
   PlanosRoute: typeof PlanosRoute
   PublicarRoute: typeof PublicarRoute
@@ -233,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mapa': {
+      id: '/mapa'
+      path: '/mapa'
+      fullPath: '/mapa'
+      preLoaderRoute: typeof MapaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inspiracao': {
@@ -325,6 +345,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExplorarRoute: ExplorarRoute,
   FaturasRoute: FaturasRoute,
   InspiracaoRoute: InspiracaoRoute,
+  MapaRoute: MapaRoute,
   PerfilRoute: PerfilRoute,
   PlanosRoute: PlanosRoute,
   PublicarRoute: PublicarRoute,
@@ -334,3 +355,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
