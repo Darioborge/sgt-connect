@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Search, MessageCircle, User, Bell, Plus } from "lucide-react";
+import { Home, MapPin, MessageCircle, User, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ interface MobileShellProps {
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/explorar", label: "Search", icon: Search },
+  { to: "/mapa", label: "Mapa", icon: MapPin },
   { to: "/publicar", label: "Publish", icon: Plus, isFab: true },
   { to: "/chat", label: "Message", icon: MessageCircle },
   { to: "/perfil", label: "Profile", icon: User },

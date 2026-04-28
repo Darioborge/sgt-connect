@@ -23,8 +23,10 @@ import {
   Copy,
   Download,
   Check,
+  Wand2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PostEditor } from "@/components/sgt/PostEditor";
 
 interface CriarPostSearch {
   template?: string;
@@ -98,6 +100,7 @@ function CriarPost() {
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
   const [activeCaption, setActiveCaption] = useState<"short" | "medium" | "long">("medium");
   const [copied, setCopied] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     if (!file) return;
@@ -449,13 +452,16 @@ function CriarPost() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <button onClick={copyCaption} className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-semibold">
-              {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
-              Copiar legenda
+          <div className="grid grid-cols-3 gap-2">
+            <button onClick={() => setEditing(true)} className="flex items-center justify-center gap-1.5 rounded-xl border border-primary/40 bg-primary/10 py-3 text-xs font-semibold text-primary">
+              <Wand2 className="h-3.5 w-3.5" /> Editar
             </button>
-            <button onClick={downloadImage} className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-semibold">
-              <Download className="h-4 w-4" /> Descarregar
+            <button onClick={copyCaption} className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card py-3 text-xs font-semibold">
+              {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
+              Copiar
+            </button>
+            <button onClick={downloadImage} className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card py-3 text-xs font-semibold">
+              <Download className="h-3.5 w-3.5" /> Baixar
             </button>
           </div>
 
@@ -473,6 +479,25 @@ function CriarPost() {
             Criar outro post
           </Link>
         </div>
+      )}
+
+      {editing && analysis && (
+        <PostEditor
+          format={format}
+          initial={{
+            title: analysis.title,
+            description: analysis.caption_short,
+            cta: analysis.cta,
+            bgImage: generatedUrl,
+          }}
+          identity={{
+            fullName: profile?.full_name ?? "",
+            username: profile?.username ?? "",
+            avatarUrl: profile?.avatar_url ?? null,
+            verified: !!profile?.verified,
+          }}
+          onClose={() => setEditing(false)}
+        />
       )}
     </MobileShell>
   );
