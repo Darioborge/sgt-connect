@@ -532,6 +532,10 @@ export type Database = {
           full_name: string | null
           id: string
           jobs_done: number | null
+          latitude: number | null
+          location_enabled: boolean
+          location_updated_at: string | null
+          longitude: number | null
           mode: Database["public"]["Enums"]["user_mode"]
           phone: string | null
           price_from_kz: number | null
@@ -551,6 +555,10 @@ export type Database = {
           full_name?: string | null
           id: string
           jobs_done?: number | null
+          latitude?: number | null
+          location_enabled?: boolean
+          location_updated_at?: string | null
+          longitude?: number | null
           mode?: Database["public"]["Enums"]["user_mode"]
           phone?: string | null
           price_from_kz?: number | null
@@ -570,6 +578,10 @@ export type Database = {
           full_name?: string | null
           id?: string
           jobs_done?: number | null
+          latitude?: number | null
+          location_enabled?: boolean
+          location_updated_at?: string | null
+          longitude?: number | null
           mode?: Database["public"]["Enums"]["user_mode"]
           phone?: string | null
           price_from_kz?: number | null
