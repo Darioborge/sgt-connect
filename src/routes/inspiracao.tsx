@@ -4,6 +4,8 @@ import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { Sparkles, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/sgt/AuthProvider";
+import { useProfile } from "@/hooks/useProfile";
 
 import t1 from "@/assets/inspirations/template-1.jpg";
 import t2 from "@/assets/inspirations/template-2.jpg";
@@ -111,18 +113,33 @@ const CATEGORIES: { id: Category; label: string }[] = [
 
 function Inspiracao() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { profile } = useProfile(user?.id);
   const [cat, setCat] = useState<Category>("todos");
 
   const filtered = cat === "todos" ? TEMPLATES : TEMPLATES.filter((t) => t.category === cat);
 
   const pickTemplate = (tpl: Template) => {
+    // Enrich the hint with profile data so the AI generates content
+    // tailored to this user, while keeping the template's visual design.
+    const parts = [tpl.hint];
+    if (profile?.category) parts.push(`Negócio: ${profile.category}`);
+    if (profile?.full_name) parts.push(`Nome: ${profile.full_name}`);
+    if (profile?.city) parts.push(`Cidade: ${profile.city}`);
+    if (profile?.bio) parts.push(`Sobre mim: ${profile.bio}`);
+    if (profile?.price_from_kz && profile.price_from_kz > 0) {
+      parts.push(`Preço a partir de ${profile.price_from_kz} Kz`);
+    }
+    if (profile?.phone) parts.push(`Contacto: ${profile.phone}`);
+    const enrichedHint = parts.join(". ");
+
     navigate({
       to: "/criar-post",
       search: {
         template: tpl.id,
         mode: tpl.mode,
         format: tpl.format,
-        hint: tpl.hint,
+        hint: enrichedHint,
       } as never,
     });
   };
