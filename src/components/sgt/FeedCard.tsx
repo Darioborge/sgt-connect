@@ -1,4 +1,4 @@
-import { Heart, BadgeCheck, Loader2, X, MoreVertical, MessageCircle } from "lucide-react";
+import { Heart, BadgeCheck, Loader2, X, MoreVertical, MessageCircle, Download, Share2, User as UserIcon, Repeat2, Rocket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +21,7 @@ export function FeedCard({ post }: { post: Post }) {
   const [likeCount, setLikeCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const provider = post.profile;
 
   useEffect(() => {
@@ -82,10 +83,70 @@ export function FeedCard({ post }: { post: Post }) {
     navigate({ to: "/chat/$id", params: { id: data } });
   };
 
+  const goProfile = () => {
+    if (!provider) return;
+    if (user?.id === provider.id) navigate({ to: "/perfil" });
+    else navigate({ to: "/perfil/$id", params: { id: provider.id } });
+  };
+
+  const downloadImage = async () => {
+    try {
+      const res = await fetch(post.image_url);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `nupublico-${post.id}.jpg`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Imagem guardada");
+    } catch {
+      toast.error("Não foi possível baixar");
+    }
+    setMenuOpen(false);
+  };
+
+  const sharePost = async () => {
+    const shareUrl = `${window.location.origin}/perfil/${provider?.id ?? ""}`;
+    const shareData = {
+      title: provider?.full_name ?? "Núpublico",
+      text: post.caption ?? "Vê este post no Núpublico",
+      url: shareUrl,
+    };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Link copiado");
+      }
+    } catch {
+      /* user cancelled */
+    }
+    setMenuOpen(false);
+  };
+
+  const republicar = async () => {
+    if (!user) return navigate({ to: "/auth" });
+    const { error } = await supabase.from("posts").insert({
+      user_id: user.id,
+      image_url: post.image_url,
+      caption: `↻ Republicado: ${post.caption ?? ""}`.trim(),
+    });
+    if (error) toast.error(error.message);
+    else toast.success("Post republicado no teu perfil");
+    setMenuOpen(false);
+  };
+
+  const promover = () => {
+    setMenuOpen(false);
+    navigate({ to: "/planos" });
+    toast.info("Escolhe o post e o nível de promoção");
+  };
+
   return (
     <article className="overflow-hidden rounded-[1.5rem] bg-card shadow-sm">
       <header className="flex items-center justify-between px-4 py-4">
-        <div className="flex items-center gap-3">
+        <button onClick={goProfile} className="flex items-center gap-3 text-left">
           <img
             src={provider?.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${provider?.full_name ?? "U"}`}
             alt={provider?.full_name ?? ""}
@@ -102,10 +163,28 @@ export function FeedCard({ post }: { post: Post }) {
               {new Date(post.created_at ?? "").toLocaleDateString("pt-PT")}
             </div>
           </div>
-        </div>
-        <button className="text-white/60 hover:text-white">
-          <MoreVertical className="h-5 w-5" />
         </button>
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="text-white/60 hover:text-white"
+            aria-label="Mais opções"
+          >
+            <MoreVertical className="h-5 w-5" />
+          </button>
+          {menuOpen && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+              <div className="absolute right-0 top-8 z-50 w-44 overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
+                <MenuItem icon={<Download className="h-4 w-4" />} label="Baixar" onClick={downloadImage} />
+                <MenuItem icon={<Share2 className="h-4 w-4" />} label="Partilhar" onClick={sharePost} />
+                <MenuItem icon={<UserIcon className="h-4 w-4" />} label="Ver perfil" onClick={() => { goProfile(); setMenuOpen(false); }} />
+                <MenuItem icon={<Repeat2 className="h-4 w-4" />} label="Republicar" onClick={republicar} />
+                <MenuItem icon={<Rocket className="h-4 w-4 text-primary" />} label="Promover post" onClick={promover} highlight />
+              </div>
+            </>
+          )}
+        </div>
       </header>
 
       <div className="relative w-full overflow-hidden bg-muted">
@@ -150,6 +229,31 @@ export function FeedCard({ post }: { post: Post }) {
 
       {open && <CommentsSheet postId={post.id} onClose={() => setOpen(false)} onCount={setCommentCount} />}
     </article>
+  );
+}
+
+function MenuItem({
+  icon,
+  label,
+  onClick,
+  highlight,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  highlight?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm hover:bg-accent",
+        highlight && "font-semibold text-primary",
+      )}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   );
 }
 

@@ -31,7 +31,7 @@ function Conversation() {
   const { id } = Route.useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [other, setOther] = useState<{ id: string; full_name: string | null; avatar_url: string | null } | null>(null);
+  const [other, setOther] = useState<{ id: string; full_name: string | null; avatar_url: string | null; phone: string | null } | null>(null);
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -67,7 +67,7 @@ function Conversation() {
         return;
       }
       const otherId = conv.user_a === user.id ? conv.user_b : conv.user_a;
-      const { data: p } = await supabase.from("profiles").select("id, full_name, avatar_url").eq("id", otherId).maybeSingle();
+      const { data: p } = await supabase.from("profiles").select("id, full_name, avatar_url, phone").eq("id", otherId).maybeSingle();
       if (mounted) setOther(p);
 
       const { data: msgs } = await supabase
@@ -140,22 +140,33 @@ function Conversation() {
         </button>
         {other && (
           <>
-            <img
-              src={other.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${other.full_name ?? "U"}`}
-              alt=""
-              className="h-9 w-9 rounded-full object-cover"
-            />
-            <div className="flex-1 overflow-hidden">
-              <div className="truncate text-sm font-semibold">{other.full_name ?? "Utilizador"}</div>
-              <div className="text-[10px] text-muted-foreground">online</div>
-            </div>
             <button
-              onClick={() => toast.info("Chamada de voz em breve")}
+              onClick={() => navigate({ to: "/perfil/$id", params: { id: other.id } })}
+              className="flex flex-1 items-center gap-3 overflow-hidden text-left"
+            >
+              <img
+                src={other.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${other.full_name ?? "U"}`}
+                alt=""
+                className="h-9 w-9 rounded-full object-cover"
+              />
+              <div className="flex-1 overflow-hidden">
+                <div className="truncate text-sm font-semibold">{other.full_name ?? "Utilizador"}</div>
+                <div className="text-[10px] text-muted-foreground">online</div>
+              </div>
+            </button>
+            <a
+              href={other.phone ? `tel:${other.phone}` : undefined}
+              onClick={(e) => {
+                if (!other.phone) {
+                  e.preventDefault();
+                  toast.error("Sem número público");
+                }
+              }}
               className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
               aria-label="Chamada de voz"
             >
               <Phone className="h-4 w-4 text-primary" />
-            </button>
+            </a>
             <button
               onClick={() => toast.info("Videochamada em breve")}
               className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"

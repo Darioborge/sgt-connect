@@ -275,7 +275,9 @@ function MapaPage() {
               key={p.id}
               position={[p.latitude, p.longitude]}
               icon={pinIcon(p.verified ? "#22c55e" : "#ff385c")}
-              eventHandlers={{ click: () => setSelected(p) }}
+              eventHandlers={{
+                click: () => navigate({ to: "/perfil/$id", params: { id: p.id } }),
+              }}
             />
           ))}
         </MapContainer>
@@ -328,7 +330,7 @@ function MapaPage() {
                 <MessageCircle className="h-3.5 w-3.5" /> Contactar
               </button>
               <button
-                onClick={() => navigate({ to: "/perfil" })}
+                onClick={() => navigate({ to: "/perfil/$id", params: { id: selected.id } })}
                 className="flex items-center justify-center gap-1 rounded-lg border border-border py-2 text-xs font-semibold"
               >
                 <User className="h-3.5 w-3.5" /> Perfil
