@@ -139,7 +139,8 @@ export function FeedCard({ post }: { post: Post }) {
 
   const promover = () => {
     setMenuOpen(false);
-    navigate({ to: "/planos", search: { tab: "boost", postId: post.id } as never });
+    navigate({ to: "/planos" });
+    toast.info("Escolhe o post e o nível de promoção");
   };
 
   return (
