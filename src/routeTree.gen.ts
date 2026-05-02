@@ -23,6 +23,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AgendamentosRouteImport } from './routes/agendamentos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatIndexRouteImport } from './routes/chat.index'
+import { Route as PerfilIdRouteImport } from './routes/perfil.$id'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
 
 const PublicarRoute = PublicarRouteImport.update({
@@ -95,6 +96,11 @@ const ChatIndexRoute = ChatIndexRouteImport.update({
   path: '/chat/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PerfilIdRoute = PerfilIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => PerfilRoute,
+} as any)
 const ChatIdRoute = ChatIdRouteImport.update({
   id: '/chat/$id',
   path: '/chat/$id',
@@ -112,10 +118,11 @@ export interface FileRoutesByFullPath {
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
-  '/perfil': typeof PerfilRoute
+  '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
+  '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
 }
 export interface FileRoutesByTo {
@@ -129,10 +136,11 @@ export interface FileRoutesByTo {
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
-  '/perfil': typeof PerfilRoute
+  '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
+  '/perfil/$id': typeof PerfilIdRoute
   '/chat': typeof ChatIndexRoute
 }
 export interface FileRoutesById {
@@ -147,10 +155,11 @@ export interface FileRoutesById {
   '/faturas': typeof FaturasRoute
   '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
-  '/perfil': typeof PerfilRoute
+  '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
   '/chat/$id': typeof ChatIdRoute
+  '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
 }
 export interface FileRouteTypes {
@@ -170,6 +179,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/publicar'
     | '/chat/$id'
+    | '/perfil/$id'
     | '/chat/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/publicar'
     | '/chat/$id'
+    | '/perfil/$id'
     | '/chat'
   id:
     | '__root__'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/publicar'
     | '/chat/$id'
+    | '/perfil/$id'
     | '/chat/'
   fileRoutesById: FileRoutesById
 }
@@ -218,7 +230,7 @@ export interface RootRouteChildren {
   FaturasRoute: typeof FaturasRoute
   InspiracaoRoute: typeof InspiracaoRoute
   MapaRoute: typeof MapaRoute
-  PerfilRoute: typeof PerfilRoute
+  PerfilRoute: typeof PerfilRouteWithChildren
   PlanosRoute: typeof PlanosRoute
   PublicarRoute: typeof PublicarRoute
   ChatIdRoute: typeof ChatIdRoute
@@ -325,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/perfil/$id': {
+      id: '/perfil/$id'
+      path: '/$id'
+      fullPath: '/perfil/$id'
+      preLoaderRoute: typeof PerfilIdRouteImport
+      parentRoute: typeof PerfilRoute
+    }
     '/chat/$id': {
       id: '/chat/$id'
       path: '/chat/$id'
@@ -334,6 +353,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface PerfilRouteChildren {
+  PerfilIdRoute: typeof PerfilIdRoute
+}
+
+const PerfilRouteChildren: PerfilRouteChildren = {
+  PerfilIdRoute: PerfilIdRoute,
+}
+
+const PerfilRouteWithChildren =
+  PerfilRoute._addFileChildren(PerfilRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -346,7 +376,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaturasRoute: FaturasRoute,
   InspiracaoRoute: InspiracaoRoute,
   MapaRoute: MapaRoute,
-  PerfilRoute: PerfilRoute,
+  PerfilRoute: PerfilRouteWithChildren,
   PlanosRoute: PlanosRoute,
   PublicarRoute: PublicarRoute,
   ChatIdRoute: ChatIdRoute,
