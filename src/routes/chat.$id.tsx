@@ -192,6 +192,13 @@ function Conversation() {
         ) : (
           messages.map((m) => {
             const mine = m.sender_id === user?.id;
+            if (m.contract_id) {
+              return (
+                <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
+                  <ContractCard contractId={m.contract_id} compact />
+                </div>
+              );
+            }
             return (
               <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
                 <div
