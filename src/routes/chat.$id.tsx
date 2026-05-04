@@ -41,6 +41,8 @@ function Conversation() {
   const scroller = useRef<HTMLDivElement>(null);
   const [showQuick, setShowQuick] = useState(false);
   const [quickReplies, setQuickReplies] = useState<string[]>(DEFAULT_QUICK_REPLIES);
+  const [contractOpen, setContractOpen] = useState(false);
+  const [showAttach, setShowAttach] = useState(false);
 
   useEffect(() => {
     if (!user) return;
