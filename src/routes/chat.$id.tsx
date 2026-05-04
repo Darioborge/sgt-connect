@@ -313,6 +313,14 @@ function Conversation() {
           </button>
         )}
       </form>
+      {other && (
+        <ContractDialog
+          open={contractOpen}
+          onOpenChange={setContractOpen}
+          conversationId={id}
+          otherUserId={other.id}
+        />
+      )}
     </div>
   );
 }
