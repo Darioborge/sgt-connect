@@ -354,6 +354,7 @@ export type Database = {
       messages: {
         Row: {
           content: string | null
+          contract_id: string | null
           conversation_id: string
           created_at: string | null
           id: string
@@ -363,6 +364,7 @@ export type Database = {
         }
         Insert: {
           content?: string | null
+          contract_id?: string | null
           conversation_id: string
           created_at?: string | null
           id?: string
@@ -372,6 +374,7 @@ export type Database = {
         }
         Update: {
           content?: string | null
+          contract_id?: string | null
           conversation_id?: string
           created_at?: string | null
           id?: string
@@ -380,6 +383,13 @@ export type Database = {
           sender_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "messages_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "service_contracts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "messages_conversation_id_fkey"
             columns: ["conversation_id"]
@@ -618,6 +628,101 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      service_contracts: {
+        Row: {
+          amount_kz: number
+          client_doc: string | null
+          client_id: string
+          client_name: string | null
+          client_phone: string | null
+          completed_at: string | null
+          conditions: string | null
+          conversation_id: string
+          created_at: string
+          deadline: string | null
+          id: string
+          number: string
+          provider_doc: string | null
+          provider_iban: string | null
+          provider_id: string
+          provider_logo_url: string | null
+          provider_mcx: string | null
+          provider_name: string | null
+          provider_phone: string | null
+          rejected_at: string | null
+          service_description: string | null
+          service_title: string
+          signed_client_at: string | null
+          signed_provider_at: string | null
+          status: Database["public"]["Enums"]["contract_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount_kz?: number
+          client_doc?: string | null
+          client_id: string
+          client_name?: string | null
+          client_phone?: string | null
+          completed_at?: string | null
+          conditions?: string | null
+          conversation_id: string
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          number?: string
+          provider_doc?: string | null
+          provider_iban?: string | null
+          provider_id: string
+          provider_logo_url?: string | null
+          provider_mcx?: string | null
+          provider_name?: string | null
+          provider_phone?: string | null
+          rejected_at?: string | null
+          service_description?: string | null
+          service_title: string
+          signed_client_at?: string | null
+          signed_provider_at?: string | null
+          status?: Database["public"]["Enums"]["contract_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount_kz?: number
+          client_doc?: string | null
+          client_id?: string
+          client_name?: string | null
+          client_phone?: string | null
+          completed_at?: string | null
+          conditions?: string | null
+          conversation_id?: string
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          number?: string
+          provider_doc?: string | null
+          provider_iban?: string | null
+          provider_id?: string
+          provider_logo_url?: string | null
+          provider_mcx?: string | null
+          provider_name?: string | null
+          provider_phone?: string | null
+          rejected_at?: string | null
+          service_description?: string | null
+          service_title?: string
+          signed_client_at?: string | null
+          signed_provider_at?: string | null
+          status?: Database["public"]["Enums"]["contract_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_contracts_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       service_requests: {
         Row: {
@@ -918,6 +1023,12 @@ export type Database = {
         | "cancelado"
         | "recusado"
       boost_level: "basico" | "medio" | "alto"
+      contract_status:
+        | "pendente"
+        | "assinado_prestador"
+        | "assinado_ambos"
+        | "rejeitado"
+        | "concluido"
       coupon_type: "percentual" | "fixo"
       emergency_status: "aberto" | "aceite" | "fechado" | "cancelado"
       payment_kind:
@@ -1072,6 +1183,13 @@ export const Constants = {
         "recusado",
       ],
       boost_level: ["basico", "medio", "alto"],
+      contract_status: [
+        "pendente",
+        "assinado_prestador",
+        "assinado_ambos",
+        "rejeitado",
+        "concluido",
+      ],
       coupon_type: ["percentual", "fixo"],
       emergency_status: ["aberto", "aceite", "fechado", "cancelado"],
       payment_kind: [

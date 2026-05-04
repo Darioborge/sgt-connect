@@ -4,10 +4,12 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadToBucket } from "@/lib/upload";
-import { ArrowLeft, ImageIcon, Send, Loader2, Zap, Phone, Video, Mic } from "lucide-react";
+import { ArrowLeft, ImageIcon, Send, Loader2, Zap, Phone, Video, Mic, FileText, Paperclip } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
+import { ContractDialog } from "@/components/sgt/ContractDialog";
+import { ContractCard } from "@/components/sgt/ContractCard";
 
 const DEFAULT_QUICK_REPLIES = [
   "Estou a caminho 🚗",
@@ -39,6 +41,8 @@ function Conversation() {
   const scroller = useRef<HTMLDivElement>(null);
   const [showQuick, setShowQuick] = useState(false);
   const [quickReplies, setQuickReplies] = useState<string[]>(DEFAULT_QUICK_REPLIES);
+  const [contractOpen, setContractOpen] = useState(false);
+  const [showAttach, setShowAttach] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -188,6 +192,13 @@ function Conversation() {
         ) : (
           messages.map((m) => {
             const mine = m.sender_id === user?.id;
+            if (m.contract_id) {
+              return (
+                <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
+                  <ContractCard contractId={m.contract_id} compact />
+                </div>
+              );
+            }
             return (
               <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
                 <div
@@ -227,9 +238,41 @@ function Conversation() {
       )}
 
       <form onSubmit={send} className="flex items-center gap-2 border-t border-border bg-background px-3 py-3">
-        <button type="button" onClick={() => fileRef.current?.click()} disabled={busy} className="rounded-full p-2 hover:bg-accent">
-          {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImageIcon className="h-5 w-5" />}
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowAttach((v) => !v)}
+            disabled={busy}
+            className={cn("rounded-full p-2 hover:bg-accent", showAttach && "text-primary")}
+            aria-label="Anexar"
+          >
+            {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <Paperclip className="h-5 w-5" />}
+          </button>
+          {showAttach && (
+            <div className="absolute bottom-12 left-0 z-10 w-44 rounded-xl border border-border bg-card p-1 shadow-xl">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAttach(false);
+                  fileRef.current?.click();
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-accent"
+              >
+                <ImageIcon className="h-4 w-4 text-primary" /> Imagem
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAttach(false);
+                  setContractOpen(true);
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-accent"
+              >
+                <FileText className="h-4 w-4 text-primary" /> Criar Contrato
+              </button>
+            </div>
+          )}
+        </div>
         <button
           type="button"
           onClick={() => setShowQuick((v) => !v)}
@@ -270,6 +313,14 @@ function Conversation() {
           </button>
         )}
       </form>
+      {other && (
+        <ContractDialog
+          open={contractOpen}
+          onOpenChange={setContractOpen}
+          conversationId={id}
+          otherUserId={other.id}
+        />
+      )}
     </div>
   );
 }
