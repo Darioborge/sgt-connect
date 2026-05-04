@@ -4,10 +4,12 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadToBucket } from "@/lib/upload";
-import { ArrowLeft, ImageIcon, Send, Loader2, Zap, Phone, Video, Mic } from "lucide-react";
+import { ArrowLeft, ImageIcon, Send, Loader2, Zap, Phone, Video, Mic, FileText, Paperclip } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
+import { ContractDialog } from "@/components/sgt/ContractDialog";
+import { ContractCard } from "@/components/sgt/ContractCard";
 
 const DEFAULT_QUICK_REPLIES = [
   "Estou a caminho 🚗",
