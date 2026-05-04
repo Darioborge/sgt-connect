@@ -238,9 +238,41 @@ function Conversation() {
       )}
 
       <form onSubmit={send} className="flex items-center gap-2 border-t border-border bg-background px-3 py-3">
-        <button type="button" onClick={() => fileRef.current?.click()} disabled={busy} className="rounded-full p-2 hover:bg-accent">
-          {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImageIcon className="h-5 w-5" />}
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowAttach((v) => !v)}
+            disabled={busy}
+            className={cn("rounded-full p-2 hover:bg-accent", showAttach && "text-primary")}
+            aria-label="Anexar"
+          >
+            {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <Paperclip className="h-5 w-5" />}
+          </button>
+          {showAttach && (
+            <div className="absolute bottom-12 left-0 z-10 w-44 rounded-xl border border-border bg-card p-1 shadow-xl">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAttach(false);
+                  fileRef.current?.click();
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-accent"
+              >
+                <ImageIcon className="h-4 w-4 text-primary" /> Imagem
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAttach(false);
+                  setContractOpen(true);
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-accent"
+              >
+                <FileText className="h-4 w-4 text-primary" /> Criar Contrato
+              </button>
+            </div>
+          )}
+        </div>
         <button
           type="button"
           onClick={() => setShowQuick((v) => !v)}
