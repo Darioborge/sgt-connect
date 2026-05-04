@@ -269,7 +269,19 @@ function MapaPage() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           />
           <FlyTo pos={userPos} />
-          {userPos && <Marker position={userPos} icon={userIcon} />}
+          {userPos && (
+            <Marker
+              position={userPos}
+              icon={userIcon}
+              eventHandlers={{
+                click: () => {
+                  if (!user) return toast.error("Inicia sessão");
+                  if (!shareLocation) toggleShare(true);
+                  navigate({ to: "/perfil" });
+                },
+              }}
+            />
+          )}
           {filtered.map((p) => (
             <Marker
               key={p.id}
