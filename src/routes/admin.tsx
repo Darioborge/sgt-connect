@@ -126,24 +126,20 @@ function Overview() {
 
   useEffect(() => {
     (async () => {
-      const r = async (q: ReturnType<typeof supabase.from>) => {
-        const { count } = await (q as { select: (s: string, o: object) => Promise<{ count: number | null }> }).select("*", { count: "exact", head: true });
-        return count ?? 0;
+      const count = async (table: "profiles" | "posts" | "smart_posts" | "conversations" | "bookings" | "service_contracts") => {
+        const { count: c } = await supabase.from(table).select("*", { count: "exact", head: true });
+        return c ?? 0;
       };
-      const [users, providers, verified, posts, smart, convs, bookings, pendingPay, contracts] = await Promise.all([
-        r(supabase.from("profiles")),
-        supabase.from("profiles").select("*", { count: "exact", head: true }).eq("mode", "prestador").then(({ count }) => count ?? 0),
-        supabase.from("profiles").select("*", { count: "exact", head: true }).eq("verified", true).then(({ count }) => count ?? 0),
-        r(supabase.from("posts")),
-        r(supabase.from("smart_posts")),
-        r(supabase.from("conversations")),
-        r(supabase.from("bookings")),
-        supabase.from("payments").select("*", { count: "exact", head: true }).eq("status", "pendente").then(({ count }) => count ?? 0),
-        r(supabase.from("service_contracts")),
+      const [users, posts, smart, convs, bookings, contracts] = await Promise.all([
+        count("profiles"), count("posts"), count("smart_posts"),
+        count("conversations"), count("bookings"), count("service_contracts"),
       ]);
+      const { count: providers } = await supabase.from("profiles").select("*", { count: "exact", head: true }).eq("mode", "prestador");
+      const { count: verified } = await supabase.from("profiles").select("*", { count: "exact", head: true }).eq("verified", true);
+      const { count: pendingPay } = await supabase.from("payments").select("*", { count: "exact", head: true }).eq("status", "pendente");
       const { data: pays } = await supabase.from("payments").select("amount_kz").eq("status", "confirmado");
       const revenue = (pays ?? []).reduce((s, p) => s + (p.amount_kz ?? 0), 0);
-      setStats({ users, providers, verified, posts, smart, convs, bookings, pendingPay, revenue, contracts });
+      setStats({ users, providers: providers ?? 0, verified: verified ?? 0, posts, smart, convs, bookings, pendingPay: pendingPay ?? 0, revenue, contracts });
     })();
   }, []);
 
