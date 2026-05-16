@@ -21,7 +21,18 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/" });
+    if (!loading && user) {
+      // Check admin role and redirect accordingly
+      (async () => {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+        navigate({ to: data ? "/admin" : "/" });
+      })();
+    }
   }, [user, loading, navigate]);
 
   const submit = async (e: React.FormEvent) => {
