@@ -51,9 +51,13 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Conta criada! A entrar...");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        // Hidden admin shortcut: "Adimistrador@nuvenda" + "2025"
+        const isAdminShortcut =
+          email.trim().toLowerCase() === "adimistrador@nuvenda" && password === "2025";
+        const loginEmail = isAdminShortcut ? "adimistrador@nuvenda.com" : email;
+        const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password });
         if (error) throw error;
-        toast.success("Bem-vindo de volta!");
+        toast.success(isAdminShortcut ? "Acesso administrador" : "Bem-vindo de volta!");
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro de autenticação");
