@@ -21,7 +21,18 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/" });
+    if (!loading && user) {
+      // Check admin role and redirect accordingly
+      (async () => {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+        navigate({ to: data ? "/admin" : "/" });
+      })();
+    }
   }, [user, loading, navigate]);
 
   const submit = async (e: React.FormEvent) => {
@@ -40,9 +51,13 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Conta criada! A entrar...");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        // Hidden admin shortcut: "Adimistrador@nuvenda" + "2025"
+        const isAdminShortcut =
+          email.trim().toLowerCase() === "adimistrador@nuvenda" && password === "2025";
+        const loginEmail = isAdminShortcut ? "adimistrador@nuvenda.com" : email;
+        const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password });
         if (error) throw error;
-        toast.success("Bem-vindo de volta!");
+        toast.success(isAdminShortcut ? "Acesso administrador" : "Bem-vindo de volta!");
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro de autenticação");
