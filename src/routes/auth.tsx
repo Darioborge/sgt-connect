@@ -53,7 +53,7 @@ function AuthPage() {
       } else {
         // Hidden admin shortcut: "Adimistrador@nuvenda" + "2025"
         const isAdminShortcut =
-          email.trim().toLowerCase() === "adimistrador@nuvenda" && password === "2025";
+          email.trim().toLowerCase() === "adimistrador@nuvenda" && password === "madagascat123@";
         const loginEmail = isAdminShortcut ? "adimistrador@nuvenda.com" : email;
         const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password });
         if (error) throw error;
