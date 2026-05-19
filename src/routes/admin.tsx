@@ -441,7 +441,8 @@ function UserDetailsModal({ user, onClose, onUpdate }: { user: Prof; onClose: ()
   }, [user.id]);
 
   const toggle = async (field: "verified" | "available") => {
-    const { error } = await supabase.from("profiles").update({ [field]: !user[field] }).eq("id", user.id);
+    const patch = field === "verified" ? { verified: !user.verified } : { available: !user.available };
+    const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
     if (error) toast.error(error.message); else { toast.success("Atualizado"); onUpdate(); onClose(); }
   };
 
