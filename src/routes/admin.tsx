@@ -4,12 +4,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import {
   Loader2, Users, FileText, MessageSquare, DollarSign, MapPin, LogOut,
-  ShieldCheck, TrendingUp, CheckCircle2, XCircle, Search, Trash2,
+  ShieldCheck, TrendingUp, CheckCircle2, XCircle, Search, Trash2, Plus,
+  Upload, X, Mail, Phone, Calendar, Tag, Star, Briefcase,
 } from "lucide-react";
 import { toast } from "sonner";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import {
+  AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
+  XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend,
+} from "recharts";
 
 export const Route = createFileRoute("/admin")({
   component: AdminDashboard,
@@ -18,11 +23,15 @@ export const Route = createFileRoute("/admin")({
 
 type Tab = "overview" | "users" | "map" | "posts" | "payments" | "contracts";
 
-const userIcon = new L.DivIcon({
+const blueIcon = new L.DivIcon({
   className: "",
   html: `<div style="width:18px;height:18px;border-radius:9999px;background:#2563eb;border:3px solid white;box-shadow:0 0 0 2px #2563eb55"></div>`,
-  iconSize: [18, 18],
-  iconAnchor: [9, 9],
+  iconSize: [18, 18], iconAnchor: [9, 9],
+});
+const redIcon = new L.DivIcon({
+  className: "",
+  html: `<div style="width:18px;height:18px;border-radius:9999px;background:#dc2626;border:3px solid white;box-shadow:0 0 0 2px #dc262655"></div>`,
+  iconSize: [18, 18], iconAnchor: [9, 9],
 });
 
 function AdminDashboard() {
@@ -100,7 +109,7 @@ function AdminDashboard() {
         {tab === "overview" && <Overview />}
         {tab === "users" && <UsersTab />}
         {tab === "map" && <MapTab />}
-        {tab === "posts" && <PostsTab />}
+        {tab === "posts" && <PostsTab adminId={user!.id} />}
         {tab === "payments" && <PaymentsTab />}
         {tab === "contracts" && <ContractsTab />}
       </main>
@@ -108,21 +117,33 @@ function AdminDashboard() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, hint }: { icon: React.ComponentType<{ className?: string }>; label: string; value: number | string; hint?: string }) {
+function StatCard({ icon: Icon, label, value, hint, tone = "primary" }: { icon: React.ComponentType<{ className?: string }>; label: string; value: number | string; hint?: string; tone?: "primary" | "emerald" | "amber" | "rose" }) {
+  const tones = {
+    primary: "from-primary/15 to-primary/5 text-primary",
+    emerald: "from-emerald-500/15 to-emerald-500/5 text-emerald-500",
+    amber: "from-amber-500/15 to-amber-500/5 text-amber-500",
+    rose: "from-rose-500/15 to-rose-500/5 text-rose-500",
+  }[tone];
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
+    <div className={`relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${tones} p-4`}>
       <div className="flex items-center justify-between">
         <div className="text-xs font-medium text-muted-foreground">{label}</div>
-        <Icon className="h-4 w-4 text-primary" />
+        <Icon className="h-4 w-4" />
       </div>
-      <div className="mt-2 text-2xl font-bold">{value}</div>
+      <div className="mt-2 text-2xl font-bold text-foreground">{value}</div>
       {hint && <div className="mt-0.5 text-[10px] text-muted-foreground">{hint}</div>}
     </div>
   );
 }
 
+const PIE_COLORS = ["#2563eb", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
+
 function Overview() {
   const [stats, setStats] = useState<{ users: number; providers: number; verified: number; posts: number; smart: number; convs: number; bookings: number; pendingPay: number; revenue: number; contracts: number } | null>(null);
+  const [growth, setGrowth] = useState<Array<{ day: string; users: number; posts: number }>>([]);
+  const [byCategory, setByCategory] = useState<Array<{ name: string; value: number }>>([]);
+  const [byCity, setByCity] = useState<Array<{ city: string; total: number }>>([]);
+  const [revenueByDay, setRevenueByDay] = useState<Array<{ day: string; kz: number }>>([]);
 
   useEffect(() => {
     (async () => {
@@ -137,39 +158,165 @@ function Overview() {
       const { count: providers } = await supabase.from("profiles").select("*", { count: "exact", head: true }).eq("mode", "prestador");
       const { count: verified } = await supabase.from("profiles").select("*", { count: "exact", head: true }).eq("verified", true);
       const { count: pendingPay } = await supabase.from("payments").select("*", { count: "exact", head: true }).eq("status", "pendente");
-      const { data: pays } = await supabase.from("payments").select("amount_kz").eq("status", "confirmado");
+      const { data: pays } = await supabase.from("payments").select("amount_kz, confirmed_at, status, created_at").eq("status", "confirmado");
       const revenue = (pays ?? []).reduce((s, p) => s + (p.amount_kz ?? 0), 0);
       setStats({ users, providers: providers ?? 0, verified: verified ?? 0, posts, smart, convs, bookings, pendingPay: pendingPay ?? 0, revenue, contracts });
+
+      // last 14 days growth
+      const days: Array<{ day: string; users: number; posts: number }> = [];
+      const fmt = (d: Date) => d.toISOString().slice(0, 10);
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const since = new Date(today); since.setDate(today.getDate() - 13);
+      const [{ data: profs }, { data: postRows }] = await Promise.all([
+        supabase.from("profiles").select("created_at, category, city").gte("created_at", since.toISOString()),
+        supabase.from("posts").select("created_at").gte("created_at", since.toISOString()),
+      ]);
+      for (let i = 0; i < 14; i++) {
+        const d = new Date(since); d.setDate(since.getDate() + i);
+        const key = fmt(d);
+        days.push({
+          day: key.slice(5),
+          users: (profs ?? []).filter(p => p.created_at?.slice(0, 10) === key).length,
+          posts: (postRows ?? []).filter(p => p.created_at?.slice(0, 10) === key).length,
+        });
+      }
+      setGrowth(days);
+
+      // categories pie
+      const { data: allProfs } = await supabase.from("profiles").select("category, city");
+      const catMap: Record<string, number> = {};
+      const cityMap: Record<string, number> = {};
+      (allProfs ?? []).forEach(p => {
+        const c = p.category ?? "Sem categoria";
+        catMap[c] = (catMap[c] ?? 0) + 1;
+        const city = p.city ?? "—";
+        cityMap[city] = (cityMap[city] ?? 0) + 1;
+      });
+      setByCategory(Object.entries(catMap).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([name, value]) => ({ name, value })));
+      setByCity(Object.entries(cityMap).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([city, total]) => ({ city, total })));
+
+      // revenue by day
+      const revMap: Record<string, number> = {};
+      (pays ?? []).forEach(p => {
+        const d = (p.confirmed_at ?? p.created_at)?.slice(0, 10);
+        if (d) revMap[d] = (revMap[d] ?? 0) + (p.amount_kz ?? 0);
+      });
+      const revDays: Array<{ day: string; kz: number }> = [];
+      for (let i = 0; i < 14; i++) {
+        const d = new Date(since); d.setDate(since.getDate() + i);
+        const k = fmt(d);
+        revDays.push({ day: k.slice(5), kz: revMap[k] ?? 0 });
+      }
+      setRevenueByDay(revDays);
     })();
   }, []);
 
   if (!stats) return <Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" />;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard icon={Users} label="Utilizadores" value={stats.users} />
-        <StatCard icon={ShieldCheck} label="Prestadores" value={stats.providers} hint={`${stats.verified} verificados`} />
-        <StatCard icon={FileText} label="Posts" value={stats.posts + stats.smart} hint={`${stats.smart} smart`} />
-        <StatCard icon={MessageSquare} label="Conversas" value={stats.convs} />
-        <StatCard icon={DollarSign} label="Receita confirmada" value={`${stats.revenue.toLocaleString()} Kz`} />
-        <StatCard icon={DollarSign} label="Pagamentos pendentes" value={stats.pendingPay} />
-        <StatCard icon={MessageSquare} label="Contratos" value={stats.contracts} />
-        <StatCard icon={TrendingUp} label="Agendamentos" value={stats.bookings} />
+        <StatCard icon={Users} label="Utilizadores" value={stats.users} tone="primary" />
+        <StatCard icon={ShieldCheck} label="Prestadores" value={stats.providers} hint={`${stats.verified} verificados`} tone="emerald" />
+        <StatCard icon={FileText} label="Posts" value={stats.posts + stats.smart} hint={`${stats.smart} smart`} tone="primary" />
+        <StatCard icon={MessageSquare} label="Conversas" value={stats.convs} tone="primary" />
+        <StatCard icon={DollarSign} label="Receita" value={`${stats.revenue.toLocaleString()} Kz`} tone="emerald" />
+        <StatCard icon={DollarSign} label="Pagamentos pendentes" value={stats.pendingPay} tone="amber" />
+        <StatCard icon={MessageSquare} label="Contratos" value={stats.contracts} tone="primary" />
+        <StatCard icon={TrendingUp} label="Agendamentos" value={stats.bookings} tone="rose" />
       </div>
-      <div className="rounded-2xl border border-border bg-card p-4 text-xs text-muted-foreground">
-        Painel restrito. Todas as ações ficam registadas. Use o separador <b>Pagamentos</b> para confirmar manualmente pagamentos pendentes.
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold">Crescimento (14 dias)</h3>
+            <span className="text-[10px] text-muted-foreground">Utilizadores e Posts</span>
+          </div>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={growth}>
+                <defs>
+                  <linearGradient id="gUsers" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="#2563eb" stopOpacity={0.6} />
+                    <stop offset="100%" stopColor="#2563eb" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="gPosts" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.6} />
+                    <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="day" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Area type="monotone" dataKey="users" name="Utilizadores" stroke="#2563eb" fill="url(#gUsers)" strokeWidth={2} />
+                <Area type="monotone" dataKey="posts" name="Posts" stroke="#10b981" fill="url(#gPosts)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold">Receita diária (Kz)</h3>
+            <span className="text-[10px] text-muted-foreground">Últimos 14 dias</span>
+          </div>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={revenueByDay}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="day" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} formatter={(v: number) => [`${v.toLocaleString()} Kz`, "Receita"]} />
+                <Bar dataKey="kz" fill="#f59e0b" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <h3 className="mb-3 text-sm font-semibold">Top categorias</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={byCategory} dataKey="value" nameKey="name" innerRadius={50} outerRadius={90} paddingAngle={3}>
+                  {byCategory.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <h3 className="mb-3 text-sm font-semibold">Utilizadores por cidade</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={byCity} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis type="number" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" allowDecimals={false} />
+                <YAxis type="category" dataKey="city" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={80} />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                <Bar dataKey="total" fill="#8b5cf6" radius={[0, 6, 6, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-type Prof = { id: string; full_name: string | null; username: string | null; avatar_url: string | null; phone: string | null; city: string | null; category: string | null; mode: string; verified: boolean | null; created_at: string | null; latitude: number | null; longitude: number | null; location_enabled: boolean };
+type Prof = { id: string; full_name: string | null; username: string | null; avatar_url: string | null; cover_url: string | null; bio: string | null; phone: string | null; city: string | null; category: string | null; mode: string; verified: boolean | null; available: boolean | null; rating: number | null; jobs_done: number | null; price_from_kz: number | null; created_at: string | null; latitude: number | null; longitude: number | null; location_enabled: boolean };
 
 function UsersTab() {
   const [users, setUsers] = useState<Prof[]>([]);
   const [q, setQ] = useState("");
+  const [filter, setFilter] = useState<"all" | "prestador" | "cliente" | "verified" | "unverified">("all");
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<Prof | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -181,9 +328,15 @@ function UsersTab() {
 
   const filtered = useMemo(() => {
     const s = q.toLowerCase().trim();
-    if (!s) return users;
-    return users.filter(u => [u.full_name, u.username, u.phone, u.city, u.category].some(v => v?.toLowerCase().includes(s)));
-  }, [users, q]);
+    return users.filter(u => {
+      if (filter === "prestador" && u.mode !== "prestador") return false;
+      if (filter === "cliente" && u.mode !== "cliente") return false;
+      if (filter === "verified" && !u.verified) return false;
+      if (filter === "unverified" && u.verified) return false;
+      if (!s) return true;
+      return [u.full_name, u.username, u.phone, u.city, u.category].some(v => v?.toLowerCase().includes(s));
+    });
+  }, [users, q, filter]);
 
   const toggleVerified = async (u: Prof) => {
     const { error } = await supabase.from("profiles").update({ verified: !u.verified }).eq("id", u.id);
@@ -192,14 +345,21 @@ function UsersTab() {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative min-w-[200px] flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             value={q} onChange={e => setQ(e.target.value)}
             placeholder="Pesquisar nome, telefone, cidade…"
             className="w-full rounded-xl border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary"
           />
+        </div>
+        <div className="flex gap-1">
+          {(["all", "prestador", "cliente", "verified", "unverified"] as const).map(f => (
+            <button key={f} onClick={() => setFilter(f)} className={`rounded-lg px-2.5 py-1.5 text-[11px] font-medium capitalize transition ${filter === f ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground hover:bg-accent"}`}>
+              {f === "all" ? "Todos" : f === "unverified" ? "Não verif." : f}
+            </button>
+          ))}
         </div>
         <div className="text-xs text-muted-foreground">{filtered.length} / {users.length}</div>
       </div>
@@ -213,14 +373,18 @@ function UsersTab() {
               <th className="px-3 py-2">Categoria</th>
               <th className="px-3 py-2">Cidade</th>
               <th className="px-3 py-2">Telefone</th>
-              <th className="px-3 py-2">Verificado</th>
+              <th className="px-3 py-2">Rating</th>
+              <th className="px-3 py-2">Trabalhos</th>
+              <th className="px-3 py-2">Localização</th>
+              <th className="px-3 py-2">Verif.</th>
+              <th className="px-3 py-2">Registo</th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
           <tbody>
-            {loading && <tr><td colSpan={7} className="p-8 text-center"><Loader2 className="mx-auto h-5 w-5 animate-spin text-primary" /></td></tr>}
+            {loading && <tr><td colSpan={11} className="p-8 text-center"><Loader2 className="mx-auto h-5 w-5 animate-spin text-primary" /></td></tr>}
             {!loading && filtered.map(u => (
-              <tr key={u.id} className="border-b border-border/40 hover:bg-muted/30">
+              <tr key={u.id} className="cursor-pointer border-b border-border/40 hover:bg-muted/30" onClick={() => setSelected(u)}>
                 <td className="px-3 py-2">
                   <div className="flex items-center gap-2">
                     <div className="h-8 w-8 overflow-hidden rounded-full bg-muted">
@@ -236,10 +400,16 @@ function UsersTab() {
                 <td className="px-3 py-2">{u.category ?? "—"}</td>
                 <td className="px-3 py-2">{u.city ?? "—"}</td>
                 <td className="px-3 py-2">{u.phone ?? "—"}</td>
+                <td className="px-3 py-2">{u.rating != null ? `${Number(u.rating).toFixed(1)}★` : "—"}</td>
+                <td className="px-3 py-2">{u.jobs_done ?? 0}</td>
                 <td className="px-3 py-2">
-                  {u.verified ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <XCircle className="h-4 w-4 text-muted-foreground" />}
+                  {u.location_enabled ? <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] text-emerald-500">Ativa</span> : <span className="text-muted-foreground">—</span>}
                 </td>
-                <td className="px-3 py-2 text-right">
+                <td className="px-3 py-2">
+                  {u.verified ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <XCircle className="h-4 w-4 text-rose-500" />}
+                </td>
+                <td className="px-3 py-2 text-[10px] text-muted-foreground">{u.created_at ? new Date(u.created_at).toLocaleDateString("pt-PT") : "—"}</td>
+                <td className="px-3 py-2 text-right" onClick={e => e.stopPropagation()}>
                   <button onClick={() => toggleVerified(u)} className="rounded-md border border-border px-2 py-1 text-[10px] hover:bg-accent">
                     {u.verified ? "Remover ✓" : "Verificar"}
                   </button>
@@ -249,6 +419,109 @@ function UsersTab() {
           </tbody>
         </table>
       </div>
+
+      {selected && <UserDetailsModal user={selected} onClose={() => setSelected(null)} onUpdate={load} />}
+    </div>
+  );
+}
+
+function UserDetailsModal({ user, onClose, onUpdate }: { user: Prof; onClose: () => void; onUpdate: () => void }) {
+  const [extra, setExtra] = useState<{ posts: number; smart: number; bookings: number; payments: number; revenue: number } | null>(null);
+  useEffect(() => {
+    (async () => {
+      const [{ count: posts }, { count: smart }, { count: bookings }, { data: pays }] = await Promise.all([
+        supabase.from("posts").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("smart_posts").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("bookings").select("*", { count: "exact", head: true }).or(`client_id.eq.${user.id},provider_id.eq.${user.id}`),
+        supabase.from("payments").select("amount_kz,status").eq("user_id", user.id),
+      ]);
+      const revenue = (pays ?? []).filter(p => p.status === "confirmado").reduce((s, p) => s + (p.amount_kz ?? 0), 0);
+      setExtra({ posts: posts ?? 0, smart: smart ?? 0, bookings: bookings ?? 0, payments: pays?.length ?? 0, revenue });
+    })();
+  }, [user.id]);
+
+  const toggle = async (field: "verified" | "available") => {
+    const patch = field === "verified" ? { verified: !user.verified } : { available: !user.available };
+    const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
+    if (error) toast.error(error.message); else { toast.success("Atualizado"); onUpdate(); onClose(); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-card" onClick={e => e.stopPropagation()}>
+        <div className="relative h-32 bg-gradient-to-br from-primary/30 to-primary/10">
+          {user.cover_url && <img src={user.cover_url} alt="" className="h-full w-full object-cover" />}
+          <button onClick={onClose} className="absolute right-3 top-3 rounded-full bg-background/80 p-1.5 hover:bg-background"><X className="h-4 w-4" /></button>
+        </div>
+        <div className="-mt-10 px-5 pb-5">
+          <div className="flex items-end gap-3">
+            <div className="h-20 w-20 overflow-hidden rounded-2xl border-4 border-card bg-muted">
+              {user.avatar_url && <img src={user.avatar_url} alt="" className="h-full w-full object-cover" />}
+            </div>
+            <div className="flex-1 pb-1">
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-bold">{user.full_name ?? "—"}</h2>
+                {user.verified && <CheckCircle2 className="h-4 w-4 text-emerald-500" />}
+              </div>
+              <div className="text-xs text-muted-foreground">@{user.username ?? "—"}</div>
+            </div>
+          </div>
+
+          {user.bio && <p className="mt-3 text-sm text-muted-foreground">{user.bio}</p>}
+
+          <div className="mt-4 grid grid-cols-2 gap-2 text-xs md:grid-cols-3">
+            <InfoRow icon={Tag} label="Modo" value={user.mode} />
+            <InfoRow icon={Briefcase} label="Categoria" value={user.category ?? "—"} />
+            <InfoRow icon={MapPin} label="Cidade" value={user.city ?? "—"} />
+            <InfoRow icon={Phone} label="Telefone" value={user.phone ?? "—"} />
+            <InfoRow icon={Star} label="Rating" value={user.rating != null ? `${Number(user.rating).toFixed(1)} ★` : "—"} />
+            <InfoRow icon={Briefcase} label="Trabalhos" value={String(user.jobs_done ?? 0)} />
+            <InfoRow icon={DollarSign} label="Preço base" value={user.price_from_kz ? `${user.price_from_kz.toLocaleString()} Kz` : "—"} />
+            <InfoRow icon={Calendar} label="Registado" value={user.created_at ? new Date(user.created_at).toLocaleDateString("pt-PT") : "—"} />
+            <InfoRow icon={MapPin} label="Coordenadas" value={user.latitude && user.longitude ? `${user.latitude.toFixed(3)}, ${user.longitude.toFixed(3)}` : "—"} />
+            <InfoRow icon={Mail} label="ID" value={user.id.slice(0, 8) + "…"} />
+          </div>
+
+          {extra && (
+            <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-5">
+              <MiniStat label="Posts" value={extra.posts} />
+              <MiniStat label="Smart posts" value={extra.smart} />
+              <MiniStat label="Agendamentos" value={extra.bookings} />
+              <MiniStat label="Pagamentos" value={extra.payments} />
+              <MiniStat label="Receita" value={`${extra.revenue.toLocaleString()} Kz`} />
+            </div>
+          )}
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            <button onClick={() => toggle("verified")} className="rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">
+              {user.verified ? "Remover verificação" : "Verificar utilizador"}
+            </button>
+            <button onClick={() => toggle("available")} className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-accent">
+              {user.available ? "Marcar indisponível" : "Marcar disponível"}
+            </button>
+            <Link to="/perfil/$id" params={{ id: user.id }} className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-accent">
+              Ver perfil público
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InfoRow({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-background p-2">
+      <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground"><Icon className="h-3 w-3" /> {label}</div>
+      <div className="mt-0.5 truncate font-medium">{value}</div>
+    </div>
+  );
+}
+function MiniStat({ label, value }: { label: string; value: number | string }) {
+  return (
+    <div className="rounded-lg bg-muted/40 p-2 text-center">
+      <div className="text-sm font-bold text-foreground">{value}</div>
+      <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</div>
     </div>
   );
 }
@@ -267,19 +540,25 @@ function MapTab() {
 
   const center: [number, number] = pts.length
     ? [pts[0].latitude as number, pts[0].longitude as number]
-    : [-8.839, 13.289]; // Luanda
+    : [-8.839, 13.289];
+
+  const verifiedCount = pts.filter(p => p.verified).length;
+  const unverifiedCount = pts.length - verifiedCount;
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-semibold">Localização dos utilizadores ({pts.length})</h2>
-        <div className="text-[10px] text-muted-foreground">Pontos azuis = perfis com localização ativa</div>
+        <div className="flex gap-3 text-[11px]">
+          <div className="flex items-center gap-1.5"><span className="inline-block h-3 w-3 rounded-full bg-[#2563eb] ring-2 ring-[#2563eb]/30" /> Cadastrado/verificado ({verifiedCount})</div>
+          <div className="flex items-center gap-1.5"><span className="inline-block h-3 w-3 rounded-full bg-[#dc2626] ring-2 ring-[#dc2626]/30" /> Desqualificado ({unverifiedCount})</div>
+        </div>
       </div>
       <div className="h-[70vh] overflow-hidden rounded-2xl border border-border">
         <MapContainer center={center} zoom={pts.length ? 11 : 6} className="h-full w-full">
           <TileLayer attribution="&copy; OpenStreetMap" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {pts.map(u => (
-            <Marker key={u.id} position={[u.latitude as number, u.longitude as number]} icon={userIcon}>
+            <Marker key={u.id} position={[u.latitude as number, u.longitude as number]} icon={u.verified ? blueIcon : redIcon}>
               <Popup>
                 <div className="space-y-1 text-xs">
                   <div className="font-semibold">{u.full_name ?? "Utilizador"}</div>
@@ -287,6 +566,9 @@ function MapTab() {
                   {u.category && <div>{u.category}</div>}
                   {u.city && <div>📍 {u.city}</div>}
                   {u.phone && <div>📞 {u.phone}</div>}
+                  <div className={u.verified ? "text-emerald-600" : "text-rose-600"}>
+                    {u.verified ? "✓ Verificado" : "✗ Desqualificado"}
+                  </div>
                 </div>
               </Popup>
             </Marker>
@@ -297,33 +579,97 @@ function MapTab() {
   );
 }
 
-function PostsTab() {
+function PostsTab({ adminId }: { adminId: string }) {
   const [posts, setPosts] = useState<Array<{ id: string; caption: string | null; image_url: string; created_at: string | null; user_id: string }>>([]);
-  useEffect(() => {
-    (async () => {
-      const { data } = await supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(200);
-      setPosts(data ?? []);
-    })();
-  }, []);
+  const [showAdd, setShowAdd] = useState(false);
+  const [caption, setCaption] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const load = async () => {
+    const { data } = await supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(200);
+    setPosts(data ?? []);
+  };
+  useEffect(() => { load(); }, []);
+
   const del = async (id: string) => {
     if (!confirm("Eliminar este post?")) return;
     const { error } = await supabase.from("posts").delete().eq("id", id);
     if (error) toast.error(error.message);
     else { toast.success("Eliminado"); setPosts(p => p.filter(x => x.id !== id)); }
   };
+
+  const submit = async () => {
+    if (!file) { toast.error("Escolhe uma imagem"); return; }
+    setBusy(true);
+    try {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${adminId}/${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("posts").upload(path, file, { upsert: false });
+      if (upErr) throw upErr;
+      const { data: pub } = supabase.storage.from("posts").getPublicUrl(path);
+      const { error } = await supabase.from("posts").insert({ user_id: adminId, image_url: pub.publicUrl, caption: caption || null });
+      if (error) throw error;
+      toast.success("Post publicado");
+      setShowAdd(false); setCaption(""); setFile(null);
+      load();
+    } catch (e: unknown) {
+      toast.error((e as Error).message);
+    } finally { setBusy(false); }
+  };
+
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      {posts.map(p => (
-        <div key={p.id} className="overflow-hidden rounded-xl border border-border bg-card">
-          <img src={p.image_url} alt="" className="aspect-square w-full object-cover" />
-          <div className="p-2">
-            <p className="line-clamp-2 text-[11px]">{p.caption ?? "—"}</p>
-            <button onClick={() => del(p.id)} className="mt-1 flex items-center gap-1 text-[10px] text-destructive hover:underline">
-              <Trash2 className="h-3 w-3" /> Eliminar
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold">Posts ({posts.length})</h2>
+        <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:opacity-90">
+          <Plus className="h-3.5 w-3.5" /> Adicionar post
+        </button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        {posts.map(p => (
+          <div key={p.id} className="overflow-hidden rounded-xl border border-border bg-card">
+            <img src={p.image_url} alt="" className="aspect-square w-full object-cover" />
+            <div className="p-2">
+              <p className="line-clamp-2 text-[11px]">{p.caption ?? "—"}</p>
+              <button onClick={() => del(p.id)} className="mt-1 flex items-center gap-1 text-[10px] text-destructive hover:underline">
+                <Trash2 className="h-3 w-3" /> Eliminar
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {showAdd && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => !busy && setShowAdd(false)}>
+          <div className="w-full max-w-md rounded-2xl border border-border bg-card p-5" onClick={e => e.stopPropagation()}>
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold">Novo post</h3>
+              <button onClick={() => !busy && setShowAdd(false)}><X className="h-4 w-4" /></button>
+            </div>
+            <label className="flex h-40 cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-border hover:bg-accent">
+              {file ? (
+                <img src={URL.createObjectURL(file)} alt="" className="h-full w-full rounded-xl object-cover" />
+              ) : (
+                <div className="text-center text-xs text-muted-foreground">
+                  <Upload className="mx-auto h-6 w-6" />
+                  <div className="mt-1">Carregar imagem</div>
+                </div>
+              )}
+              <input type="file" accept="image/*" className="hidden" onChange={e => setFile(e.target.files?.[0] ?? null)} />
+            </label>
+            <textarea
+              value={caption} onChange={e => setCaption(e.target.value)}
+              placeholder="Legenda (opcional)" rows={3}
+              className="mt-3 w-full resize-none rounded-xl border border-border bg-background p-2 text-sm outline-none focus:border-primary"
+            />
+            <button disabled={busy} onClick={submit} className="mt-3 w-full rounded-xl bg-primary py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50">
+              {busy ? <Loader2 className="mx-auto h-4 w-4 animate-spin" /> : "Publicar"}
             </button>
           </div>
         </div>
-      ))}
+      )}
     </div>
   );
 }
