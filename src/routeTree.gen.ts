@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatIndexRouteImport } from './routes/chat.index'
 import { Route as PerfilIdRouteImport } from './routes/perfil.$id'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
+import { Route as ChamadaIdRouteImport } from './routes/chamada.$id'
 
 const PublicarRoute = PublicarRouteImport.update({
   id: '/publicar',
@@ -112,6 +113,11 @@ const ChatIdRoute = ChatIdRouteImport.update({
   path: '/chat/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChamadaIdRoute = ChamadaIdRouteImport.update({
+  id: '/chamada/$id',
+  path: '/chamada/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
+  '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
+  '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat': typeof ChatIndexRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
+  '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/planos'
     | '/publicar'
+    | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat/'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/planos'
     | '/publicar'
+    | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/planos'
     | '/publicar'
+    | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat/'
@@ -246,6 +258,7 @@ export interface RootRouteChildren {
   PerfilRoute: typeof PerfilRouteWithChildren
   PlanosRoute: typeof PlanosRoute
   PublicarRoute: typeof PublicarRoute
+  ChamadaIdRoute: typeof ChamadaIdRoute
   ChatIdRoute: typeof ChatIdRoute
   ChatIndexRoute: typeof ChatIndexRoute
 }
@@ -371,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chamada/$id': {
+      id: '/chamada/$id'
+      path: '/chamada/$id'
+      fullPath: '/chamada/$id'
+      preLoaderRoute: typeof ChamadaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -400,6 +420,7 @@ const rootRouteChildren: RootRouteChildren = {
   PerfilRoute: PerfilRouteWithChildren,
   PlanosRoute: PlanosRoute,
   PublicarRoute: PublicarRoute,
+  ChamadaIdRoute: ChamadaIdRoute,
   ChatIdRoute: ChatIdRoute,
   ChatIndexRoute: ChatIndexRoute,
 }
