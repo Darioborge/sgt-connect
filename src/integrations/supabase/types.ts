@@ -95,6 +95,47 @@ export type Database = {
         }
         Relationships: []
       }
+      calls: {
+        Row: {
+          callee_id: string
+          caller_id: string
+          conversation_id: string
+          created_at: string
+          ended_at: string | null
+          id: string
+          kind: string
+          status: string
+        }
+        Insert: {
+          callee_id: string
+          caller_id: string
+          conversation_id: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          kind?: string
+          status?: string
+        }
+        Update: {
+          callee_id?: string
+          caller_id?: string
+          conversation_id?: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          kind?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comments: {
         Row: {
           content: string
@@ -351,32 +392,76 @@ export type Database = {
           },
         ]
       }
+      message_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
+          audio_url: string | null
           content: string | null
           contract_id: string | null
           conversation_id: string
           created_at: string | null
+          duration_seconds: number | null
+          file_name: string | null
+          file_url: string | null
           id: string
           image_url: string | null
           read_at: string | null
           sender_id: string
         }
         Insert: {
+          audio_url?: string | null
           content?: string | null
           contract_id?: string | null
           conversation_id: string
           created_at?: string | null
+          duration_seconds?: number | null
+          file_name?: string | null
+          file_url?: string | null
           id?: string
           image_url?: string | null
           read_at?: string | null
           sender_id: string
         }
         Update: {
+          audio_url?: string | null
           content?: string | null
           contract_id?: string | null
           conversation_id?: string
           created_at?: string | null
+          duration_seconds?: number | null
+          file_name?: string | null
+          file_url?: string | null
           id?: string
           image_url?: string | null
           read_at?: string | null
