@@ -79,6 +79,7 @@ function RootComponent() {
     <ThemeProvider>
       <AuthProvider>
         <Outlet />
+        <IncomingCallProvider />
         <Toaster position="top-center" />
       </AuthProvider>
     </ThemeProvider>
