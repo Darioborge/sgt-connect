@@ -41,6 +41,151 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_clients: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          tax_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      billing_invoices: {
+        Row: {
+          amount_kz: number
+          client_id: string | null
+          created_at: string
+          description: string
+          discount_kz: number
+          due_at: string | null
+          id: string
+          issued_at: string
+          notes: string | null
+          number: string
+          paid_kz: number
+          status: string
+          tax_kz: number
+          total_kz: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_kz?: number
+          client_id?: string | null
+          created_at?: string
+          description: string
+          discount_kz?: number
+          due_at?: string | null
+          id?: string
+          issued_at?: string
+          notes?: string | null
+          number: string
+          paid_kz?: number
+          status?: string
+          tax_kz?: number
+          total_kz?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          client_id?: string | null
+          created_at?: string
+          description?: string
+          discount_kz?: number
+          due_at?: string | null
+          id?: string
+          issued_at?: string
+          notes?: string | null
+          number?: string
+          paid_kz?: number
+          status?: string
+          tax_kz?: number
+          total_kz?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "billing_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_payments: {
+        Row: {
+          amount_kz: number
+          created_at: string
+          id: string
+          invoice_id: string
+          method: string | null
+          paid_at: string
+          reference: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_kz: number
+          created_at?: string
+          id?: string
+          invoice_id: string
+          method?: string | null
+          paid_at?: string
+          reference?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          method?: string | null
+          paid_at?: string
+          reference?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "billing_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           address: string | null
@@ -1096,6 +1241,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      next_billing_invoice_number: {
+        Args: { _user_id: string }
+        Returns: string
       }
     }
     Enums: {
