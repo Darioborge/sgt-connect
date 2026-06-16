@@ -25,7 +25,7 @@ export function MobileShell({ children, hideTopBar, topTitle = "Discover" }: Mob
       <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background">
         <main className="flex-1 pb-24">{children}</main>
 
-        <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-center justify-between bg-black/90 px-6 py-4 backdrop-blur-md pb-6 rounded-t-3xl">
+        <nav className="fixed inset-x-0 bottom-3 z-40 mx-auto flex max-w-[22rem] items-center justify-between rounded-full border border-white/5 bg-black/70 px-5 py-3 shadow-elegant backdrop-blur-xl">
           {navItems.map((item) => {
             const active = location.pathname === item.to;
             const Icon = item.icon;
