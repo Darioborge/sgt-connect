@@ -84,9 +84,48 @@ function ChatList() {
   const filtered = items?.filter((i) => i.other_name.toLowerCase().includes(filter.toLowerCase())) ?? null;
 
   return (
-    <MobileShell>
-      <div className="px-4 pt-4">
-        <div className="flex items-center gap-2 rounded-xl bg-secondary px-3 py-2.5">
+    <MobileShell hideTopBar>
+      <div className="px-5 pt-6 pb-2">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-tight">Mensagens</h1>
+          <div className="flex items-center gap-2 text-foreground/80">
+            <button className="grid h-9 w-9 place-items-center rounded-full bg-secondary/80">
+              <Search className="h-4 w-4" />
+            </button>
+            <button className="grid h-9 w-9 place-items-center rounded-full bg-secondary/80">
+              <Camera className="h-4 w-4" />
+            </button>
+            <button className="grid h-9 w-9 place-items-center rounded-full bg-secondary/80">
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        {filtered && filtered.length > 0 && (
+          <div className="-mx-5 mt-5 flex gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {filtered.slice(0, 8).map((c) => (
+              <Link
+                key={`story-${c.id}`}
+                to="/chat/$id"
+                params={{ id: c.id }}
+                className="flex shrink-0 flex-col items-center gap-1.5"
+              >
+                <div className="rounded-full bg-gradient-to-tr from-primary to-primary-glow p-[2px]">
+                  <img
+                    src={c.other_avatar || `https://api.dicebear.com/9.x/initials/svg?seed=${c.other_name}`}
+                    alt={c.other_name}
+                    className="h-14 w-14 rounded-full border-2 border-background object-cover"
+                  />
+                </div>
+                <span className="max-w-[64px] truncate text-[11px] text-muted-foreground">
+                  {c.other_name.split(" ")[0]}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-3 flex items-center gap-2 rounded-full bg-secondary/60 px-4 py-2.5">
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
             placeholder="Procurar conversas"
