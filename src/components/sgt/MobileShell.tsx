@@ -10,11 +10,11 @@ interface MobileShellProps {
 }
 
 const navItems = [
-  { to: "/", label: "Home", icon: Home },
+  { to: "/", label: "Início", icon: Home },
   { to: "/mapa", label: "Mapa", icon: MapPin },
-  { to: "/publicar", label: "Publish", icon: Plus, isFab: true },
-  { to: "/chat", label: "Message", icon: MessageCircle },
-  { to: "/perfil", label: "Profile", icon: User },
+  { to: "/publicar", label: "Publicar", icon: Plus, isFab: true },
+  { to: "/chat", label: "Mensagens", icon: MessageCircle },
+  { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
 export function MobileShell({ children, hideTopBar, topTitle = "Discover" }: MobileShellProps) {
