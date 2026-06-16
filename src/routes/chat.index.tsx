@@ -4,7 +4,7 @@ import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Camera, MoreVertical } from "lucide-react";
 
 export const Route = createFileRoute("/chat/")({
   component: () => (
