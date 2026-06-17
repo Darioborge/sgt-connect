@@ -150,6 +150,21 @@ function Settings() {
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
         </button>
 
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/faturas" })}
+          className="flex w-full items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 text-left transition hover:border-primary/40"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary">
+            <FileText className="h-5 w-5" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold">Faturação</p>
+            <p className="text-xs text-muted-foreground">Emitir faturas, clientes e pagamentos</p>
+          </div>
+          <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        </button>
+
         <div className="rounded-xl border border-border bg-card px-4 py-3">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-sm font-medium">Tema da aplicação</span>
