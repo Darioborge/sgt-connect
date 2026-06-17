@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { MapPin, MessageCircle, User, Plus, CircleDot } from "lucide-react";
+import { Home, MapPin, MessageCircle, User, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -10,10 +10,10 @@ interface MobileShellProps {
 }
 
 const navItems = [
-  { to: "/chat", label: "Mensagens", icon: MessageCircle },
-  { to: "/estados", label: "Estados", icon: CircleDot },
-  { to: "/publicar", label: "Publicar", icon: Plus, isFab: true },
+  { to: "/", label: "Início", icon: Home },
   { to: "/mapa", label: "Mapa", icon: MapPin },
+  { to: "/publicar", label: "Publicar", icon: Plus, isFab: true },
+  { to: "/chat", label: "Mensagens", icon: MessageCircle },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
@@ -27,9 +27,7 @@ export function MobileShell({ children, hideTopBar, topTitle = "Discover" }: Mob
 
         <nav className="fixed inset-x-0 bottom-3 z-40 mx-auto flex max-w-[22rem] items-center justify-between rounded-full border border-white/5 bg-black/70 px-5 py-3 shadow-elegant backdrop-blur-xl">
           {navItems.map((item) => {
-            const active = item.to === "/chat"
-              ? location.pathname === "/chat" || location.pathname.startsWith("/chat/")
-              : location.pathname === item.to;
+            const active = location.pathname === item.to;
             const Icon = item.icon;
             
             if ("isFab" in item && item.isFab) {
