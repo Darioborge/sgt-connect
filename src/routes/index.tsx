@@ -52,7 +52,7 @@ function Index() {
     <MobileShell hideTopBar={true}>
       <div className="flex items-center justify-between px-6 pt-12 pb-4">
         <h1 className="text-2xl tracking-tight text-white">
-          Discover <span className="font-semibold text-primary">Nuvenda</span>
+          <span className="font-semibold text-primary">Nupublico</span>
         </h1>
         <div className="flex gap-3">
           <button className="flex h-10 w-10 items-center justify-center rounded-full bg-card/60 text-white transition hover:bg-card">

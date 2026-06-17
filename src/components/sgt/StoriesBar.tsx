@@ -90,7 +90,7 @@ export function StoriesBar() {
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/20 text-primary ring-2 ring-primary ring-offset-2 ring-offset-background">
             <Plus className="h-6 w-6" strokeWidth={2.5} />
           </div>
-          <span className="text-xs font-medium text-white/70">{user ? "You" : "Login"}</span>
+          <span className="text-xs font-medium text-white/70">{user ? "EStado" : "Login"}</span>
         </Link>
 
         {groups.map((g, gi) => (
