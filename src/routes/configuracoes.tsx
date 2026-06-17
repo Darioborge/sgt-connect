@@ -5,7 +5,7 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Loader2, Sun, Moon, LogOut, Crown, ChevronRight } from "lucide-react";
+import { ArrowLeft, Loader2, Sun, Moon, LogOut, Crown, ChevronRight, FileText } from "lucide-react";
 import { usePlan } from "@/hooks/usePlan";
 import { toast } from "sonner";
 import { categories } from "@/components/sgt/data";
