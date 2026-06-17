@@ -152,7 +152,7 @@ function EstadosPage() {
                 Atualizações recentes
               </div>
               <ul className="flex flex-col">
-                {others.map((g, gi) => {
+                {others.map((g) => {
                   const realIdx = (groups ?? []).findIndex((x) => x.userId === g.userId);
                   const last = g.items[g.items.length - 1];
                   return (
