@@ -6,7 +6,7 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapPin, Loader2, BadgeCheck, MessageCircle, User, Sparkles, Filter, Crosshair } from "lucide-react";
+import { MapPin, Loader2, BadgeCheck, MessageCircle, User, Filter, Crosshair } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

@@ -3,7 +3,7 @@ import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
-import { Settings, BadgeCheck, Camera, Loader2, Sparkles, Plus, Pencil, Wand2 } from "lucide-react";
+import { Settings, BadgeCheck, Camera, Loader2, Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { uploadToBucket } from "@/lib/upload";

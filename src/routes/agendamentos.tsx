@@ -4,7 +4,7 @@ import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar, Clock, MapPin, Loader2, CheckCircle2, X, Play, MessageCircle, FileText } from "lucide-react";
+import { Calendar, Clock, MapPin, Loader2, CheckCircle2, X, Play, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { setBookingStatus, concludeBooking } from "@/lib/booking";

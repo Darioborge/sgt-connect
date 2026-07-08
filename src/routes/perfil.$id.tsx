@@ -3,7 +3,7 @@ import { MobileShell } from "@/components/sgt/MobileShell";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/sgt/AuthProvider";
-import { ArrowLeft, BadgeCheck, MessageCircle, Phone, Sparkles, Loader2, MapPin } from "lucide-react";
+import { ArrowLeft, BadgeCheck, MessageCircle, Phone, Loader2, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
 
