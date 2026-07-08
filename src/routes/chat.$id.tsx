@@ -10,7 +10,10 @@ import {
   Send,
   Loader2,
   Zap,
+  Phone,
+  Video,
   Mic,
+  FileText,
   Paperclip,
   Square,
   File as FileIcon,
@@ -19,6 +22,8 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
+import { ContractDialog } from "@/components/sgt/ContractDialog";
+import { ContractCard } from "@/components/sgt/ContractCard";
 
 const DEFAULT_QUICK_REPLIES = [
   "Estou a caminho 🚗",
@@ -55,6 +60,7 @@ function Conversation() {
   const scroller = useRef<HTMLDivElement>(null);
   const [showQuick, setShowQuick] = useState(false);
   const [quickReplies, setQuickReplies] = useState<string[]>(DEFAULT_QUICK_REPLIES);
+  const [contractOpen, setContractOpen] = useState(false);
   const [showAttach, setShowAttach] = useState(false);
   const [otherTyping, setOtherTyping] = useState(false);
   const [reactingFor, setReactingFor] = useState<string | null>(null);
@@ -273,6 +279,20 @@ function Conversation() {
     recorderRef.current = null;
   };
 
+  const startCall = async (kind: "audio" | "video") => {
+    if (!user || !other) return;
+    const { data, error } = await supabase
+      .from("calls")
+      .insert({ conversation_id: id, caller_id: user.id, callee_id: other.id, kind, status: "ringing" })
+      .select("id")
+      .single();
+    if (error || !data) return toast.error("Não foi possível iniciar a chamada");
+    navigate({
+      to: "/chamada/$id",
+      params: { id: data.id },
+      search: { role: "caller", kind, other: other.id },
+    });
+  };
 
   const toggleReaction = async (messageId: string, emoji: string) => {
     if (!user) return;
@@ -311,6 +331,20 @@ function Conversation() {
                 </div>
               </div>
             </button>
+            <button
+              onClick={() => startCall("audio")}
+              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
+              aria-label="Chamada de voz"
+            >
+              <Phone className="h-4 w-4 text-primary" />
+            </button>
+            <button
+              onClick={() => startCall("video")}
+              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
+              aria-label="Videochamada"
+            >
+              <Video className="h-4 w-4 text-primary" />
+            </button>
           </>
         )}
       </header>
@@ -326,7 +360,11 @@ function Conversation() {
           messages.map((m) => {
             const mine = m.sender_id === user?.id;
             if (m.contract_id) {
-              return null;
+              return (
+                <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
+                  <ContractCard contractId={m.contract_id} compact />
+                </div>
+              );
             }
             const msgRx = reactions.filter((r) => r.message_id === m.id);
             const grouped = msgRx.reduce<Record<string, number>>((acc, r) => {
@@ -500,6 +538,16 @@ function Conversation() {
                 >
                   <FileIcon className="h-4 w-4 text-primary" /> Ficheiro
                 </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAttach(false);
+                    setContractOpen(true);
+                  }}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-accent"
+                >
+                  <FileText className="h-4 w-4 text-primary" /> Criar Contrato
+                </button>
               </div>
             )}
           </div>
@@ -548,6 +596,14 @@ function Conversation() {
             </button>
           )}
         </form>
+      )}
+      {other && (
+        <ContractDialog
+          open={contractOpen}
+          onOpenChange={setContractOpen}
+          conversationId={id}
+          otherUserId={other.id}
+        />
       )}
     </div>
   );

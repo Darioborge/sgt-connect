@@ -3,7 +3,7 @@ import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useProfile } from "@/hooks/useProfile";
-import { Settings, BadgeCheck, Camera, Loader2, Pencil } from "lucide-react";
+import { Settings, BadgeCheck, Camera, Loader2, Sparkles, Plus, Pencil, Wand2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { uploadToBucket } from "@/lib/upload";
@@ -82,7 +82,7 @@ function Perfil() {
     }
   };
 
-  
+  const avgScore = posts && posts.length > 0 ? Math.round(posts.reduce((a, p) => a + p.score, 0) / posts.length) : 0;
 
   return (
     <MobileShell hideTopBar>
@@ -211,20 +211,20 @@ function Perfil() {
         <Stat value={String(profile?.jobs_done ?? 0)} label="Serviços" />
       </div>
 
-      {/* Actions */}
+      {/* Message + Inspiração */}
       <div className="mt-5 flex items-center justify-center gap-3 px-6">
         <Link
           to="/chat"
           className="flex flex-1 items-center justify-center rounded-full py-2.5 text-sm font-semibold text-primary-foreground"
           style={{ background: "var(--gradient-primary)" }}
         >
-          Mensagens
+          Mensagem
         </Link>
         <Link
-          to="/agendamentos"
+          to="/inspiracao"
           className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-primary/40 bg-card py-2.5 text-sm font-semibold text-primary"
         >
-          Meus pedidos
+          <Wand2 className="h-3.5 w-3.5" /> Inspiração
         </Link>
       </div>
 
@@ -245,23 +245,50 @@ function Perfil() {
         ))}
       </div>
 
+      {/* Smart Post Creator quick action */}
+      <div className="mx-4 mt-4">
+        <Link
+          to="/criar-post"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-primary-foreground"
+          style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-elegant)" }}
+        >
+          <Sparkles className="h-4 w-4" /> Criar Post com Núpublico
+        </Link>
+        {posts && posts.length > 0 && (
+          <div className="mt-2 text-center text-[11px] text-muted-foreground">
+            Score médio dos teus posts: <span className="font-semibold text-primary">{avgScore}%</span>
+          </div>
+        )}
+      </div>
+
       {/* Grid */}
       <div className="mx-4 mt-4 pb-6">
         {posts === null ? (
           <div className="flex items-center justify-center py-10">
             <Loader2 className="h-5 w-5 animate-spin text-primary" />
           </div>
-        ) : tab !== "photos" || posts.length === 0 ? (
+        ) : tab !== "photos" ? (
           <div className="rounded-2xl border border-dashed border-border py-10 text-center text-xs text-muted-foreground">
             Nada por aqui ainda.
           </div>
+        ) : posts.length === 0 ? (
+          <Link
+            to="/criar-post"
+            className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-10 text-xs text-muted-foreground"
+          >
+            <Plus className="mb-2 h-5 w-5 text-primary" />
+            Cria o teu primeiro post
+          </Link>
         ) : (
           <div className="grid grid-cols-3 gap-1.5">
             {posts.map((p) => (
               <div key={p.id} className="group relative aspect-square overflow-hidden rounded-xl bg-secondary">
                 {p.generated_image_url && (
-                  <img src={p.generated_image_url} alt={p.title ?? "Post"} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  <img src={p.generated_image_url} alt={p.title ?? "Post"} className="h-full w-full object-cover" />
                 )}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1 text-[10px] font-bold text-white">
+                  {p.score}%
+                </div>
               </div>
             ))}
           </div>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, MapPin, Search, ClipboardList, User } from "lucide-react";
+import { Home, MapPin, MessageCircle, User, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -11,13 +11,13 @@ interface MobileShellProps {
 
 const navItems = [
   { to: "/", label: "Início", icon: Home },
-  { to: "/explorar", label: "Explorar", icon: Search },
   { to: "/mapa", label: "Mapa", icon: MapPin },
-  { to: "/agendamentos", label: "Pedidos", icon: ClipboardList },
+  { to: "/publicar", label: "Publicar", icon: Plus, isFab: true },
+  { to: "/chat", label: "Mensagens", icon: MessageCircle },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
-export function MobileShell({ children }: MobileShellProps) {
+export function MobileShell({ children, hideTopBar, topTitle = "Discover" }: MobileShellProps) {
   const location = useLocation();
 
   return (
@@ -29,6 +29,19 @@ export function MobileShell({ children }: MobileShellProps) {
           {navItems.map((item) => {
             const active = location.pathname === item.to;
             const Icon = item.icon;
+            
+            if ("isFab" in item && item.isFab) {
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="flex -translate-y-6 items-center justify-center rounded-full bg-primary p-4 text-white shadow-lg shadow-primary/30 transition hover:scale-105"
+                >
+                  <Icon className="h-6 w-6" strokeWidth={2.5} />
+                </Link>
+              );
+            }
+
             return (
               <Link
                 key={item.to}
