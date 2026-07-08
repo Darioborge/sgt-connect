@@ -274,20 +274,6 @@ function Conversation() {
     recorderRef.current = null;
   };
 
-  const startCall = async (kind: "audio" | "video") => {
-    if (!user || !other) return;
-    const { data, error } = await supabase
-      .from("calls")
-      .insert({ conversation_id: id, caller_id: user.id, callee_id: other.id, kind, status: "ringing" })
-      .select("id")
-      .single();
-    if (error || !data) return toast.error("Não foi possível iniciar a chamada");
-    navigate({
-      to: "/chamada/$id",
-      params: { id: data.id },
-      search: { role: "caller", kind, other: other.id },
-    });
-  };
 
   const toggleReaction = async (messageId: string, emoji: string) => {
     if (!user) return;
@@ -326,20 +312,6 @@ function Conversation() {
                 </div>
               </div>
             </button>
-            <button
-              onClick={() => startCall("audio")}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
-              aria-label="Chamada de voz"
-            >
-              <Phone className="h-4 w-4 text-primary" />
-            </button>
-            <button
-              onClick={() => startCall("video")}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
-              aria-label="Videochamada"
-            >
-              <Video className="h-4 w-4 text-primary" />
-            </button>
           </>
         )}
       </header>
@@ -355,11 +327,7 @@ function Conversation() {
           messages.map((m) => {
             const mine = m.sender_id === user?.id;
             if (m.contract_id) {
-              return (
-                <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
-                  <ContractCard contractId={m.contract_id} compact />
-                </div>
-              );
+              return null;
             }
             const msgRx = reactions.filter((r) => r.message_id === m.id);
             const grouped = msgRx.reduce<Record<string, number>>((acc, r) => {
