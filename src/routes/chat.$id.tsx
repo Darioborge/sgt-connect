@@ -56,7 +56,6 @@ function Conversation() {
   const [showQuick, setShowQuick] = useState(false);
   const [quickReplies, setQuickReplies] = useState<string[]>(DEFAULT_QUICK_REPLIES);
   const [showAttach, setShowAttach] = useState(false);
-  const [showAttach, setShowAttach] = useState(false);
   const [otherTyping, setOtherTyping] = useState(false);
   const [reactingFor, setReactingFor] = useState<string | null>(null);
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
@@ -501,16 +500,6 @@ function Conversation() {
                 >
                   <FileIcon className="h-4 w-4 text-primary" /> Ficheiro
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowAttach(false);
-                    setContractOpen(true);
-                  }}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-accent"
-                >
-                  <FileText className="h-4 w-4 text-primary" /> Criar Contrato
-                </button>
               </div>
             )}
           </div>
@@ -559,14 +548,6 @@ function Conversation() {
             </button>
           )}
         </form>
-      )}
-      {other && (
-        <ContractDialog
-          open={contractOpen}
-          onOpenChange={setContractOpen}
-          conversationId={id}
-          otherUserId={other.id}
-        />
       )}
     </div>
   );
