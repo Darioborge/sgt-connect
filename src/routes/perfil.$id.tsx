@@ -64,10 +64,6 @@ function PublicProfile() {
     navigate({ to: "/chat/$id", params: { id: data as string } });
   };
 
-  const call = () => {
-    if (!profile?.phone) return toast.error("Este utilizador não tem número público.");
-    window.location.href = `tel:${profile.phone}`;
-  };
 
   if (loading) {
     return (
