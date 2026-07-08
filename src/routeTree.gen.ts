@@ -9,15 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as MapaRouteImport } from './routes/mapa'
-import { Route as InspiracaoRouteImport } from './routes/inspiracao'
-import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
-import { Route as EmergenciaRouteImport } from './routes/emergencia'
-import { Route as CriarPostRouteImport } from './routes/criar-post'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AgendamentosRouteImport } from './routes/agendamentos'
@@ -26,13 +21,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatIndexRouteImport } from './routes/chat.index'
 import { Route as PerfilIdRouteImport } from './routes/perfil.$id'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
-import { Route as ChamadaIdRouteImport } from './routes/chamada.$id'
 
-const PublicarRoute = PublicarRouteImport.update({
-  id: '/publicar',
-  path: '/publicar',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PlanosRoute = PlanosRouteImport.update({
   id: '/planos',
   path: '/planos',
@@ -48,29 +37,9 @@ const MapaRoute = MapaRouteImport.update({
   path: '/mapa',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InspiracaoRoute = InspiracaoRouteImport.update({
-  id: '/inspiracao',
-  path: '/inspiracao',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaturasRoute = FaturasRouteImport.update({
-  id: '/faturas',
-  path: '/faturas',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ExplorarRoute = ExplorarRouteImport.update({
   id: '/explorar',
   path: '/explorar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmergenciaRoute = EmergenciaRouteImport.update({
-  id: '/emergencia',
-  path: '/emergencia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CriarPostRoute = CriarPostRouteImport.update({
-  id: '/criar-post',
-  path: '/criar-post',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
@@ -113,11 +82,6 @@ const ChatIdRoute = ChatIdRouteImport.update({
   path: '/chat/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChamadaIdRoute = ChamadaIdRouteImport.update({
-  id: '/chamada/$id',
-  path: '/chamada/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -125,16 +89,10 @@ export interface FileRoutesByFullPath {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
-  '/criar-post': typeof CriarPostRoute
-  '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
-  '/faturas': typeof FaturasRoute
-  '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
-  '/publicar': typeof PublicarRoute
-  '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
@@ -145,16 +103,10 @@ export interface FileRoutesByTo {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
-  '/criar-post': typeof CriarPostRoute
-  '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
-  '/faturas': typeof FaturasRoute
-  '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
-  '/publicar': typeof PublicarRoute
-  '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat': typeof ChatIndexRoute
@@ -166,16 +118,10 @@ export interface FileRoutesById {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
-  '/criar-post': typeof CriarPostRoute
-  '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
-  '/faturas': typeof FaturasRoute
-  '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
-  '/publicar': typeof PublicarRoute
-  '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
@@ -188,16 +134,10 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
-    | '/criar-post'
-    | '/emergencia'
     | '/explorar'
-    | '/faturas'
-    | '/inspiracao'
     | '/mapa'
     | '/perfil'
     | '/planos'
-    | '/publicar'
-    | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat/'
@@ -208,16 +148,10 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
-    | '/criar-post'
-    | '/emergencia'
     | '/explorar'
-    | '/faturas'
-    | '/inspiracao'
     | '/mapa'
     | '/perfil'
     | '/planos'
-    | '/publicar'
-    | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat'
@@ -228,16 +162,10 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
-    | '/criar-post'
-    | '/emergencia'
     | '/explorar'
-    | '/faturas'
-    | '/inspiracao'
     | '/mapa'
     | '/perfil'
     | '/planos'
-    | '/publicar'
-    | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat/'
@@ -249,29 +177,16 @@ export interface RootRouteChildren {
   AgendamentosRoute: typeof AgendamentosRoute
   AuthRoute: typeof AuthRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
-  CriarPostRoute: typeof CriarPostRoute
-  EmergenciaRoute: typeof EmergenciaRoute
   ExplorarRoute: typeof ExplorarRoute
-  FaturasRoute: typeof FaturasRoute
-  InspiracaoRoute: typeof InspiracaoRoute
   MapaRoute: typeof MapaRoute
   PerfilRoute: typeof PerfilRouteWithChildren
   PlanosRoute: typeof PlanosRoute
-  PublicarRoute: typeof PublicarRoute
-  ChamadaIdRoute: typeof ChamadaIdRoute
   ChatIdRoute: typeof ChatIdRoute
   ChatIndexRoute: typeof ChatIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/publicar': {
-      id: '/publicar'
-      path: '/publicar'
-      fullPath: '/publicar'
-      preLoaderRoute: typeof PublicarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/planos': {
       id: '/planos'
       path: '/planos'
@@ -293,39 +208,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/inspiracao': {
-      id: '/inspiracao'
-      path: '/inspiracao'
-      fullPath: '/inspiracao'
-      preLoaderRoute: typeof InspiracaoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faturas': {
-      id: '/faturas'
-      path: '/faturas'
-      fullPath: '/faturas'
-      preLoaderRoute: typeof FaturasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/explorar': {
       id: '/explorar'
       path: '/explorar'
       fullPath: '/explorar'
       preLoaderRoute: typeof ExplorarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/emergencia': {
-      id: '/emergencia'
-      path: '/emergencia'
-      fullPath: '/emergencia'
-      preLoaderRoute: typeof EmergenciaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/criar-post': {
-      id: '/criar-post'
-      path: '/criar-post'
-      fullPath: '/criar-post'
-      preLoaderRoute: typeof CriarPostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configuracoes': {
@@ -384,13 +271,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chamada/$id': {
-      id: '/chamada/$id'
-      path: '/chamada/$id'
-      fullPath: '/chamada/$id'
-      preLoaderRoute: typeof ChamadaIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -411,28 +291,13 @@ const rootRouteChildren: RootRouteChildren = {
   AgendamentosRoute: AgendamentosRoute,
   AuthRoute: AuthRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
-  CriarPostRoute: CriarPostRoute,
-  EmergenciaRoute: EmergenciaRoute,
   ExplorarRoute: ExplorarRoute,
-  FaturasRoute: FaturasRoute,
-  InspiracaoRoute: InspiracaoRoute,
   MapaRoute: MapaRoute,
   PerfilRoute: PerfilRouteWithChildren,
   PlanosRoute: PlanosRoute,
-  PublicarRoute: PublicarRoute,
-  ChamadaIdRoute: ChamadaIdRoute,
   ChatIdRoute: ChatIdRoute,
   ChatIndexRoute: ChatIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

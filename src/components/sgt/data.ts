@@ -97,14 +97,16 @@ export const providers: Provider[] = [
 ];
 
 export const categories = [
-  { id: "c1", label: "Eletricista", emoji: "⚡" },
-  { id: "c2", label: "Limpeza", emoji: "🧹" },
-  { id: "c3", label: "Canalização", emoji: "🔧" },
-  { id: "c4", label: "Beleza", emoji: "💇🏽‍♀️" },
-  { id: "c5", label: "Mudanças", emoji: "📦" },
-  { id: "c6", label: "Costura", emoji: "🧵" },
-  { id: "c7", label: "Pintor", emoji: "🎨" },
-  { id: "c8", label: "Jardim", emoji: "🌿" },
+  { id: "c1", label: "Canalizador", emoji: "🔧" },
+  { id: "c2", label: "Eletricista", emoji: "⚡" },
+  { id: "c3", label: "Pintor", emoji: "🎨" },
+  { id: "c4", label: "Pedreiro", emoji: "🧱" },
+  { id: "c5", label: "Jardineiro", emoji: "🌿" },
+  { id: "c6", label: "Babá", emoji: "👶" },
+  { id: "c7", label: "Empregada doméstica", emoji: "🧹" },
+  { id: "c8", label: "Motorista", emoji: "🚗" },
+  { id: "c9", label: "Técnico de informática", emoji: "💻" },
+  { id: "c10", label: "Técnico de ar condicionado", emoji: "❄️" },
 ];
 
 export const feed: FeedPost[] = [

@@ -6,7 +6,7 @@ import { useAuth } from "@/components/sgt/AuthProvider";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapPin, Loader2, BadgeCheck, MessageCircle, User, Sparkles, Filter, Crosshair } from "lucide-react";
+import { MapPin, Loader2, BadgeCheck, MessageCircle, User, Filter, Crosshair } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -346,17 +346,6 @@ function MapaPage() {
                 className="flex items-center justify-center gap-1 rounded-lg border border-border py-2 text-xs font-semibold"
               >
                 <User className="h-3.5 w-3.5" /> Perfil
-              </button>
-              <button
-                onClick={() =>
-                  navigate({
-                    to: "/criar-post",
-                    search: { hint: `Serviço de ${selected.category ?? selected.full_name}` },
-                  })
-                }
-                className="flex items-center justify-center gap-1 rounded-lg border border-border py-2 text-xs font-semibold"
-              >
-                <Sparkles className="h-3.5 w-3.5" /> Post
               </button>
             </div>
           </div>

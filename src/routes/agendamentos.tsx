@@ -4,7 +4,7 @@ import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar, Clock, MapPin, Loader2, CheckCircle2, X, Play, MessageCircle, FileText } from "lucide-react";
+import { Calendar, Clock, MapPin, Loader2, CheckCircle2, X, Play, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { setBookingStatus, concludeBooking } from "@/lib/booking";
@@ -193,14 +193,6 @@ function Bookings() {
                     >
                       <X className="h-3 w-3" /> Cancelar
                     </button>
-                  )}
-                  {b.status === "concluido" && (
-                    <Link
-                      to="/faturas"
-                      className="flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] hover:bg-accent"
-                    >
-                      <FileText className="h-3 w-3" /> Ver fatura
-                    </Link>
                   )}
                 </div>
               </li>
