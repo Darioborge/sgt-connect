@@ -148,7 +148,7 @@ function PublicProfile() {
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-3 gap-2 px-4">
+      <div className="mt-5 grid grid-cols-2 gap-2 px-4">
         <button
           onClick={message}
           className="flex items-center justify-center gap-1 rounded-full py-2.5 text-xs font-semibold text-primary-foreground"
@@ -156,19 +156,21 @@ function PublicProfile() {
         >
           <MessageCircle className="h-3.5 w-3.5" /> Mensagem
         </button>
-        <button
-          onClick={call}
-          className="flex items-center justify-center gap-1 rounded-full border border-primary/40 bg-card py-2.5 text-xs font-semibold text-primary"
-        >
-          <Phone className="h-3.5 w-3.5" /> Ligar
-        </button>
-        <Link
-          to="/criar-post"
-          search={{ hint: `Serviço de ${profile.category ?? profile.full_name}` } as never}
-          className="flex items-center justify-center gap-1 rounded-full border border-border bg-card py-2.5 text-xs font-semibold"
-        >
-          <Sparkles className="h-3.5 w-3.5" /> Post
-        </Link>
+        {profile.phone ? (
+          <a
+            href={`tel:${profile.phone}`}
+            className="flex items-center justify-center gap-1 rounded-full border border-primary/40 bg-card py-2.5 text-xs font-semibold text-primary"
+          >
+            <Phone className="h-3.5 w-3.5" /> Ligar
+          </a>
+        ) : (
+          <button
+            disabled
+            className="flex items-center justify-center gap-1 rounded-full border border-border bg-card py-2.5 text-xs font-semibold text-muted-foreground"
+          >
+            <Phone className="h-3.5 w-3.5" /> Sem telefone
+          </button>
+        )}
       </div>
 
       <div className="mx-4 mt-6 pb-8">

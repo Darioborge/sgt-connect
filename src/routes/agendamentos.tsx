@@ -194,14 +194,6 @@ function Bookings() {
                       <X className="h-3 w-3" /> Cancelar
                     </button>
                   )}
-                  {b.status === "concluido" && (
-                    <Link
-                      to="/faturas"
-                      className="flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] hover:bg-accent"
-                    >
-                      <FileText className="h-3 w-3" /> Ver fatura
-                    </Link>
-                  )}
                 </div>
               </li>
             );
