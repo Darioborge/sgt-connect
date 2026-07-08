@@ -82,7 +82,7 @@ function Perfil() {
     }
   };
 
-  const avgScore = posts && posts.length > 0 ? Math.round(posts.reduce((a, p) => a + p.score, 0) / posts.length) : 0;
+  
 
   return (
     <MobileShell hideTopBar>
