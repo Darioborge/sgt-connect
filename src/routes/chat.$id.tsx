@@ -10,10 +10,7 @@ import {
   Send,
   Loader2,
   Zap,
-  Phone,
-  Video,
   Mic,
-  FileText,
   Paperclip,
   Square,
   File as FileIcon,
@@ -22,8 +19,6 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
-import { ContractDialog } from "@/components/sgt/ContractDialog";
-import { ContractCard } from "@/components/sgt/ContractCard";
 
 const DEFAULT_QUICK_REPLIES = [
   "Estou a caminho 🚗",
@@ -60,7 +55,7 @@ function Conversation() {
   const scroller = useRef<HTMLDivElement>(null);
   const [showQuick, setShowQuick] = useState(false);
   const [quickReplies, setQuickReplies] = useState<string[]>(DEFAULT_QUICK_REPLIES);
-  const [contractOpen, setContractOpen] = useState(false);
+  const [showAttach, setShowAttach] = useState(false);
   const [showAttach, setShowAttach] = useState(false);
   const [otherTyping, setOtherTyping] = useState(false);
   const [reactingFor, setReactingFor] = useState<string | null>(null);
