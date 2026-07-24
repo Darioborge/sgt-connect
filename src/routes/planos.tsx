@@ -21,7 +21,7 @@ import {
   Sparkles,
   Rocket,
   Package,
-  Zap,
+  
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
