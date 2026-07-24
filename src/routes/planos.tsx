@@ -186,10 +186,8 @@ function Planos() {
           <TabBtn active={tab === "assinatura"} onClick={() => setTab("assinatura")} icon={<Crown className="h-4 w-4" />}>
             Assinatura
           </TabBtn>
-          <TabBtn active={tab === "creditos"} onClick={() => setTab("creditos")} icon={<Zap className="h-4 w-4" />}>
-            Créditos
-          </TabBtn>
           <TabBtn active={tab === "promover"} onClick={() => setTab("promover")} icon={<Rocket className="h-4 w-4" />}>
+
             Promover
           </TabBtn>
         </div>
