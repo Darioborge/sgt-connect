@@ -13,11 +13,9 @@ import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as MapaRouteImport } from './routes/mapa'
-import { Route as InspiracaoRouteImport } from './routes/inspiracao'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
 import { Route as EmergenciaRouteImport } from './routes/emergencia'
-import { Route as CriarPostRouteImport } from './routes/criar-post'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AgendamentosRouteImport } from './routes/agendamentos'
@@ -48,11 +46,6 @@ const MapaRoute = MapaRouteImport.update({
   path: '/mapa',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InspiracaoRoute = InspiracaoRouteImport.update({
-  id: '/inspiracao',
-  path: '/inspiracao',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FaturasRoute = FaturasRouteImport.update({
   id: '/faturas',
   path: '/faturas',
@@ -66,11 +59,6 @@ const ExplorarRoute = ExplorarRouteImport.update({
 const EmergenciaRoute = EmergenciaRouteImport.update({
   id: '/emergencia',
   path: '/emergencia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CriarPostRoute = CriarPostRouteImport.update({
-  id: '/criar-post',
-  path: '/criar-post',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
@@ -125,11 +113,9 @@ export interface FileRoutesByFullPath {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
-  '/criar-post': typeof CriarPostRoute
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
-  '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
@@ -145,11 +131,9 @@ export interface FileRoutesByTo {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
-  '/criar-post': typeof CriarPostRoute
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
-  '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
@@ -166,11 +150,9 @@ export interface FileRoutesById {
   '/agendamentos': typeof AgendamentosRoute
   '/auth': typeof AuthRoute
   '/configuracoes': typeof ConfiguracoesRoute
-  '/criar-post': typeof CriarPostRoute
   '/emergencia': typeof EmergenciaRoute
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
-  '/inspiracao': typeof InspiracaoRoute
   '/mapa': typeof MapaRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
@@ -188,11 +170,9 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
-    | '/criar-post'
     | '/emergencia'
     | '/explorar'
     | '/faturas'
-    | '/inspiracao'
     | '/mapa'
     | '/perfil'
     | '/planos'
@@ -208,11 +188,9 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
-    | '/criar-post'
     | '/emergencia'
     | '/explorar'
     | '/faturas'
-    | '/inspiracao'
     | '/mapa'
     | '/perfil'
     | '/planos'
@@ -228,11 +206,9 @@ export interface FileRouteTypes {
     | '/agendamentos'
     | '/auth'
     | '/configuracoes'
-    | '/criar-post'
     | '/emergencia'
     | '/explorar'
     | '/faturas'
-    | '/inspiracao'
     | '/mapa'
     | '/perfil'
     | '/planos'
@@ -249,11 +225,9 @@ export interface RootRouteChildren {
   AgendamentosRoute: typeof AgendamentosRoute
   AuthRoute: typeof AuthRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
-  CriarPostRoute: typeof CriarPostRoute
   EmergenciaRoute: typeof EmergenciaRoute
   ExplorarRoute: typeof ExplorarRoute
   FaturasRoute: typeof FaturasRoute
-  InspiracaoRoute: typeof InspiracaoRoute
   MapaRoute: typeof MapaRoute
   PerfilRoute: typeof PerfilRouteWithChildren
   PlanosRoute: typeof PlanosRoute
@@ -293,13 +267,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/inspiracao': {
-      id: '/inspiracao'
-      path: '/inspiracao'
-      fullPath: '/inspiracao'
-      preLoaderRoute: typeof InspiracaoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/faturas': {
       id: '/faturas'
       path: '/faturas'
@@ -319,13 +286,6 @@ declare module '@tanstack/react-router' {
       path: '/emergencia'
       fullPath: '/emergencia'
       preLoaderRoute: typeof EmergenciaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/criar-post': {
-      id: '/criar-post'
-      path: '/criar-post'
-      fullPath: '/criar-post'
-      preLoaderRoute: typeof CriarPostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configuracoes': {
@@ -411,11 +371,9 @@ const rootRouteChildren: RootRouteChildren = {
   AgendamentosRoute: AgendamentosRoute,
   AuthRoute: AuthRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
-  CriarPostRoute: CriarPostRoute,
   EmergenciaRoute: EmergenciaRoute,
   ExplorarRoute: ExplorarRoute,
   FaturasRoute: FaturasRoute,
-  InspiracaoRoute: InspiracaoRoute,
   MapaRoute: MapaRoute,
   PerfilRoute: PerfilRouteWithChildren,
   PlanosRoute: PlanosRoute,
