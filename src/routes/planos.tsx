@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   PREMIUM_PLANS,
   PREMIUM_BENEFITS,
-  CREDIT_PACKS,
+  
   TEMPLATE_PACKS,
   BOOST_OPTIONS,
   fmtKz,
