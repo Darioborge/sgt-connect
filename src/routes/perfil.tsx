@@ -211,22 +211,17 @@ function Perfil() {
         <Stat value={String(profile?.jobs_done ?? 0)} label="Serviços" />
       </div>
 
-      {/* Message + Inspiração */}
-      <div className="mt-5 flex items-center justify-center gap-3 px-6">
+      {/* Message */}
+      <div className="mt-5 flex items-center justify-center px-6">
         <Link
           to="/chat"
-          className="flex flex-1 items-center justify-center rounded-full py-2.5 text-sm font-semibold text-primary-foreground"
+          className="flex w-full items-center justify-center rounded-full py-2.5 text-sm font-semibold text-primary-foreground"
           style={{ background: "var(--gradient-primary)" }}
         >
           Mensagem
         </Link>
-        <Link
-          to="/inspiracao"
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-primary/40 bg-card py-2.5 text-sm font-semibold text-primary"
-        >
-          <Wand2 className="h-3.5 w-3.5" /> Inspiração
-        </Link>
       </div>
+
 
       {/* Tabs */}
       <div className="mt-6 grid grid-cols-3 border-b border-border/40 px-4">
