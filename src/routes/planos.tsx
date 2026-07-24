@@ -85,16 +85,6 @@ function Planos() {
     });
   };
 
-  const buyCredits = (packId: string) => {
-    const pack = CREDIT_PACKS.find((p) => p.id === packId)!;
-    setCheckout({
-      kind: "creditos_ia",
-      amountKz: pack.priceKz,
-      title: pack.label,
-      subtitle: `${pack.credits} gerações de IA para criar posts`,
-      metadata: { credits: pack.credits },
-    });
-  };
 
   const buyTemplatePack = (packId: string) => {
     const pack = TEMPLATE_PACKS.find((p) => p.id === packId)!;
