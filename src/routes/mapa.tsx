@@ -347,17 +347,6 @@ function MapaPage() {
               >
                 <User className="h-3.5 w-3.5" /> Perfil
               </button>
-              <button
-                onClick={() =>
-                  navigate({
-                    to: "/criar-post",
-                    search: { hint: `Serviço de ${selected.category ?? selected.full_name}` },
-                  })
-                }
-                className="flex items-center justify-center gap-1 rounded-lg border border-border py-2 text-xs font-semibold"
-              >
-                <Sparkles className="h-3.5 w-3.5" /> Post
-              </button>
             </div>
           </div>
         )}
