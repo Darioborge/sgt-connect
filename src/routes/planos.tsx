@@ -263,31 +263,6 @@ function Planos() {
           </>
         )}
 
-        {tab === "creditos" && (
-          <>
-            <p className="text-xs text-muted-foreground">
-              Cada geração de post com IA consome 1 crédito. Compra packs para gerar mais.
-            </p>
-            {CREDIT_PACKS.map((pack) => (
-              <div key={pack.id} className="rounded-2xl border border-border bg-card p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-semibold">{pack.label}</p>
-                    <p className="text-xs text-muted-foreground">{pack.credits} gerações de IA</p>
-                  </div>
-                  <p className="text-base font-bold">{fmtKz(pack.priceKz)}</p>
-                </div>
-                <button
-                  onClick={() => buyCredits(pack.id)}
-                  className="mt-3 w-full rounded-xl py-2.5 text-sm font-semibold text-primary-foreground"
-                  style={{ background: "var(--gradient-primary)" }}
-                >
-                  Comprar
-                </button>
-              </div>
-            ))}
-          </>
-        )}
 
         {tab === "promover" && (
           <>
