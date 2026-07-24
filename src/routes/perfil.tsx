@@ -240,21 +240,11 @@ function Perfil() {
         ))}
       </div>
 
-      {/* Smart Post Creator quick action */}
-      <div className="mx-4 mt-4">
-        <Link
-          to="/criar-post"
-          className="flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-primary-foreground"
-          style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-elegant)" }}
-        >
-          <Sparkles className="h-4 w-4" /> Criar Post com Núpublico
-        </Link>
-        {posts && posts.length > 0 && (
-          <div className="mt-2 text-center text-[11px] text-muted-foreground">
-            Score médio dos teus posts: <span className="font-semibold text-primary">{avgScore}%</span>
-          </div>
-        )}
-      </div>
+      {posts && posts.length > 0 && (
+        <div className="mx-4 mt-4 text-center text-[11px] text-muted-foreground">
+          Score médio dos teus posts: <span className="font-semibold text-primary">{avgScore}%</span>
+        </div>
+      )}
 
       {/* Grid */}
       <div className="mx-4 mt-4 pb-6">
@@ -267,13 +257,9 @@ function Perfil() {
             Nada por aqui ainda.
           </div>
         ) : posts.length === 0 ? (
-          <Link
-            to="/criar-post"
-            className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-10 text-xs text-muted-foreground"
-          >
-            <Plus className="mb-2 h-5 w-5 text-primary" />
-            Cria o teu primeiro post
-          </Link>
+          <div className="rounded-2xl border border-dashed border-border py-10 text-center text-xs text-muted-foreground">
+            Nada por aqui ainda.
+          </div>
         ) : (
           <div className="grid grid-cols-3 gap-1.5">
             {posts.map((p) => (
