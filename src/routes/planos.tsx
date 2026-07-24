@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   PREMIUM_PLANS,
   PREMIUM_BENEFITS,
-  CREDIT_PACKS,
+  
   TEMPLATE_PACKS,
   BOOST_OPTIONS,
   fmtKz,
@@ -21,7 +21,7 @@ import {
   Sparkles,
   Rocket,
   Package,
-  Zap,
+  
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/planos")({
   head: () => ({ meta: [{ title: "Planos & Créditos — Núpublico" }] }),
 });
 
-type Tab = "assinatura" | "creditos" | "promover";
+type Tab = "assinatura" | "promover";
 
 function Planos() {
   const navigate = useNavigate();
@@ -85,16 +85,6 @@ function Planos() {
     });
   };
 
-  const buyCredits = (packId: string) => {
-    const pack = CREDIT_PACKS.find((p) => p.id === packId)!;
-    setCheckout({
-      kind: "creditos_ia",
-      amountKz: pack.priceKz,
-      title: pack.label,
-      subtitle: `${pack.credits} gerações de IA para criar posts`,
-      metadata: { credits: pack.credits },
-    });
-  };
 
   const buyTemplatePack = (packId: string) => {
     const pack = TEMPLATE_PACKS.find((p) => p.id === packId)!;
@@ -186,10 +176,8 @@ function Planos() {
           <TabBtn active={tab === "assinatura"} onClick={() => setTab("assinatura")} icon={<Crown className="h-4 w-4" />}>
             Assinatura
           </TabBtn>
-          <TabBtn active={tab === "creditos"} onClick={() => setTab("creditos")} icon={<Zap className="h-4 w-4" />}>
-            Créditos
-          </TabBtn>
           <TabBtn active={tab === "promover"} onClick={() => setTab("promover")} icon={<Rocket className="h-4 w-4" />}>
+
             Promover
           </TabBtn>
         </div>
@@ -265,31 +253,6 @@ function Planos() {
           </>
         )}
 
-        {tab === "creditos" && (
-          <>
-            <p className="text-xs text-muted-foreground">
-              Cada geração de post com IA consome 1 crédito. Compra packs para gerar mais.
-            </p>
-            {CREDIT_PACKS.map((pack) => (
-              <div key={pack.id} className="rounded-2xl border border-border bg-card p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-semibold">{pack.label}</p>
-                    <p className="text-xs text-muted-foreground">{pack.credits} gerações de IA</p>
-                  </div>
-                  <p className="text-base font-bold">{fmtKz(pack.priceKz)}</p>
-                </div>
-                <button
-                  onClick={() => buyCredits(pack.id)}
-                  className="mt-3 w-full rounded-xl py-2.5 text-sm font-semibold text-primary-foreground"
-                  style={{ background: "var(--gradient-primary)" }}
-                >
-                  Comprar
-                </button>
-              </div>
-            ))}
-          </>
-        )}
 
         {tab === "promover" && (
           <>
