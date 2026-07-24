@@ -35,7 +35,7 @@ export const Route = createFileRoute("/planos")({
   head: () => ({ meta: [{ title: "Planos & Créditos — Núpublico" }] }),
 });
 
-type Tab = "assinatura" | "creditos" | "promover";
+type Tab = "assinatura" | "promover";
 
 function Planos() {
   const navigate = useNavigate();
