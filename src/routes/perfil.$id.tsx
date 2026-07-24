@@ -162,13 +162,6 @@ function PublicProfile() {
         >
           <Phone className="h-3.5 w-3.5" /> Ligar
         </button>
-        <Link
-          to="/criar-post"
-          search={{ hint: `Serviço de ${profile.category ?? profile.full_name}` } as never}
-          className="flex items-center justify-center gap-1 rounded-full border border-border bg-card py-2.5 text-xs font-semibold"
-        >
-          <Sparkles className="h-3.5 w-3.5" /> Post
-        </Link>
       </div>
 
       <div className="mx-4 mt-6 pb-8">
