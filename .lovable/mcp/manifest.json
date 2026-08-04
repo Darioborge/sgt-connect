@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://dovrpzalrjcdzspwfrrr.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "nupublico",
+      "version": "0.1.0",
+      "title": "Nupublico"
+    },
+    "tools": [
+      {
+        "name": "get_profile",
+        "title": "Ver o meu perfil",
+        "description": "Devolve o perfil do utilizador autenticado no Núpublico (nome, categoria, cidade, preço, avaliação).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "update_profile",
+        "title": "Atualizar perfil",
+        "description": "Atualiza campos do perfil do utilizador autenticado (nome, bio, categoria, cidade, telefone, preço, disponibilidade).",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "full_name": {
+              "description": "Nome completo",
+              "type": "string"
+            },
+            "bio": {
+              "description": "Descrição do perfil",
+              "type": "string"
+            },
+            "category": {
+              "description": "Categoria de serviço",
+              "type": "string"
+            },
+            "city": {
+              "description": "Cidade",
+              "type": "string"
+            },
+            "phone": {
+              "description": "Telefone de contacto",
+              "type": "string"
+            },
+            "price_from_kz": {
+              "description": "Preço a partir de, em Kwanzas",
+              "type": "number"
+            },
+            "available": {
+              "description": "Disponibilidade ativa",
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_posts",
+        "title": "Listar publicações",
+        "description": "Lista as publicações do utilizador autenticado no Núpublico.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Número máximo de publicações (padrão 20)",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_post",
+        "title": "Criar publicação",
+        "description": "Cria uma nova publicação no feed do Núpublico com uma imagem (URL) e uma legenda.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "image_url": {
+              "type": "string",
+              "description": "URL da imagem da publicação"
+            },
+            "caption": {
+              "description": "Legenda da publicação",
+              "type": "string"
+            }
+          },
+          "required": [
+            "image_url"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_bookings",
+        "title": "Listar agendamentos",
+        "description": "Lista os agendamentos do utilizador autenticado (como prestador ou como cliente), opcionalmente filtrados por estado.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "status": {
+              "description": "Filtrar por estado do agendamento, por exemplo pendente ou concluido",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Número máximo de resultados (padrão 20)",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_invoices",
+        "title": "Listar faturas",
+        "description": "Lista as faturas emitidas pelo utilizador autenticado no módulo de Faturação, opcionalmente filtradas por estado.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "status": {
+              "description": "Filtrar por estado da fatura, por exemplo pendente ou paga",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Número máximo de faturas (padrão 20)",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_clients",
+        "title": "Listar clientes",
+        "description": "Lista os clientes de faturação do utilizador autenticado no Núpublico.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "search": {
+              "description": "Filtrar por nome do cliente",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Número máximo de clientes (padrão 20)",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

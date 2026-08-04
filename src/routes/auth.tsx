@@ -8,12 +8,22 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
+  validateSearch: (s: Record<string, unknown>): { next?: string } =>
+    typeof s.next === "string" ? { next: s.next } : {},
+
   head: () => ({ meta: [{ title: "Entrar — Núpublico" }] }),
 });
+
+// Only same-origin relative paths are accepted as a post-login destination.
+function safeNext(next?: string) {
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : undefined;
+}
 
 function AuthPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const nextPath = safeNext(next);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,6 +32,10 @@ function AuthPage() {
 
   useEffect(() => {
     if (!loading && user) {
+      if (nextPath) {
+        window.location.href = nextPath;
+        return;
+      }
       // Check admin role and redirect accordingly
       (async () => {
         const { data } = await supabase
@@ -33,7 +47,8 @@ function AuthPage() {
         navigate({ to: data ? "/admin" : "/" });
       })();
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, nextPath]);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +59,7 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
+            emailRedirectTo: `${window.location.origin}${nextPath ?? "/"}`,
             data: { full_name: fullName },
           },
         });
@@ -70,7 +85,7 @@ function AuthPage() {
     setBusy(true);
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: `${window.location.origin}/`,
+        redirect_uri: `${window.location.origin}${nextPath ?? "/"}`,
       });
       if (result.error) throw result.error;
     } catch (err) {
