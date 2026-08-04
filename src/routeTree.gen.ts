@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as ExplorarRouteImport } from './routes/explorar'
@@ -25,6 +26,9 @@ import { Route as ChatIndexRouteImport } from './routes/chat.index'
 import { Route as PerfilIdRouteImport } from './routes/perfil.$id'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
 import { Route as ChamadaIdRouteImport } from './routes/chamada.$id'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const PublicarRoute = PublicarRouteImport.update({
   id: '/publicar',
@@ -39,6 +43,11 @@ const PlanosRoute = PlanosRouteImport.update({
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapaRoute = MapaRouteImport.update({
@@ -106,6 +115,24 @@ const ChamadaIdRoute = ChamadaIdRouteImport.update({
   path: '/chamada/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -117,13 +144,17 @@ export interface FileRoutesByFullPath {
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
   '/mapa': typeof MapaRoute
+  '/mcp': typeof McpRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -135,13 +166,17 @@ export interface FileRoutesByTo {
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
   '/mapa': typeof MapaRoute
+  '/mcp': typeof McpRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat': typeof ChatIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -154,13 +189,17 @@ export interface FileRoutesById {
   '/explorar': typeof ExplorarRoute
   '/faturas': typeof FaturasRoute
   '/mapa': typeof MapaRoute
+  '/mcp': typeof McpRoute
   '/perfil': typeof PerfilRouteWithChildren
   '/planos': typeof PlanosRoute
   '/publicar': typeof PublicarRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/chamada/$id': typeof ChamadaIdRoute
   '/chat/$id': typeof ChatIdRoute
   '/perfil/$id': typeof PerfilIdRoute
   '/chat/': typeof ChatIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -174,13 +213,17 @@ export interface FileRouteTypes {
     | '/explorar'
     | '/faturas'
     | '/mapa'
+    | '/mcp'
     | '/perfil'
     | '/planos'
     | '/publicar'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat/'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -192,13 +235,17 @@ export interface FileRouteTypes {
     | '/explorar'
     | '/faturas'
     | '/mapa'
+    | '/mcp'
     | '/perfil'
     | '/planos'
     | '/publicar'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
@@ -210,13 +257,17 @@ export interface FileRouteTypes {
     | '/explorar'
     | '/faturas'
     | '/mapa'
+    | '/mcp'
     | '/perfil'
     | '/planos'
     | '/publicar'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/chamada/$id'
     | '/chat/$id'
     | '/perfil/$id'
     | '/chat/'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -229,12 +280,16 @@ export interface RootRouteChildren {
   ExplorarRoute: typeof ExplorarRoute
   FaturasRoute: typeof FaturasRoute
   MapaRoute: typeof MapaRoute
+  McpRoute: typeof McpRoute
   PerfilRoute: typeof PerfilRouteWithChildren
   PlanosRoute: typeof PlanosRoute
   PublicarRoute: typeof PublicarRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ChamadaIdRoute: typeof ChamadaIdRoute
   ChatIdRoute: typeof ChatIdRoute
   ChatIndexRoute: typeof ChatIndexRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,6 +313,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mapa': {
@@ -351,6 +413,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChamadaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -375,12 +458,17 @@ const rootRouteChildren: RootRouteChildren = {
   ExplorarRoute: ExplorarRoute,
   FaturasRoute: FaturasRoute,
   MapaRoute: MapaRoute,
+  McpRoute: McpRoute,
   PerfilRoute: PerfilRouteWithChildren,
   PlanosRoute: PlanosRoute,
   PublicarRoute: PublicarRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ChamadaIdRoute: ChamadaIdRoute,
   ChatIdRoute: ChatIdRoute,
   ChatIndexRoute: ChatIndexRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
