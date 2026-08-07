@@ -14,6 +14,178 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_credits: {
+        Row: {
+          balance: number
+          id: string
+          total_purchased: number
+          total_used: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          id?: string
+          total_purchased?: number
+          total_used?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          id?: string
+          total_purchased?: number
+          total_used?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      billing_clients: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          tax_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      billing_invoices: {
+        Row: {
+          amount_kz: number
+          client_id: string | null
+          created_at: string
+          description: string
+          discount_kz: number
+          due_at: string | null
+          id: string
+          issued_at: string
+          notes: string | null
+          number: string
+          paid_kz: number
+          status: string
+          tax_kz: number
+          total_kz: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_kz?: number
+          client_id?: string | null
+          created_at?: string
+          description: string
+          discount_kz?: number
+          due_at?: string | null
+          id?: string
+          issued_at?: string
+          notes?: string | null
+          number: string
+          paid_kz?: number
+          status?: string
+          tax_kz?: number
+          total_kz?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          client_id?: string | null
+          created_at?: string
+          description?: string
+          discount_kz?: number
+          due_at?: string | null
+          id?: string
+          issued_at?: string
+          notes?: string | null
+          number?: string
+          paid_kz?: number
+          status?: string
+          tax_kz?: number
+          total_kz?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "billing_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_payments: {
+        Row: {
+          amount_kz: number
+          created_at: string
+          id: string
+          invoice_id: string
+          method: string | null
+          paid_at: string
+          reference: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_kz: number
+          created_at?: string
+          id?: string
+          invoice_id: string
+          method?: string | null
+          paid_at?: string
+          reference?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          method?: string | null
+          paid_at?: string
+          reference?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "billing_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           address: string | null
@@ -67,6 +239,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      calls: {
+        Row: {
+          callee_id: string
+          caller_id: string
+          conversation_id: string
+          created_at: string
+          ended_at: string | null
+          id: string
+          kind: string
+          status: string
+        }
+        Insert: {
+          callee_id: string
+          caller_id: string
+          conversation_id: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          kind?: string
+          status?: string
+        }
+        Update: {
+          callee_id?: string
+          caller_id?: string
+          conversation_id?: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          kind?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       comments: {
         Row: {
@@ -324,29 +537,76 @@ export type Database = {
           },
         ]
       }
+      message_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
+          audio_url: string | null
           content: string | null
+          contract_id: string | null
           conversation_id: string
           created_at: string | null
+          duration_seconds: number | null
+          file_name: string | null
+          file_url: string | null
           id: string
           image_url: string | null
           read_at: string | null
           sender_id: string
         }
         Insert: {
+          audio_url?: string | null
           content?: string | null
+          contract_id?: string | null
           conversation_id: string
           created_at?: string | null
+          duration_seconds?: number | null
+          file_name?: string | null
+          file_url?: string | null
           id?: string
           image_url?: string | null
           read_at?: string | null
           sender_id: string
         }
         Update: {
+          audio_url?: string | null
           content?: string | null
+          contract_id?: string | null
           conversation_id?: string
           created_at?: string | null
+          duration_seconds?: number | null
+          file_name?: string | null
+          file_url?: string | null
           id?: string
           image_url?: string | null
           read_at?: string | null
@@ -354,10 +614,116 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "messages_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "service_contracts"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "messages_conversation_id_fkey"
             columns: ["conversation_id"]
             isOneToOne: false
             referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount_kz: number
+          confirmed_at: string | null
+          confirmed_by: string | null
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["payment_kind"]
+          metadata: Json
+          method: Database["public"]["Enums"]["payment_method"]
+          reference: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_kz: number
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["payment_kind"]
+          metadata?: Json
+          method?: Database["public"]["Enums"]["payment_method"]
+          reference?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["payment_kind"]
+          metadata?: Json
+          method?: Database["public"]["Enums"]["payment_method"]
+          reference?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_boosts: {
+        Row: {
+          active: boolean
+          amount_kz: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          level: Database["public"]["Enums"]["boost_level"]
+          payment_id: string | null
+          smart_post_id: string
+          starts_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          amount_kz: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level: Database["public"]["Enums"]["boost_level"]
+          payment_id?: string | null
+          smart_post_id: string
+          starts_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          amount_kz?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level?: Database["public"]["Enums"]["boost_level"]
+          payment_id?: string | null
+          smart_post_id?: string
+          starts_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_boosts_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_boosts_smart_post_id_fkey"
+            columns: ["smart_post_id"]
+            isOneToOne: false
+            referencedRelation: "smart_posts"
             referencedColumns: ["id"]
           },
         ]
@@ -406,6 +772,10 @@ export type Database = {
           full_name: string | null
           id: string
           jobs_done: number | null
+          latitude: number | null
+          location_enabled: boolean
+          location_updated_at: string | null
+          longitude: number | null
           mode: Database["public"]["Enums"]["user_mode"]
           phone: string | null
           price_from_kz: number | null
@@ -425,6 +795,10 @@ export type Database = {
           full_name?: string | null
           id: string
           jobs_done?: number | null
+          latitude?: number | null
+          location_enabled?: boolean
+          location_updated_at?: string | null
+          longitude?: number | null
           mode?: Database["public"]["Enums"]["user_mode"]
           phone?: string | null
           price_from_kz?: number | null
@@ -444,6 +818,10 @@ export type Database = {
           full_name?: string | null
           id?: string
           jobs_done?: number | null
+          latitude?: number | null
+          location_enabled?: boolean
+          location_updated_at?: string | null
+          longitude?: number | null
           mode?: Database["public"]["Enums"]["user_mode"]
           phone?: string | null
           price_from_kz?: number | null
@@ -480,6 +858,101 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      service_contracts: {
+        Row: {
+          amount_kz: number
+          client_doc: string | null
+          client_id: string
+          client_name: string | null
+          client_phone: string | null
+          completed_at: string | null
+          conditions: string | null
+          conversation_id: string
+          created_at: string
+          deadline: string | null
+          id: string
+          number: string
+          provider_doc: string | null
+          provider_iban: string | null
+          provider_id: string
+          provider_logo_url: string | null
+          provider_mcx: string | null
+          provider_name: string | null
+          provider_phone: string | null
+          rejected_at: string | null
+          service_description: string | null
+          service_title: string
+          signed_client_at: string | null
+          signed_provider_at: string | null
+          status: Database["public"]["Enums"]["contract_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount_kz?: number
+          client_doc?: string | null
+          client_id: string
+          client_name?: string | null
+          client_phone?: string | null
+          completed_at?: string | null
+          conditions?: string | null
+          conversation_id: string
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          number?: string
+          provider_doc?: string | null
+          provider_iban?: string | null
+          provider_id: string
+          provider_logo_url?: string | null
+          provider_mcx?: string | null
+          provider_name?: string | null
+          provider_phone?: string | null
+          rejected_at?: string | null
+          service_description?: string | null
+          service_title: string
+          signed_client_at?: string | null
+          signed_provider_at?: string | null
+          status?: Database["public"]["Enums"]["contract_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount_kz?: number
+          client_doc?: string | null
+          client_id?: string
+          client_name?: string | null
+          client_phone?: string | null
+          completed_at?: string | null
+          conditions?: string | null
+          conversation_id?: string
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          number?: string
+          provider_doc?: string | null
+          provider_iban?: string | null
+          provider_id?: string
+          provider_logo_url?: string | null
+          provider_mcx?: string | null
+          provider_name?: string | null
+          provider_phone?: string | null
+          rejected_at?: string | null
+          service_description?: string | null
+          service_title?: string
+          signed_client_at?: string | null
+          signed_provider_at?: string | null
+          status?: Database["public"]["Enums"]["contract_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_contracts_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       service_requests: {
         Row: {
@@ -662,6 +1135,71 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          auto_renew: boolean
+          created_at: string
+          expires_at: string | null
+          id: string
+          started_at: string
+          tier: Database["public"]["Enums"]["plan_tier"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_renew?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          started_at?: string
+          tier?: Database["public"]["Enums"]["plan_tier"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_renew?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          started_at?: string
+          tier?: Database["public"]["Enums"]["plan_tier"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      template_packs_owned: {
+        Row: {
+          created_at: string
+          id: string
+          pack_id: string
+          payment_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pack_id: string
+          payment_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pack_id?: string
+          payment_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_packs_owned_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -695,6 +1233,7 @@ export type Database = {
         }[]
       }
       conclude_booking: { Args: { _booking_id: string }; Returns: string }
+      confirm_payment: { Args: { _payment_id: string }; Returns: undefined }
       get_or_create_conversation: { Args: { _other: string }; Returns: string }
       has_role: {
         Args: {
@@ -702,6 +1241,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      next_billing_invoice_number: {
+        Args: { _user_id: string }
+        Returns: string
       }
     }
     Enums: {
@@ -713,8 +1256,23 @@ export type Database = {
         | "concluido"
         | "cancelado"
         | "recusado"
+      boost_level: "basico" | "medio" | "alto"
+      contract_status:
+        | "pendente"
+        | "assinado_prestador"
+        | "assinado_ambos"
+        | "rejeitado"
+        | "concluido"
       coupon_type: "percentual" | "fixo"
       emergency_status: "aberto" | "aceite" | "fechado" | "cancelado"
+      payment_kind:
+        | "assinatura_premium"
+        | "creditos_ia"
+        | "promover_post"
+        | "template_pack"
+      payment_method: "multicaixa_express" | "transferencia_iban" | "cartao"
+      payment_status: "pendente" | "confirmado" | "rejeitado" | "cancelado"
+      plan_tier: "gratuito" | "premium"
       request_status:
         | "pendente"
         | "aceite"
@@ -858,8 +1416,25 @@ export const Constants = {
         "cancelado",
         "recusado",
       ],
+      boost_level: ["basico", "medio", "alto"],
+      contract_status: [
+        "pendente",
+        "assinado_prestador",
+        "assinado_ambos",
+        "rejeitado",
+        "concluido",
+      ],
       coupon_type: ["percentual", "fixo"],
       emergency_status: ["aberto", "aceite", "fechado", "cancelado"],
+      payment_kind: [
+        "assinatura_premium",
+        "creditos_ia",
+        "promover_post",
+        "template_pack",
+      ],
+      payment_method: ["multicaixa_express", "transferencia_iban", "cartao"],
+      payment_status: ["pendente", "confirmado", "rejeitado", "cancelado"],
+      plan_tier: ["gratuito", "premium"],
       request_status: [
         "pendente",
         "aceite",
