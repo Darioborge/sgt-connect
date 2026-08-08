@@ -5,7 +5,7 @@ import { supabaseForUser } from "../supabase";
 export default defineTool({
   name: "create_post",
   title: "Criar publicação",
-  description: "Cria uma nova publicação no feed do Núpublico com uma imagem (URL) e uma legenda.",
+  description: "Cria uma nova publicação no feed do BB Serviços Express com uma imagem (URL) e uma legenda.",
   inputSchema: {
     image_url: z.string().describe("URL da imagem da publicação"),
     caption: z.string().optional().describe("Legenda da publicação"),

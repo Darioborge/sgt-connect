@@ -18,7 +18,7 @@ export const Route = createFileRoute("/perfil")({
       <Perfil />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Meu perfil — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Meu perfil — BB Serviços Express" }] }),
 });
 
 interface SmartPostRow {

@@ -10,7 +10,7 @@ import type { Database } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/perfil/$id")({
   component: PublicProfile,
-  head: () => ({ meta: [{ title: "Perfil — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Perfil — BB Serviços Express" }] }),
 });
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];

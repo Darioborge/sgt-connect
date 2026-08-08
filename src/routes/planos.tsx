@@ -32,7 +32,7 @@ export const Route = createFileRoute("/planos")({
       <Planos />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Planos & Créditos — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Planos & Créditos — BB Serviços Express" }] }),
 });
 
 type Tab = "assinatura" | "promover";

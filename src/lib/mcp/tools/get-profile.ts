@@ -4,7 +4,7 @@ import { supabaseForUser } from "../supabase";
 export default defineTool({
   name: "get_profile",
   title: "Ver o meu perfil",
-  description: "Devolve o perfil do utilizador autenticado no Núpublico (nome, categoria, cidade, preço, avaliação).",
+  description: "Devolve o perfil do utilizador autenticado no BB Serviços Express (nome, categoria, cidade, preço, avaliação).",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {

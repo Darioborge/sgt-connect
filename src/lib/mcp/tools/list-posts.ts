@@ -5,7 +5,7 @@ import { supabaseForUser } from "../supabase";
 export default defineTool({
   name: "list_posts",
   title: "Listar publicações",
-  description: "Lista as publicações do utilizador autenticado no Núpublico.",
+  description: "Lista as publicações do utilizador autenticado no BB Serviços Express.",
   inputSchema: { limit: z.number().int().optional().describe("Número máximo de publicações (padrão 20)") },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit }, ctx) => {

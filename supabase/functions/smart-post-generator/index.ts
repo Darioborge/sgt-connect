@@ -1,4 +1,4 @@
-// Núpublico Smart Post Generator
+// BB Serviços Express Smart Post Generator
 // Uses Lovable AI Gateway:
 // - google/gemini-2.5-flash for text/copy/score (JSON via tool calling)
 // - google/gemini-2.5-flash-image (Nano Banana) for the visual post
@@ -72,7 +72,7 @@ const ANALYSIS_TOOL = {
 } as const;
 
 async function generateAnalysis(apiKey: string, imageUrl: string, mode: string, hint?: string) {
-  const systemPrompt = `Tu és o Núpublico, especialista em marketing digital para o mercado angolano.
+  const systemPrompt = `Tu és o BB Serviços Express, especialista em marketing digital para o mercado angolano.
 Analisas imagens e geras conteúdo publicitário profissional em Português de Angola (PT-AO).
 Modo do post: ${mode}.
 - viral: tom emocional, gancho forte, partilhável.
@@ -150,7 +150,7 @@ Add a bold headline overlay at the top: "${analysis.title}".
 Add a clear CTA button at the bottom with the text: "${analysis.cta}".
 Keep the original product/subject visible and in focus, apply background blur if needed, balance composition, ensure text is highly legible (with subtle drop shadow or contrasting plate).
 ${brandLine}
-Add small "Núpublico" watermark in bottom-right corner.
+Add small "BB Serviços Express" watermark in bottom-right corner.
 Make it look like a real high-converting Instagram ad.`;
 
   const resp = await fetch(GATEWAY, {

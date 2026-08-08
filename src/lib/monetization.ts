@@ -1,4 +1,4 @@
-// Núpublico — catálogo de monetização (Kz)
+// BB Serviços Express — catálogo de monetização (Kz)
 
 export const FREE_DAILY_POSTS = 3;
 
@@ -81,7 +81,7 @@ export const PAYMENT_INFO = {
   multicaixaPhone: "+244 923 000 000",
   iban: "AO06 0040 0000 1234 5678 9012 3",
   bank: "BAI",
-  holder: "Núpublico, Lda.",
+  holder: "BB Serviços Express, Lda.",
 };
 
 export const fmtKz = (n: number) =>

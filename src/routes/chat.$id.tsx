@@ -41,7 +41,7 @@ export const Route = createFileRoute("/chat/$id")({
       <Conversation />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Conversa — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Conversa — BB Serviços Express" }] }),
 });
 
 type Message = Database["public"]["Tables"]["messages"]["Row"];

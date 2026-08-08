@@ -10,11 +10,11 @@ import listClients from "./tools/list-clients";
 const projectRef = import.meta.env['VITE_SUPABASE_PROJECT_ID'] ?? "project-ref-unset";
 
 export default defineMcp({
-  name: "nupublico",
-  title: "Nupublico",
+  name: "bb-servicos-express",
+  title: "BB Serviços Express",
   version: "0.1.0",
   instructions:
-    "Ferramentas do Núpublico, a plataforma angolana de prestadores de serviços. Permite consultar e atualizar o perfil, listar e criar publicações, consultar agendamentos, faturas e clientes de faturação do utilizador autenticado. Valores monetários estão em Kwanzas (Kz).",
+    "Ferramentas do BB Serviços Express, a plataforma angolana de prestadores de serviços. Permite consultar e atualizar o perfil, listar e criar publicações, consultar agendamentos, faturas e clientes de faturação do utilizador autenticado. Valores monetários estão em Kwanzas (Kz).",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",

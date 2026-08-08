@@ -15,7 +15,7 @@ export const Route = createFileRoute("/publicar")({
       <Publicar />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Publicar — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Publicar — BB Serviços Express" }] }),
 });
 
 type Kind = "post" | "status";

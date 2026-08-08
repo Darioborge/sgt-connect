@@ -19,7 +19,7 @@ import {
 
 export const Route = createFileRoute("/admin")({
   component: AdminDashboard,
-  head: () => ({ meta: [{ title: "Admin — Núpublico" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({ meta: [{ title: "Admin — BB Serviços Express" }, { name: "robots", content: "noindex,nofollow" }] }),
 });
 
 type Tab = "overview" | "users" | "map" | "posts" | "payments" | "contracts";
@@ -70,7 +70,7 @@ function AdminDashboard() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-sm font-bold">Núpublico Admin</div>
+              <div className="text-sm font-bold">BB Serviços Express Admin</div>
               <div className="text-[10px] text-muted-foreground">Painel de controlo</div>
             </div>
           </div>

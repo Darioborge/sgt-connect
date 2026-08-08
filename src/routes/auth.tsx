@@ -11,7 +11,7 @@ export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } =>
     typeof s.next === "string" ? { next: s.next } : {},
 
-  head: () => ({ meta: [{ title: "Entrar — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Entrar — BB Serviços Express" }] }),
 });
 
 // Only same-origin relative paths are accepted as a post-login destination.
@@ -102,10 +102,10 @@ function AuthPage() {
             className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl text-base font-bold text-primary-foreground"
             style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-elegant)" }}
           >
-            Nú
+            BB
           </div>
-          <h1 className="text-2xl font-bold">Núpublico</h1>
-          <p className="text-sm text-muted-foreground">Cria conteúdo publicitário com IA em minutos</p>
+          <h1 className="text-2xl font-bold">BB Serviços Express</h1>
+          <p className="text-sm text-muted-foreground">Encontra e contrata prestadores de serviços em Angola</p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5" style={{ boxShadow: "var(--shadow-soft)" }}>
