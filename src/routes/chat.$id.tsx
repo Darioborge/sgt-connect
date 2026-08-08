@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
@@ -319,7 +320,7 @@ function Conversation() {
               onClick={() => navigate({ to: "/perfil/$id", params: { id: other.id } })}
               className="flex flex-1 items-center gap-3 overflow-hidden text-left"
             >
-              <img
+              <Img
                 src={other.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${other.full_name ?? "U"}`}
                 alt=""
                 className="h-9 w-9 rounded-full object-cover"
@@ -384,7 +385,7 @@ function Conversation() {
                         : "rounded-bl-sm bg-secondary text-foreground",
                     )}
                   >
-                    {m.image_url && <img src={m.image_url} alt="" className="mb-1 max-w-full rounded-xl" />}
+                    {m.image_url && <Img src={m.image_url} alt="" className="mb-1 max-w-full rounded-xl" />}
                     {m.audio_url && (
                       <audio
                         controls

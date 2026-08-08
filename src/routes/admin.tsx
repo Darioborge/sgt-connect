@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -388,7 +389,7 @@ function UsersTab() {
                 <td className="px-3 py-2">
                   <div className="flex items-center gap-2">
                     <div className="h-8 w-8 overflow-hidden rounded-full bg-muted">
-                      {u.avatar_url && <img src={u.avatar_url} alt="" className="h-full w-full object-cover" />}
+                      {u.avatar_url && <Img src={u.avatar_url} alt="" className="h-full w-full object-cover" />}
                     </div>
                     <div>
                       <div className="font-medium">{u.full_name ?? "—"}</div>
@@ -450,13 +451,13 @@ function UserDetailsModal({ user, onClose, onUpdate }: { user: Prof; onClose: ()
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-card" onClick={e => e.stopPropagation()}>
         <div className="relative h-32 bg-gradient-to-br from-primary/30 to-primary/10">
-          {user.cover_url && <img src={user.cover_url} alt="" className="h-full w-full object-cover" />}
+          {user.cover_url && <Img src={user.cover_url} alt="" className="h-full w-full object-cover" />}
           <button onClick={onClose} className="absolute right-3 top-3 rounded-full bg-background/80 p-1.5 hover:bg-background"><X className="h-4 w-4" /></button>
         </div>
         <div className="-mt-10 px-5 pb-5">
           <div className="flex items-end gap-3">
             <div className="h-20 w-20 overflow-hidden rounded-2xl border-4 border-card bg-muted">
-              {user.avatar_url && <img src={user.avatar_url} alt="" className="h-full w-full object-cover" />}
+              {user.avatar_url && <Img src={user.avatar_url} alt="" className="h-full w-full object-cover" />}
             </div>
             <div className="flex-1 pb-1">
               <div className="flex items-center gap-2">
@@ -630,7 +631,7 @@ function PostsTab({ adminId }: { adminId: string }) {
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {posts.map(p => (
           <div key={p.id} className="overflow-hidden rounded-xl border border-border bg-card">
-            <img src={p.image_url} alt="" className="aspect-square w-full object-cover" />
+            <Img src={p.image_url} alt="" className="aspect-square w-full object-cover" />
             <div className="p-2">
               <p className="line-clamp-2 text-[11px]">{p.caption ?? "—"}</p>
               <button onClick={() => del(p.id)} className="mt-1 flex items-center gap-1 text-[10px] text-destructive hover:underline">
@@ -650,7 +651,7 @@ function PostsTab({ adminId }: { adminId: string }) {
             </div>
             <label className="flex h-40 cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-border hover:bg-accent">
               {file ? (
-                <img src={URL.createObjectURL(file)} alt="" className="h-full w-full rounded-xl object-cover" />
+                <Img src={URL.createObjectURL(file)} alt="" className="h-full w-full rounded-xl object-cover" />
               ) : (
                 <div className="text-center text-xs text-muted-foreground">
                   <Upload className="mx-auto h-6 w-6" />

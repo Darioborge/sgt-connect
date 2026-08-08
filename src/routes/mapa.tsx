@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { useEffect, useMemo, useState } from "react";
@@ -306,7 +307,7 @@ function MapaPage() {
           <div className="absolute inset-x-3 bottom-3 z-[1000] rounded-2xl border border-border bg-card p-4 shadow-2xl">
             <div className="flex items-start gap-3">
               {selected.avatar_url ? (
-                <img src={selected.avatar_url} alt="" className="h-14 w-14 rounded-full object-cover" />
+                <Img src={selected.avatar_url} alt="" className="h-14 w-14 rounded-full object-cover" />
               ) : (
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
                   {(selected.full_name || selected.username || "U")[0]?.toUpperCase()}

@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { Heart, BadgeCheck, Loader2, X, MoreVertical, MessageCircle, Download, Share2, User as UserIcon, Repeat2, Rocket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -147,7 +148,7 @@ export function FeedCard({ post }: { post: Post }) {
     <article className="overflow-hidden rounded-[1.5rem] bg-card shadow-sm">
       <header className="flex items-center justify-between px-4 py-4">
         <button onClick={goProfile} className="flex items-center gap-3 text-left">
-          <img
+          <Img
             src={provider?.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${provider?.full_name ?? "U"}`}
             alt={provider?.full_name ?? ""}
             className="h-10 w-10 rounded-full object-cover"
@@ -188,7 +189,7 @@ export function FeedCard({ post }: { post: Post }) {
       </header>
 
       <div className="relative w-full overflow-hidden bg-muted">
-        <img src={post.image_url} alt={post.caption ?? ""} className="w-full object-cover" />
+        <Img src={post.image_url} alt={post.caption ?? ""} className="w-full object-cover" />
       </div>
 
       <div className="p-4">
@@ -327,7 +328,7 @@ function CommentsSheet({
           {items.length === 0 && <p className="text-center text-xs text-muted-foreground">Sê o primeiro a comentar</p>}
           {items.map((c) => (
             <div key={c.id} className="flex gap-2">
-              <img
+              <Img
                 src={c.profile?.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${c.profile?.full_name ?? "U"}`}
                 className="h-8 w-8 rounded-full object-cover"
                 alt=""

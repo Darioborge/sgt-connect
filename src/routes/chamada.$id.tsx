@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
@@ -257,7 +258,7 @@ function CallScreen() {
       ) : (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-primary/30 to-black">
           {remoteAvatar ? (
-            <img src={remoteAvatar} alt="" className="h-32 w-32 rounded-full border-4 border-white/20 object-cover" />
+            <Img src={remoteAvatar} alt="" className="h-32 w-32 rounded-full border-4 border-white/20 object-cover" />
           ) : (
             <div className="flex h-32 w-32 items-center justify-center rounded-full bg-primary text-4xl font-bold">
               {remoteName[0]?.toUpperCase() ?? "U"}

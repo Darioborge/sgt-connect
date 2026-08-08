@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthProvider";
@@ -100,7 +101,7 @@ export function StoriesBar() {
             className="flex w-16 shrink-0 flex-col items-center gap-2"
           >
             <div className="rounded-full">
-              <img
+              <Img
                 src={g.avatar || `https://api.dicebear.com/9.x/initials/svg?seed=${g.fullName}`}
                 alt={g.fullName}
                 className="h-16 w-16 rounded-full object-cover ring-2 ring-primary ring-offset-2 ring-offset-background"
@@ -159,7 +160,7 @@ function StatusViewer({
         <div className="absolute left-3 top-3 z-10 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white">
           {name}
         </div>
-        <img src={status.image_url} alt="status" className="max-h-[90vh] w-full object-contain" />
+        <Img src={status.image_url} alt="status" className="max-h-[90vh] w-full object-contain" />
         {status.caption && (
           <p className="absolute bottom-4 left-4 right-4 rounded-lg bg-black/40 p-3 text-center text-sm text-white">
             {status.caption}

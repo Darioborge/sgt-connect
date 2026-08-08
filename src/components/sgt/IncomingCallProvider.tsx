@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "./AuthProvider";
@@ -88,7 +89,7 @@ export function IncomingCallProvider() {
     <div className="fixed inset-x-0 top-3 z-[10000] mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-border bg-card/95 p-3 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top">
       <div className="relative">
         {incoming.caller_avatar ? (
-          <img src={incoming.caller_avatar} alt="" className="h-12 w-12 rounded-full object-cover" />
+          <Img src={incoming.caller_avatar} alt="" className="h-12 w-12 rounded-full object-cover" />
         ) : (
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
             {incoming.caller_name?.[0]?.toUpperCase() ?? "U"}

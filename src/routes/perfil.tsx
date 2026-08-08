@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
@@ -130,7 +131,7 @@ function Perfil() {
       <div className="-mt-14 flex justify-center">
         <div className="relative">
           <div className="rounded-full p-[3px]" style={{ background: "var(--gradient-primary)" }}>
-            <img
+            <Img
               src={profile?.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${profile?.full_name ?? "U"}`}
               alt="Avatar"
               className="h-24 w-24 rounded-full bg-background object-cover ring-4 ring-background"
@@ -265,7 +266,7 @@ function Perfil() {
             {posts.map((p) => (
               <div key={p.id} className="group relative aspect-square overflow-hidden rounded-xl bg-secondary">
                 {p.generated_image_url && (
-                  <img src={p.generated_image_url} alt={p.title ?? "Post"} className="h-full w-full object-cover" />
+                  <Img src={p.generated_image_url} alt={p.title ?? "Post"} className="h-full w-full object-cover" />
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1 text-[10px] font-bold text-white">
                   {p.score}%

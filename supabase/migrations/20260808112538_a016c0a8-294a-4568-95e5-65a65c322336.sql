@@ -1,0 +1,11 @@
+REVOKE ALL ON FUNCTION public.auto_verify_profile() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.bump_conversation_last_message() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.handle_new_user_monetization() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.set_updated_at() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.next_billing_invoice_number(uuid) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.has_role(uuid, public.app_role) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.apply_coupon(text, integer) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.conclude_booking(uuid) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.confirm_payment(uuid) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.get_or_create_conversation(uuid) FROM PUBLIC, anon;
