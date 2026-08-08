@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { Heart, BadgeCheck, Loader2, X, MoreVertical, MessageCircle, Download, Share2, User as UserIcon, Repeat2, Rocket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -188,7 +189,7 @@ export function FeedCard({ post }: { post: Post }) {
       </header>
 
       <div className="relative w-full overflow-hidden bg-muted">
-        <img src={post.image_url} alt={post.caption ?? ""} className="w-full object-cover" />
+        <Img src={post.image_url} alt={post.caption ?? ""} className="w-full object-cover" />
       </div>
 
       <div className="p-4">

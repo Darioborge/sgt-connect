@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { useEffect, useState } from "react";
@@ -171,7 +172,7 @@ function PublicProfile() {
             {posts.map((p) => (
               <div key={p.id} className="relative aspect-square overflow-hidden rounded-xl bg-secondary">
                 {p.generated_image_url && (
-                  <img src={p.generated_image_url} alt={p.title ?? ""} className="h-full w-full object-cover" />
+                  <Img src={p.generated_image_url} alt={p.title ?? ""} className="h-full w-full object-cover" />
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1 text-[10px] font-bold text-white">
                   {p.score}%

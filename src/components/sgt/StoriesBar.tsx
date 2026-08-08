@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthProvider";
@@ -159,7 +160,7 @@ function StatusViewer({
         <div className="absolute left-3 top-3 z-10 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white">
           {name}
         </div>
-        <img src={status.image_url} alt="status" className="max-h-[90vh] w-full object-contain" />
+        <Img src={status.image_url} alt="status" className="max-h-[90vh] w-full object-contain" />
         {status.caption && (
           <p className="absolute bottom-4 left-4 right-4 rounded-lg bg-black/40 p-3 text-center text-sm text-white">
             {status.caption}

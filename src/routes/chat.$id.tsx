@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
 import { useAuth } from "@/components/sgt/AuthProvider";
@@ -384,7 +385,7 @@ function Conversation() {
                         : "rounded-bl-sm bg-secondary text-foreground",
                     )}
                   >
-                    {m.image_url && <img src={m.image_url} alt="" className="mb-1 max-w-full rounded-xl" />}
+                    {m.image_url && <Img src={m.image_url} alt="" className="mb-1 max-w-full rounded-xl" />}
                     {m.audio_url && (
                       <audio
                         controls

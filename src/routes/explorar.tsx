@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { useEffect, useState } from "react";

@@ -1,3 +1,4 @@
+import { Img } from "@/components/sgt/Img";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileShell } from "@/components/sgt/MobileShell";
 import { RequireAuth } from "@/components/sgt/RequireAuth";
