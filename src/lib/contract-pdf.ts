@@ -48,7 +48,7 @@ export function downloadContractPdf(c: ContractForPdf) {
   doc.text("CONTRATO DE PRESTACAO DE SERVICO", 40, 50);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Documento gerado pela plataforma Nupublico", 40, 70);
+  doc.text("Documento gerado pela plataforma BB Serviços Express", 40, 70);
   doc.text("Republica de Angola", 40, 86);
 
   doc.setFontSize(11);
@@ -162,7 +162,7 @@ export function downloadContractPdf(c: ContractForPdf) {
     doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
     doc.text("ASSINADO", W - 90, y + 18, { align: "center" });
-    doc.text("NUPUBLICO", W - 90, y + 30, { align: "center" });
+    doc.text("BB SERVICOS EXPRESS", W - 90, y + 30, { align: "center" });
     doc.setLineWidth(1);
   }
 
@@ -170,7 +170,7 @@ export function downloadContractPdf(c: ContractForPdf) {
   doc.setFontSize(8);
   doc.setTextColor(148, 163, 184);
   doc.text(
-    `Documento ${c.number} gerado electronicamente pela plataforma Nupublico. Validade legal mediante aceitacao das partes.`,
+    `Documento ${c.number} gerado electronicamente pela plataforma BB Serviços Express. Validade legal mediante aceitacao das partes.`,
     W / 2,
     H - 30,
     { align: "center" },

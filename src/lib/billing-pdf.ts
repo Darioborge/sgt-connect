@@ -30,13 +30,13 @@ export function downloadBillingInvoicePdf(inv: BillingInvoicePdf) {
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
 
-  // Header band — Nupublico yellow
+  // Header band — BB Serviços Express yellow
   doc.setFillColor(249, 197, 26);
   doc.rect(0, 0, W, 96, "F");
   doc.setTextColor(20, 20, 20);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(24);
-  doc.text("Nupublico", 40, 52);
+  doc.text("BB Serviços Express", 40, 52);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.text("Faturacao profissional", 40, 72);
@@ -149,7 +149,7 @@ export function downloadBillingInvoicePdf(inv: BillingInvoicePdf) {
   doc.setFontSize(9);
   doc.setTextColor(140, 140, 140);
   doc.text(
-    "Documento gerado pelo Nupublico. Obrigado pela sua preferencia.",
+    "Documento gerado pelo BB Serviços Express. Obrigado pela sua preferencia.",
     W / 2,
     H - 30,
     { align: "center" },
