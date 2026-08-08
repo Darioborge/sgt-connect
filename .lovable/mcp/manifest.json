@@ -19,7 +19,7 @@
       {
         "name": "get_profile",
         "title": "Ver o meu perfil",
-        "description": "Devolve o perfil do utilizador autenticado no Núpublico (nome, categoria, cidade, preço, avaliação).",
+        "description": "Devolve o perfil do utilizador autenticado no BB Serviços Express (nome, categoria, cidade, preço, avaliação).",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -103,7 +103,7 @@
       {
         "name": "create_post",
         "title": "Criar publicação",
-        "description": "Cria uma nova publicação no feed do Núpublico com uma imagem (URL) e uma legenda.",
+        "description": "Cria uma nova publicação no feed do BB Serviços Express com uma imagem (URL) e uma legenda.",
         "annotations": {
           "readOnlyHint": false,
           "destructiveHint": false,
