@@ -1,8 +1,8 @@
-# Product Requirements Document (PRD) — Núpublico
+# Product Requirements Document (PRD) — BB Serviços Express
 
 ## 1. Visão Geral do Produto
 
-**Núpublico** é uma plataforma digital angolana de criação automática de posts, geração de clientes e networking entre prestadores de serviços. O objetivo principal é transformar o utilizador num prestador digital profissional sem exigir conhecimentos de design ou marketing: o sistema constroi posts profissionais automaticamente e conecta prestadores a potenciais clientes através de feed social, mapa em tempo real, chat com contratos e faturação integrada.
+**BB Serviços Express** é uma plataforma digital angolana para encontrar, contratar e pagar prestadores de serviços. O objetivo principal é ligar clientes a prestadores digitais profissionais através de feed social, mapa em tempo real, chat com contratos e faturação integrada.
 
 ### Proposta de Valor
 - Criação de conteúdo profissional automatizada (templates, IA, exportação em HD).
@@ -18,7 +18,7 @@
 |------|-----------|-----------|
 | **Prestador de serviços** | Profissional autónomo (consultor, técnico, artista, vendedor) | Divulgar serviços, receber pedidos, gerar faturas, ser encontrado no mapa. |
 | **Cliente** | Pessoa que procura serviços | Descobrir prestadores, contactar, contratar, pagar. |
-| **Administrador** | Equipa interna Núpublico | Gerir utilizadores, ver estatísticas, confirmar pagamentos, moderar conteúdo. |
+| **Administrador** | Equipa interna BB Serviços Express | Gerir utilizadores, ver estatísticas, confirmar pagamentos, moderar conteúdo. |
 | **Agente externo (MCP)** | Aplicação ou assistente IA autorizado | Aceder dados do utilizador em seu nome via protocolo MCP. |
 
 ---
@@ -186,7 +186,7 @@ Campos editáveis do perfil:
 - Pagamento manual via:
   - Multicaixa (telefone: +244 923 000 000)
   - IBAN: AO06 0040 0000 1234 5678 9012 3 (BAI)
-  - Titular: Núpublico, Lda.
+  - Titular: BB Serviços Express, Lda.
 - Confirmação administrativa manual após receção do comprovativo.
 - Futuro: integração Stripe para cartões internacionais.
 

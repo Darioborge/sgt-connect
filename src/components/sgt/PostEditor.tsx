@@ -119,7 +119,7 @@ export function PostEditor({ initial, identity, format = "square", onClose }: Po
       const url = canvas.toDataURL("image/png");
       const a = document.createElement("a");
       a.href = url;
-      a.download = `nupublico-post-${Date.now()}.png`;
+      a.download = `bb-servicos-express-post-${Date.now()}.png`;
       a.click();
       toast.success("Post exportado!");
     } catch (e) {

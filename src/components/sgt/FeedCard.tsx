@@ -97,7 +97,7 @@ export function FeedCard({ post }: { post: Post }) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `nupublico-${post.id}.jpg`;
+      a.download = `bb-servicos-express-${post.id}.jpg`;
       a.click();
       URL.revokeObjectURL(url);
       toast.success("Imagem guardada");
@@ -110,8 +110,8 @@ export function FeedCard({ post }: { post: Post }) {
   const sharePost = async () => {
     const shareUrl = `${window.location.origin}/perfil/${provider?.id ?? ""}`;
     const shareData = {
-      title: provider?.full_name ?? "Núpublico",
-      text: post.caption ?? "Vê este post no Núpublico",
+      title: provider?.full_name ?? "BB Serviços Express",
+      text: post.caption ?? "Vê este post no BB Serviços Express",
       url: shareUrl,
     };
     try {

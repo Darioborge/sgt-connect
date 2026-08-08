@@ -24,7 +24,7 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // Núpublico identity is dark green & black — force dark theme by default.
+  // BB Serviços Express identity is dark green & black — force dark theme by default.
   const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {

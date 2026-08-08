@@ -111,7 +111,7 @@ export function ContractCard({ contractId, compact }: Props) {
     const text = `Contrato ${c.number} — ${c.service_title}`;
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Contrato Núpublico", text });
+        await navigator.share({ title: "Contrato BB Serviços Express", text });
       } catch {
         /* cancelled */
       }
