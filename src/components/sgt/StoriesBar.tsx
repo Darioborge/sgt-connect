@@ -101,7 +101,7 @@ export function StoriesBar() {
             className="flex w-16 shrink-0 flex-col items-center gap-2"
           >
             <div className="rounded-full">
-              <img
+              <Img
                 src={g.avatar || `https://api.dicebear.com/9.x/initials/svg?seed=${g.fullName}`}
                 alt={g.fullName}
                 className="h-16 w-16 rounded-full object-cover ring-2 ring-primary ring-offset-2 ring-offset-background"

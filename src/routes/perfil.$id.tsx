@@ -111,7 +111,7 @@ function PublicProfile() {
 
       <div className="-mt-12 flex justify-center">
         <div className="rounded-full p-[3px]" style={{ background: "var(--gradient-primary)" }}>
-          <img
+          <Img
             src={profile.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${profile.full_name ?? "U"}`}
             alt={profile.full_name ?? ""}
             className="h-24 w-24 rounded-full bg-background object-cover ring-4 ring-background"

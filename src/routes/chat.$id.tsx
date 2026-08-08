@@ -320,7 +320,7 @@ function Conversation() {
               onClick={() => navigate({ to: "/perfil/$id", params: { id: other.id } })}
               className="flex flex-1 items-center gap-3 overflow-hidden text-left"
             >
-              <img
+              <Img
                 src={other.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${other.full_name ?? "U"}`}
                 alt=""
                 className="h-9 w-9 rounded-full object-cover"

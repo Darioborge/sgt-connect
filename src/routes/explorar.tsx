@@ -97,7 +97,7 @@ function Explorar() {
               className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3"
               style={{ boxShadow: "var(--shadow-soft)" }}
             >
-              <img
+              <Img
                 src={p.avatar_url || `https://api.dicebear.com/9.x/initials/svg?seed=${p.full_name ?? "U"}`}
                 alt=""
                 className="h-14 w-14 rounded-full object-cover"

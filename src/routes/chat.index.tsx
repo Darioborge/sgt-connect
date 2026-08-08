@@ -112,7 +112,7 @@ function ChatList() {
                 className="flex shrink-0 flex-col items-center gap-1.5"
               >
                 <div className="rounded-full bg-gradient-to-tr from-primary to-primary-glow p-[2px]">
-                  <img
+                  <Img
                     src={c.other_avatar || `https://api.dicebear.com/9.x/initials/svg?seed=${c.other_name}`}
                     alt={c.other_name}
                     className="h-14 w-14 rounded-full border-2 border-background object-cover"
@@ -154,7 +154,7 @@ function ChatList() {
                 params={{ id: c.id }}
                 className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-accent/40"
               >
-                <img
+                <Img
                   src={c.other_avatar || `https://api.dicebear.com/9.x/initials/svg?seed=${c.other_name}`}
                   alt={c.other_name}
                   className="h-12 w-12 rounded-full object-cover"
