@@ -80,7 +80,7 @@
       {
         "name": "list_posts",
         "title": "Listar publicações",
-        "description": "Lista as publicações do utilizador autenticado no Núpublico.",
+        "description": "Lista as publicações do utilizador autenticado no BB Serviços Express.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -185,7 +185,7 @@
       {
         "name": "list_clients",
         "title": "Listar clientes",
-        "description": "Lista os clientes de faturação do utilizador autenticado no Núpublico.",
+        "description": "Lista os clientes de faturação do utilizador autenticado no BB Serviços Express.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,

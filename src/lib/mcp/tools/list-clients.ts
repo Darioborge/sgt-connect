@@ -5,7 +5,7 @@ import { supabaseForUser } from "../supabase";
 export default defineTool({
   name: "list_clients",
   title: "Listar clientes",
-  description: "Lista os clientes de faturação do utilizador autenticado no Núpublico.",
+  description: "Lista os clientes de faturação do utilizador autenticado no BB Serviços Express.",
   inputSchema: {
     search: z.string().optional().describe("Filtrar por nome do cliente"),
     limit: z.number().int().optional().describe("Número máximo de clientes (padrão 20)"),
