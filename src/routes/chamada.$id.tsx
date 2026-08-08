@@ -19,7 +19,7 @@ export const Route = createFileRoute("/chamada/$id")({
     kind: (s.kind as "audio" | "video") ?? "video",
     other: (s.other as string) ?? "",
   }),
-  head: () => ({ meta: [{ title: "Chamada — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Chamada — BB Serviços Express" }] }),
 });
 
 // Public STUN servers — sufficient for most peer connections

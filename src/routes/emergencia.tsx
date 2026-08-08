@@ -16,7 +16,7 @@ export const Route = createFileRoute("/emergencia")({
       <Emergency />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Emergência — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Emergência — BB Serviços Express" }] }),
 });
 
 type Em = Database["public"]["Tables"]["emergency_requests"]["Row"];

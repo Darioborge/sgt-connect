@@ -17,7 +17,7 @@ export const Route = createFileRoute("/configuracoes")({
       <Settings />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Configurações — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Configurações — BB Serviços Express" }] }),
 });
 
 function Settings() {

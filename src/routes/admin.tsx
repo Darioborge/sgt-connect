@@ -19,7 +19,7 @@ import {
 
 export const Route = createFileRoute("/admin")({
   component: AdminDashboard,
-  head: () => ({ meta: [{ title: "Admin — Núpublico" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({ meta: [{ title: "Admin — BB Serviços Express" }, { name: "robots", content: "noindex,nofollow" }] }),
 });
 
 type Tab = "overview" | "users" | "map" | "posts" | "payments" | "contracts";

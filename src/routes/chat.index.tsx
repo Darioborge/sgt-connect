@@ -13,7 +13,7 @@ export const Route = createFileRoute("/chat/")({
       <ChatList />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Mensagens — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Mensagens — BB Serviços Express" }] }),
 });
 
 interface Item {

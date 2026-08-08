@@ -18,7 +18,7 @@ export const Route = createFileRoute("/faturas")({
       <Billing />
     </RequireAuth>
   ),
-  head: () => ({ meta: [{ title: "Faturação — Núpublico" }] }),
+  head: () => ({ meta: [{ title: "Faturação — BB Serviços Express" }] }),
 });
 
 type Client = Database["public"]["Tables"]["billing_clients"]["Row"];
