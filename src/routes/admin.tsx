@@ -70,7 +70,7 @@ function AdminDashboard() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-sm font-bold">Núpublico Admin</div>
+              <div className="text-sm font-bold">BB Serviços Express Admin</div>
               <div className="text-[10px] text-muted-foreground">Painel de controlo</div>
             </div>
           </div>

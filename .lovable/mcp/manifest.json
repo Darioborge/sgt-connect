@@ -11,9 +11,9 @@
   },
   "mcp": {
     "server": {
-      "name": "nupublico",
+      "name": "bb-servicos-express",
       "version": "0.1.0",
-      "title": "Nupublico"
+      "title": "BB Serviços Express"
     },
     "tools": [
       {

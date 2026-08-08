@@ -16,11 +16,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Núpublico — Cria conteúdo publicitário com IA" },
+      { title: "BB Serviços Express — Liga prestadores a clientes em Angola" },
       {
         name: "description",
         content:
-          "Núpublico é a plataforma angolana para criar posts publicitários profissionais com IA, promover serviços e vender mais — tudo num só fluxo.",
+          "BB Serviços Express é a plataforma angolana para encontrar prestadores de serviços, agendar, contratar e pagar — tudo num só fluxo.",
       },
     ],
   }),

@@ -87,7 +87,7 @@ function Consent() {
         </div>
         <h1 className="text-lg font-semibold">Ligar {clientName} à tua conta</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Isto permite que {clientName} aceda ao Núpublico em teu nome: ver e atualizar o teu perfil, publicações,
+          Isto permite que {clientName} aceda ao BB Serviços Express em teu nome: ver e atualizar o teu perfil, publicações,
           agendamentos e faturação.
         </p>
         {error && (

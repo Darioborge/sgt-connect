@@ -15,7 +15,7 @@ export const Route = createFileRoute("/mapa")({
   component: MapaPage,
   head: () => ({
     meta: [
-      { title: "Perto de ti — Núpublico" },
+      { title: "Perto de ti — BB Serviços Express" },
       { name: "description", content: "Encontra prestadores de serviços perto de ti em tempo real." },
     ],
   }),
