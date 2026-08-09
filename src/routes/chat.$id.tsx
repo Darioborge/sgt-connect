@@ -11,8 +11,6 @@ import {
   Send,
   Loader2,
   Zap,
-  Phone,
-  Video,
   Mic,
   FileText,
   Paperclip,
