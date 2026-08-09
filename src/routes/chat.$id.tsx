@@ -332,20 +332,6 @@ function Conversation() {
                 </div>
               </div>
             </button>
-            <button
-              onClick={() => startCall("audio")}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
-              aria-label="Chamada de voz"
-            >
-              <Phone className="h-4 w-4 text-primary" />
-            </button>
-            <button
-              onClick={() => startCall("video")}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
-              aria-label="Videochamada"
-            >
-              <Video className="h-4 w-4 text-primary" />
-            </button>
           </>
         )}
       </header>
