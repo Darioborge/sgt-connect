@@ -280,20 +280,8 @@ function Conversation() {
     recorderRef.current = null;
   };
 
-  const startCall = async (kind: "audio" | "video") => {
-    if (!user || !other) return;
-    const { data, error } = await supabase
-      .from("calls")
-      .insert({ conversation_id: id, caller_id: user.id, callee_id: other.id, kind, status: "ringing" })
-      .select("id")
-      .single();
-    if (error || !data) return toast.error("Não foi possível iniciar a chamada");
-    navigate({
-      to: "/chamada/$id",
-      params: { id: data.id },
-      search: { role: "caller", kind, other: other.id },
-    });
-  };
+
+
 
   const toggleReaction = async (messageId: string, emoji: string) => {
     if (!user) return;
