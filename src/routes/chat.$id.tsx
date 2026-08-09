@@ -11,8 +11,6 @@ import {
   Send,
   Loader2,
   Zap,
-  Phone,
-  Video,
   Mic,
   FileText,
   Paperclip,
@@ -280,20 +278,8 @@ function Conversation() {
     recorderRef.current = null;
   };
 
-  const startCall = async (kind: "audio" | "video") => {
-    if (!user || !other) return;
-    const { data, error } = await supabase
-      .from("calls")
-      .insert({ conversation_id: id, caller_id: user.id, callee_id: other.id, kind, status: "ringing" })
-      .select("id")
-      .single();
-    if (error || !data) return toast.error("Não foi possível iniciar a chamada");
-    navigate({
-      to: "/chamada/$id",
-      params: { id: data.id },
-      search: { role: "caller", kind, other: other.id },
-    });
-  };
+
+
 
   const toggleReaction = async (messageId: string, emoji: string) => {
     if (!user) return;
@@ -331,20 +317,6 @@ function Conversation() {
                   {otherTyping ? <span className="text-primary">a escrever…</span> : "online"}
                 </div>
               </div>
-            </button>
-            <button
-              onClick={() => startCall("audio")}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
-              aria-label="Chamada de voz"
-            >
-              <Phone className="h-4 w-4 text-primary" />
-            </button>
-            <button
-              onClick={() => startCall("video")}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent"
-              aria-label="Videochamada"
-            >
-              <Video className="h-4 w-4 text-primary" />
             </button>
           </>
         )}
